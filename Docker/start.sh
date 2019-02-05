@@ -5,3 +5,4 @@ docker-compose up -d
 #docker-compose kill
 #docker-compose up -d
 ./client.sh
+xdg-open https://localhost:9001
