@@ -6,36 +6,34 @@ import unicodedata
 
 
 '''
-## the communacation between the database and the command line need to be decided ##
-
 When this file been called, it will create ### two ### tables first,
-the camera table, and the image/video table,
-and then the content of camera.csv and iv.csv file will be added to
+the CAMERA table, and the IMAGE/VIDEO table,
+and then the content of CAMERA.csv and IV.csv file will be added to
 these two tables.
 
 
 ## the input, content of csv file, need to be decided ##
 
-For now, the camera.csv file would looks something similar to
+For now, the CAMERA.csv file would looks something similar to
 
-----------------------------------------------------------------------------------------
-| camera id | country | city     | latitude | longtitude | resolution_w | resolution_h | 
-----------------------------------------------------------------------------------------
-|    000001 | USA     | Boston   |  42.3692 |   -71.0658 |         2048 |         1536 |
-----------------------------------------------------------------------------------------
-|    000002 | USA     | New York |  40.7047 |   -74.0211 |         1024 |          768 |
-----------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------
+| Transaction id | Expired | Country | City     | Latitude | Longtitude | Resolution_w | Resolution_h | 
+-------------------------------------------------------------------------------------------------------
+|         000001 |       0 | USA     | Boston   |  42.3692 |   -71.0658 |         2048 |         1536 |
+-------------------------------------------------------------------------------------------------------
+|         000002 |       0 | USA     | New York |  40.7047 |   -74.0211 |         1024 |          768 |
+-------------------------------------------------------------------------------------------------------
 ...
 
-and the iv.csv file would looks something similar to
+and the IV.csv file would looks something similar to
 
------------------------------------------------------------------------------------------------------------------
-| iv_id      | camera id | iv_ date   | iv_time  | file type | file size | minio link | data set | is processed |
------------------------------------------------------------------------------------------------------------------
-| 0000000001 | 000001    | 2019-01-02 | 13:38:22 | PNG       | 1.4 MB    | None       | None     |            0 |
------------------------------------------------------------------------------------------------------------------
-| 0000000002 | 000001    | 2019-01-03 | 14:57:19 | JPEG      | 390 KB    | None       | None     |            0 |
------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------------------
+| IV_id      | Transaction id | iv_ date   | iv_time  | file type | file size | minio link | data set | is processed |
+----------------------------------------------------------------------------------------------------------------------
+| 0000000001 |         000001 | 2019-01-02 | 13:38:22 | PNG       | 1.4 MB    | None       | None     |            0 |
+----------------------------------------------------------------------------------------------------------------------
+| 0000000002 |         000001 | 2019-01-03 | 14:57:19 | JPEG      | 390 KB    | None       | None     |            0 |
+----------------------------------------------------------------------------------------------------------------------
 ...
 
 
@@ -68,9 +66,6 @@ class communacation:
   # connect to the mysql
   def __init__(self, cameraset, imageset): #, featureset, imagefeature):
 
-    # CREATE THE DATABASE IF NEEDED
-    # mycursor.execute("CREATE DATABASE mydatabase")
-
     # Define database
     mydatabase = "test_keyspace"
   
@@ -83,7 +78,9 @@ class communacation:
         database = mydatabase,
         auth_plugin='mysql_native_password'
       )
+
       print "Connected to mysql database", mydatabase
+      print
       
     except mysql.connector.Error as err:
       if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -92,44 +89,62 @@ class communacation:
         print "Database does not exist"
       else:
         print(err)
+      return
 
-    self.mycursor = self.mydb.cursor()
+    self.mycursor = self.mydb.cursor(buffered=True)
     self.cameraset = cameraset
     self.imageset = imageset
     ##self.featureset = featureset
     ##self.imagefeature = imagefeature
 
 
+  # drop test table IF NEEDED
+  def dropCameraTable(self):
+    self.mycursor.execute("drop table CAMERA")
+    print "CAMERA table dropped."
+    print
+
+  # drop test table IF NEEDED
+  def dropImageTable(self):
+    self.mycursor.execute("drop table IMAGE_VIDEO")
+    print "IMAGE_VIDEO table dropped."
+    print
+    
 
   # CREATE CAMERA TABLE IF NEEDED
-  
   def createCameraTable(self):
-    # drop test table IF NEEDED
-    #self.mycursor.execute("drop table camera")
-
-    # create table
-    self.mycursor.execute("CREATE TABLE camera(CameraID INT, \
+    try:
+      self.mycursor.execute("SELECT * FROM CAMERA")
+      print "CAMERA table exist"
+      print
+      
+    except:
+      # create table
+      self.mycursor.execute("CREATE TABLE CAMERA(Transaction_ID INT,\
+                  Expired INT, \
                   Country VARCHAR(30), City VARCHAR(30), \
                   Latitude FLOAT, Longitude FLOAT, \
-                  resolution_w INT, resolution_h INT, PRIMARY KEY (CameraID))")
-
-    print "camera table created."
+                  Resolution_w INT, Resolution_h INT, PRIMARY KEY (Transaction_ID))")
+      print "CAMERA table created."
+      print
     
 
   # CREATE IMAGE TABLE IF NEEDED
-
   def createImageTable(self):
-    ## drop test table IF NEEDED
-    #self.mycursor.execute("drop table image")
-
-    ## create table
-    self.mycursor.execute("CREATE TABLE image(iv_ID INT, CameraID INT, \
-                  iv_date DATE, iv_time TIME, \
-                  file_type VARCHAR(10), file_size VARCHAR(10), \
-                  minio_link VARCHAR(500), dataset VARCHAR(500), is_processed INT, \
+    try:
+      self.mycursor.execute("SELECT * FROM IMAGE_VIDEO")
+      print "IMAGE_VIDEO table exist"
+      print
+    except:
+      ## create table
+      self.mycursor.execute("CREATE TABLE IMAGE_VIDEO(IV_ID INT, Transaction_ID INT, \
+                  IV_date DATE, IV_time TIME, \
+                  File_type VARCHAR(10), File_size VARCHAR(10), \
+                  Minio_link VARCHAR(500), Dataset VARCHAR(500), Is_processed INT, \
                   PRIMARY KEY (iv_ID))")
                           
-    print "image table created."
+      print "IMAGE_VIDEO table created."
+      print
 
 
   # The features need to be decided, thus the following two functions
@@ -149,35 +164,33 @@ class communacation:
 
 
   # INSERT the element from the input into the database
-  
   def insertCamera(self):
     for i in self.cameraset.iterrows():
-      sql = "INSERT INTO camera(CameraID, Country, City, Latitude, Longitude, \
-                  resolution_w, resolution_h) \
-                  VALUES (%s, %s, %s, %s, %s, %s, %s)"
-      val=(i[1][0], i[1][1], i[1][2], i[1][3], i[1][4], i[1][5],i[1][6])
-      
+      sql = "INSERT INTO CAMERA(Transaction_ID, Expired, Country, City, Latitude, Longitude, \
+                  Resolution_w, Resolution_h) \
+                  VALUES (%s, %s, %s, %s, %s, %s, %s, %s) \
+                  ON DUPLICATE KEY UPDATE Transaction_ID = " + `i[1][0]`
+      val=(i[1][0], i[1][1], i[1][2], i[1][3], i[1][4], i[1][5], i[1][6], i[1][7])
       self.mycursor.execute(sql, val)
       
     self.mydb.commit()
-    print "Camera record inserted."
+    print "CAMERA table updated."
+    print
 
 
   def insertImage(self):
     for i in self.imageset.iterrows():
-      sql = "INSERT INTO image(iv_ID, CameraID, iv_date, iv_time, file_type, file_size, \
-            minio_link, dataset, is_processed) \
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-      
+      sql = "INSERT INTO IMAGE_VIDEO(IV_ID, Transaction_ID, IV_date, IV_time, File_type, File_size, \
+                Minio_link, Dataset, Is_processed) \
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) \
+                ON DUPLICATE KEY UPDATE iv_ID = " + `i[1][0]`
       val = (i[1][0], i[1][1], i[1][2], i[1][3], i[1][4], i[1][5], i[1][6], i[1][7], i[1][8])
-
       self.mycursor.execute(sql, val)
       
     self.mydb.commit()
+    print "IMAGE_VIDEO table updated."
+    print
     
-    print "Image record inserted."
-    
-
 
   # The features need to be decided, thus the following two functions
   #     will not been called for now.
@@ -209,19 +222,22 @@ class communacation:
       print(x)
 
 
-
 def main():
   ## read file
   camera_data = Datafile()
-  camera_data.readcameraData("camera.csv");
+  camera_data.readcameraData("CAMERA.csv")
   
   iv_data = Datafile()
-  iv_data.readivData("iv.csv");
+  iv_data.readivData("IV.csv")
 
   ## initialize newData
   newData = communacation(camera_data.cameradata, iv_data.imagedata) #, data.featuredata, \
                         #data.imagefeaturedata)
 
+
+  ## drop test table
+  #newData.dropCameraTable()
+  #newData.dropImageTable()
   
   ## create data table
   newData.createCameraTable()
