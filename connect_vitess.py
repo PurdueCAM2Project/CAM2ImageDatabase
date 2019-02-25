@@ -1,8 +1,11 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-import pandas as pd
-import unicodedata
+import sys
+import os.path
+import csv
+#import pandas as pd
+
 
 
 '''
@@ -44,27 +47,129 @@ class Datafile:
   data = None
   length = None
 
+  # cameradata stores the metadata of camera
+  # camera_bool check whether the data is valid
   def __init__(self):
-    self.camera_raw_data = None
-    self.iv_raw_data = None
+    self.check = True
     self.cameradata = None
-    self.imagedata = None
+    self.camera_bool = False
+    
+    self.ivdata = None
+    self.iv_bool = False
+    
     self.featuredata = None
-    self.imagefeaturedata = None
+    self.feature_bool = False
+    
+    self.ifdata = None
+    self.if_bool = False
 
-  def readcameraData(self, filename):
-    self.camera_raw_data = pd.read_csv(filename, header=0)
-    self.cameradata = self.camera_raw_data.iloc[:]
+  def readData(self, file_content, filename):
+    if (file_content == 0):
+      try:
+        self.cameradata = []
+        with open(filename, 'rb') as csvfile:
+          spamreader = csv.reader(csvfile, delimiter='|')
+          for row in spamreader:
+            if (row[0] != ',,,,,,,'):
+              temp = row[0].split(",")
+              self.cameradata.append(temp)
+            
+        # if it is valid dataset
+        if (self.cameradata[0] == ["Transaction id", "Expired", "country", \
+                                   "city", "latitude", "longtitude", \
+                                   "resolution_w", "resolution_h"]):
+          self.cameradata = self.cameradata[1:]
 
-  def readivData(self, filename):
-    self.iv_raw_data = pd.read_csv(filename, header=0)
-    self.imagedata = self.iv_raw_data.iloc[:]
+        # if it missing optional column - city
+        elif (self.cameradata[0] == ["Transaction id", "Expired", "country", \
+                                   "latitude", "longtitude", \
+                                   "resolution_w", "resolution_h"]):
+          self.cameradata = self.cameradata[1:]
+          for i in range (len(self.cameradata)):
+            self.cameradata[i] = self.cameradata[i][:3] + ["None"] + self.cameradata[i][3:]
 
+        elif (len(self.cameradata[0]) < 8):
+          print "File", filename, "is missing required column."
+          print
+          self.check = False
+          return
+        elif (len(self.cameradata[0]) > 8):
+          print "File", filename, "exceed the expected number of columns."
+          print
+          self.check = False
+          return
+          
+        self.camera_bool = True
+      except:
+        print "The camera file", filename, "does not exist"
+        print
+        self.check = False
+        return
+      
+    elif (file_content == 1):
+      try:
+        self.ivdata = []
+        with open(filename, 'rb') as csvfile:
+          spamreader = csv.reader(csvfile, delimiter='|')
+          for row in spamreader:
+            if (row[0] != ',,,,,,,'):
+              temp = row[0].split(",")
+              self.ivdata.append(temp)
+        if (self.ivdata[0] == ["iv_id", "Transaction id", "iv_date",\
+                               "iv_time", "file type", "file size",\
+                               "minio link", "data set", "is processed"]):
+          self.ivdata = self.ivdata[1:]
+        elif (len(self.ivdata[0]) < 9):
+          print "File", filename, "is missing required column."
+          print
+          self.check = False
+          return
+        elif (len(self.ivdata[0]) > 9):
+          print "File", filename, "exceed the expected number of columns."
+          print
+          self.check = False
+          return
+        self.iv_bool = True
+      except:
+        print "The imagevideo file", filename, "does not exist"
+        print
+        self.check = False
+        return
+      
+    elif (file_content == 2):
+      try:
+        self.featuredata = []
+        with open(filename, 'rb') as csvfile:
+          spamreader = csv.reader(csvfile, delimiter='|')
+          for row in spamreader:
+            temp = row[0].split(",")
+            self.featuredata.append(temp)   
+        self.feature_bool = True
+      except:
+          print "The feature file", filename, "does not exist"
+          print
+          self.check = False
+          return
+        
+    else:
+      try:
+        self.ifdata = []
+        with open(filename, 'rb') as csvfile:
+          spamreader = csv.reader(csvfile, delimiter='|')
+          for row in spamreader:
+            temp = row[0].split(",")
+            self.ifdata.append(temp)   
+        self.if_bool = True
+      except:
+        print "The imagefeature file", filename, "does not exist"
+        print
+        self.check = False
+        return
 
 class communacation:
 
   # connect to the mysql
-  def __init__(self, cameraset, imageset): #, featureset, imagefeature):
+  def __init__(self, camera_set, iv_set, feature_set, if_set):
 
     # Define database
     mydatabase = "test_keyspace"
@@ -92,10 +197,10 @@ class communacation:
       return
 
     self.mycursor = self.mydb.cursor(buffered=True)
-    self.cameraset = cameraset
-    self.imageset = imageset
-    ##self.featureset = featureset
-    ##self.imagefeature = imagefeature
+    self.camera_set = camera_set
+    self.iv_set = iv_set
+    self.feature_set = feature_set
+    self.if_set = if_set
 
 
   # drop test table IF NEEDED
@@ -165,12 +270,12 @@ class communacation:
 
   # INSERT the element from the input into the database
   def insertCamera(self):
-    for i in self.cameraset.iterrows():
+    for i in self.camera_set:
       sql = "INSERT INTO CAMERA(Transaction_ID, Expired, Country, City, Latitude, Longitude, \
                   Resolution_w, Resolution_h) \
                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s) \
-                  ON DUPLICATE KEY UPDATE Transaction_ID = " + `i[1][0]`
-      val=(i[1][0], i[1][1], i[1][2], i[1][3], i[1][4], i[1][5], i[1][6], i[1][7])
+                  ON DUPLICATE KEY UPDATE Transaction_ID = " + `i[0]`
+      val=(i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7])
       self.mycursor.execute(sql, val)
       
     self.mydb.commit()
@@ -179,12 +284,12 @@ class communacation:
 
 
   def insertImage(self):
-    for i in self.imageset.iterrows():
+    for i in self.iv_set:
       sql = "INSERT INTO IMAGE_VIDEO(IV_ID, Transaction_ID, IV_date, IV_time, File_type, File_size, \
                 Minio_link, Dataset, Is_processed) \
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s) \
-                ON DUPLICATE KEY UPDATE iv_ID = " + `i[1][0]`
-      val = (i[1][0], i[1][1], i[1][2], i[1][3], i[1][4], i[1][5], i[1][6], i[1][7], i[1][8])
+                ON DUPLICATE KEY UPDATE iv_ID = " + `i[0]`
+      val = (i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8])
       self.mycursor.execute(sql, val)
       
     self.mydb.commit()
@@ -222,34 +327,80 @@ class communacation:
       print(x)
 
 
+
 def main():
+  if (len(sys.argv) < 5):
+    print "Please use the format"
+    print ">> python connect_vitess.py <camera filename> <image&video filename> <feature filename> <image&feature filename>"
+    print
+    print "If does not have any of the file, use None"
+    print ">> python connect_vitess.py <camera filename> None None None"
+    print
+    return
+  else:
+    camera_file = sys.argv[1]
+    iv_file = sys.argv[2]
+    feature_file = sys.argv[3]
+    if_file = sys.argv[4]
+
+  for i in range (1,5):
+    if (sys.argv[i] != "None"):
+      name, ext = os.path.splitext(sys.argv[i])
+      if (ext != ".csv"):
+        print "Only accept the csv file type"
+        print
+        return
+
   ## read file
   camera_data = Datafile()
-  camera_data.readcameraData("CAMERA.csv")
-  
   iv_data = Datafile()
-  iv_data.readivData("IV.csv")
+  feature_data = Datafile()
+  if_data = Datafile()
+    
+  if (camera_file != "None"):
+    camera_data = Datafile()
+    camera_data.readData(0, camera_file)
 
+  if (iv_file != "None"):
+    iv_data = Datafile()
+    iv_data.readData(1, iv_file)
+
+  if (feature_file != "None"):
+    feature_data = Datafile()
+    feature_data.readData(2, iv_file)
+
+  if (if_file != "None"):
+    if_data = Datafile()
+    if_data.readData(3, if_file)
+
+  if (not camera_data.check or not iv_data or not feature_data or not if_data ):
+    return
+  
   ## initialize newData
-  newData = communacation(camera_data.cameradata, iv_data.imagedata) #, data.featuredata, \
-                        #data.imagefeaturedata)
-
+  newData = communacation(camera_data.cameradata, iv_data.ivdata, feature_data.featuredata, \
+                        if_data.ifdata)
 
   ## drop test table
   #newData.dropCameraTable()
   #newData.dropImageTable()
-  
-  ## create data table
-  newData.createCameraTable()
-  newData.createImageTable()
-  #newData.createFeatureTable()
-  #newData.createImagefeature()
 
-  ## insert data
-  newData.insertCamera()
-  newData.insertImage()
-  #newData.insertFeature()
-  #newData.insertImagefeature()
+  ## create and insert data table
+
+  if (camera_data.camera_bool):
+    newData.createCameraTable()
+    newData.insertCamera()
+
+  if (iv_data.iv_bool):
+    newData.createImageTable()
+    newData.insertImage()
+
+  if (feature_data.feature_bool):
+    newData.createFeatureTable()
+    newData.insertFeature()
+
+  if (if_data.if_bool):
+    newData.createImagefeature()
+    newData.insertImagefeature()
   
 
 main()
