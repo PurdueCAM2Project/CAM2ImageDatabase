@@ -123,10 +123,13 @@ class VitessConn:
   def insertCamera(self, camera):
     
     sql = 'INSERT INTO CAMERA(Camera_ID, Country, State, City, Latitude, Longitude, \
-          Resolution_w, Resolution_h) \
-          VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+            Resolution_w, Resolution_h) \
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) \
+            ON DUPLICATE KEY UPDATE \
+            Camera_ID=%s, Country=%s, State=%s, \
+            City=%s, Latitude=%s, Longitude=%s'
 
-    self.mycursor.execute(sql, camera)
+    self.mycursor.execute(sql, camera + camera)
 
   def insertImage(self, image):
 
