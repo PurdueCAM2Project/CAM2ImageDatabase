@@ -6,5 +6,5 @@ It checks to make sure all files, that are in the directory that is going to be 
 
 The purpose of this is to prevent the uploading of image features without an image that corresponds to it, and vice-versa.
 
-## This function will eventually be integrated into the setup script.
+## This function will eventually be integrated into the ImageDB script (setup branch)
 This is so that we aren't iterating through the CSV multiple times.
