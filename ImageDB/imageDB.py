@@ -36,9 +36,16 @@ This file contains the main functionalities of the imageDB system.
 
 ----- To Be Added -----
 
+Minio
+========================
+1. Insert Images to Minio Server
+2. [Done] Batch Download Images taken a data frame object as input (reduce I/O)
+3. [Done] Batch Download Images taken a CSV file as input (if user wants to download later)
+4. Transaction Rollback mechanism
 
 '''
 from vitess_connection import VitessConn
+from minio_connection import MinioConn
 import config
 import mysql.connector.Error as mysqlError
 import uuid
@@ -51,6 +58,10 @@ class ImageDB:
 
         self.vitess = VitessConn()
         # TODO: Haoran add a line for Mino connection
+        endpoint = 'localhost:9000'
+        access_key = 'FX770DGQ10M2ALSRVX3F'
+        secret_key = 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl'
+        self.minio = MinioConn(endpoint, access_key, secret_key)
     
     def init_tables(self):
         self.vitess.createCameraTable()
