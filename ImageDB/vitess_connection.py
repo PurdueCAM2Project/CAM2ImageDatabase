@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# When using this class, all transactions invloving 
+# When using this class, all transactions invloving
 # DML(data manipulation language), including insert, delete, update, etc.,
 # needs to be commited by calling [vitessConnObject].mydb.commit()
 # and [vitessConnObject].mydb.rollback() when thrwoing exception
@@ -17,7 +17,7 @@ class VitessConn:
 
 		# Define database
 		mydatabase = 'test_keyspace'
-	
+
 		try:
 			self.mydb = mysql.connector.connect(
 				host='127.0.0.1',
@@ -28,7 +28,7 @@ class VitessConn:
 				auth_plugin='mysql_native_password'
 			)
 			print('Connected to mysql database ' + mydatabase)
-			
+
 		except mysql.connector.Error as err:
 			if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
 				print('Something is wrong with your user name or password.')
@@ -50,14 +50,14 @@ class VitessConn:
 	def dropImageTable(self):
 		self.mycursor.execute('drop table IF EXISTS IMAGE_VIDEO')
 		print('IMAGE_VIDEO table dropped.')
-		
+
 
 	# CREATE CAMERA TABLE IF NEEDED
 	def createCameraTable(self):
 		try:
 			self.mycursor.execute('SELECT 1 FROM CAMERA LIMIT 1')
 			print('CAMERA table exist')
-			
+
 		except:
 			# create table
 			self.mycursor.execute('CREATE TABLE CAMERA(Camera_ID INT NOT NULL,\
@@ -65,7 +65,7 @@ class VitessConn:
 									Latitude FLOAT NOT NULL, Longitude FLOAT NOT NULL, \
 									Resolution_w INT NOT NULL, Resolution_h INT NOT NULL, PRIMARY KEY (Camera_ID))')
 			print('CAMERA table created.')
-		
+
 
 	# CREATE IMAGE TABLE IF NEEDED
 	def createImageTable(self):
@@ -79,11 +79,11 @@ class VitessConn:
 									File_type VARCHAR(10), File_size VARCHAR(10), \
 									Minio_link VARCHAR(500), Dataset VARCHAR(500), Is_processed INT, \
 									PRIMARY KEY (IV_ID))')
-													
+
 			print('IMAGE_VIDEO table created.')
 
 
-	# CREATE FEATURE TABLE IF NEEDED	
+	# CREATE FEATURE TABLE IF NEEDED
 	def createFeatureTable(self):
 		try:
 			self.mycursor.execute('SELECT 1 FROM FEATURE LIMIT 1')
@@ -91,7 +91,7 @@ class VitessConn:
 		except:
 			## create table
 			self.mycursor.execute('CREATE TABLE FEATURE(Feature_ID INT, \
-									Feature_Name VARCHAR(100)')
+									Feature_Name VARCHAR(100))')
 			print('Feature table created.')
 
 
@@ -111,7 +111,7 @@ class VitessConn:
 
 	# mannual commit after calling the method
 	def insertCameras(self, cameras):
-		
+
 		sql = 'INSERT INTO CAMERA(Camera_ID, Country, State, City, Latitude, Longitude, \
 				Resolution_w, Resolution_h) \
 				VALUES (%s, %s, %s, %s, %s, %s, %s, %s) \
@@ -121,7 +121,21 @@ class VitessConn:
 
 		self.mycursor.executemany(sql, cameras)
 
-	# Insert one image tuple 
+	# Update the camera information in the camera table
+	# Update using Camera_ID as key and so first swap the order of tuple elements
+	def updateCamera(self, camera):
+
+		camID = camera[0]
+		camData = camera[1:]
+		data = (camData, camID) # The tuple with Camera_ID as the last element
+
+		sql = 'UPDATE CAMERA SET \
+				Country=%s, State=%s, City=%s, Latitude=%s, Longitude=%s \
+				WHERE Camera_ID=%s'
+
+		self.mycursor.executemany(sql, data)
+
+	# Insert one image tuple
 	def insertImage(self, image):
 
 		sql = 'INSERT INTO IMAGE_VIDEO(IV_ID, Camera_ID, IV_date, IV_time, File_type, File_size, \
@@ -129,7 +143,7 @@ class VitessConn:
 				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
 
 		self.mycursor.execute(sql, image)
-		
+
 
 	# this function get feature ID of a feature name
 	def getFeature(self, featureName):
@@ -148,14 +162,14 @@ class VitessConn:
 
 		sql = 'INSERT INTO feature(Feature_ID, Feature_Name) VALUES (%s, %s)'
 		self.mycursor.execute(sql, feature)
-		
+
 
 	# this function takes a list of feature_ID-image_ID tuples
 	def insertImagefeatures(self, relations):
 		sql = 'INSERT INTO RELATION(Feature_ID, IV_ID) VALUES (%s, %s)'
 		self.mycursor.executemany(sql, relations)
-		
-	
+
+
 	## check permission if needed
 	def select(self, tablename):
 		self.mycursor.execute('SELECT * FROM ' + tablename)
