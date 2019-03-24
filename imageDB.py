@@ -42,6 +42,7 @@ from vitess_connection import VitessConn
 import config
 import mysql.connector.Error as mysqlError
 import uuid
+import os
 
 class ImageDB:
 
@@ -117,11 +118,19 @@ class ImageDB:
                         # Check if file name exists in the folder
                         if row[0] not in files_in_folder:
                             missing_from_folder.append(row[0])
+                        # Else, if the file exists in both, remove it from the list of files in the folder. files_in_folder will be left with the files which aren't in the CSV
+                        else:
+                            files_in_folder.remove(row[0])
 
-                        # If there are missing files, print them
+                        # If there are missing files, in the folder, print them
                         if missing_from_folder:
                             print("The following files are missing from the folder:")
-                            print(missingFolder)
+                            print(missing_from_folder)
+
+                        # If there are missing files, in the CSV, print them
+                        if files_in_folder:
+                            print("The following files are missing from the CSV:")
+                            print(files_in_folder)
 
                     elif data_format == 'dict':
                         # key: image file name; value: entire row (list)
