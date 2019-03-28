@@ -4,7 +4,7 @@ This file contains the main functionalities of the imageDB system.
 
 ----- Table Initialization -----
 
-1. Initialize camera table 
+1. Initialize camera table
 2. Initialize image table
 3. Initialize feature table
 4. Initialize image-feature relation table
@@ -44,25 +44,27 @@ Minio
 4. Transaction Rollback mechanism
 
 '''
+
 from vitess_connection import VitessConn
 from minio_connection import MinioConn
 import config
 import mysql.connector.Error as mysqlError
 import uuid
 
+
 class ImageDB:
 
     def __init__(self):
 
         # connect to Vitess-MySql and Minio
-
         self.vitess = VitessConn()
+
         # TODO: Haoran add a line for Mino connection
         endpoint = 'localhost:9000'
         access_key = 'FX770DGQ10M2ALSRVX3F'
         secret_key = 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl'
         self.minio = MinioConn(endpoint, access_key, secret_key)
-    
+
     def init_tables(self):
         self.vitess.createCameraTable()
         self.vitess.createFeatureTable()
@@ -82,7 +84,7 @@ class ImageDB:
         elif csv_header == required_header:
             return
         elif len(csv_header) < len(required_header):
-            raise ValueError("File is missing required column.") 
+            raise ValueError("File is missing required column.")
         elif len(csv_header) > len(required_header):
             raise ValueError("File exceeds the expected number of columns.")
         else:
@@ -141,8 +143,9 @@ class ImageDB:
         except Exception as e2:
             print(e2)
 
-    # this function should read image and image feature file, 
-    def insert_image(self, image_csv, image_feature_csv=None):
+    # this function should read image and image feature file,
+    # Parameters added by Haoran: bucket_name, file_path
+    def insert_image(self, image_csv, image_feature_csv=None, bucket_name, file_path):
 
         # image_list is a list of list, each element is a row in csv
         image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list')
@@ -165,13 +168,13 @@ class ImageDB:
                 if f_id is not None:
                     relation_header[i] = f_id
                 else:
-                    # generate feature id, insert new feature 
+                    # generate feature id, insert new feature
                     f_id = uuid.uuid1()
                     self.vitess.insertFeature((f_id, relation_header[i]))
                     relation_header[i] = f_id
 
             # insert image with metadata and feature inside the database one-by-one
-            
+
             for i in len(image_list):
 
                 # image_list[i] is the i th row of image metadata
@@ -179,9 +182,14 @@ class ImageDB:
                 image_filename = image_list[i][0]
                 image_id = uuid.uuid1()
 
-                # TODO: image file by file name in the folder to Minio
+                # TODO: insert image file by file name in the folder to Minio (Haoran)
                 # change its file name to image_id value
                 # record the Minio name/bucket/link in the image_list
+                mc = self.minio.connect_to_minio_server(self.minio.endpoint, self.minio.access_key, self.minio.secret_key)
+                self.minio.upload_single_file(mc, bucket_name, image_id, file_path)
+                minio_link = mc.endpoint + ":/" + bucket_name + ":/" + image_id
+                # TODO: which column is feature "minio_link"?
+                image_list[i][] = minio_link
 
                 # substitude the filename with image_id
                 image_list[i][0] = image_id
@@ -209,3 +217,12 @@ class ImageDB:
             self.vitess.mydb.rollback()
         except Exception as e2:
             print(e2)
+
+    # this function will batch download all images in a data frame from Minio Server
+    def batch_get(self):
+        # if input is a CSV
+        df = self.minio.read_csv('nyc_traffic_sample.csv')
+
+        mc = self.minio.connect_to_minio_server(self.minio.endpoint, self.minio.access_key, self.minio.secret_key)
+
+        self.minio.batch_download(mc, df)

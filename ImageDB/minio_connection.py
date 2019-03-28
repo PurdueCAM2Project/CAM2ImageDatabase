@@ -14,14 +14,14 @@ import datetime
 class MinioConn:
 
     # Constructor
-    def __init__(self, endpoint, access, secret):
+    def __init__(self, endpoint, access_key, secret_key):
         self.endpoint = endpoint
-        self.access = access
-        self.secret = secret
+        self.access_key = access_key
+        self.secret_key = secret_key
 
     # Connect Minio Client to Minio Server
-    def connect_to_minio_server(self, endpoint, access, secret):
-        return Minio(endpoint, access_key=access, secret_key=secret, secure=False)
+    def connect_to_minio_server(self, endpoint, access_key, secret_key):
+        return Minio(endpoint, access_key=access_key, secret_key=secret_key, secure=False)
 
     # Read in CSV file and output a data frame
     def read_csv(self, csv_file_name):
@@ -82,15 +82,32 @@ class MinioConn:
         print("===============================================================")
         print("Finished in --%s-- seconds" % (time.time() - start_time))
 
+    # Create a bucket on Minio server
+    # Location choices: "us-east-1", "us-west-1", "us-west-2"
+    def create_bucket(self, mc, bucket_name, location):
+        try:
+            mc.make_bucket(bucket_name, location=location)
+        except ResponseError as err:
+            print(err)
 
-'''
+    # Upload a file from local storage to Minio server
+    def upload_single_file(self, mc, bucket_name, object_name, local_file_path):
+        try:
+            print(mc.fput_object(bucket_name, object_name, local_file_path))
+        except ResponseError as err:
+            print(err)
+
 
 if __name__ == '__main__':
     new_mc = MinioConn('localhost:9000', 'FX770DGQ10M2ALSRVX3F', 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl')
 
     df = new_mc.read_csv('nyc_traffic_sample.csv')
 
-    mc = new_mc.connect_to_minio_server(new_mc.endpoint, new_mc.access, new_mc.secret)
+    mc = new_mc.connect_to_minio_server(new_mc.endpoint, new_mc.access_key, new_mc.secret_key)
 
-    new_mc.batch_download(mc, df)
-'''
+    # new_mc.create_bucket(mc, "testing", "us-east-1")
+
+    # new_mc.upload_single_file(mc, "testing", "myobject", "./test_image.jpg")
+
+    # new_mc.batch_download(mc, df)
+
