@@ -88,7 +88,7 @@ class VitessConn:
 			self.mycursor.execute('CREATE TABLE IMAGE_VIDEO(IV_ID VARCHAR(50) NOT NULL, IV_Name VARCHAR(500) NOT NULL, Camera_ID INT NOT NULL, \
 									IV_date DATE NOT NULL, IV_time TIME NOT NULL, \
 									File_type VARCHAR(10) NOT NULL, File_size VARCHAR(10) NOT NULL, \
-									Minio_link VARCHAR(500), Dataset VARCHAR(500), Is_processed INT NOT NULL, \
+									Minio_link VARCHAR(500) NOT NULL, Dataset VARCHAR(500) NOT NULL, Is_processed INT NOT NULL, \
 									PRIMARY KEY (IV_ID))')
 													
 			print('IMAGE_VIDEO table created.')

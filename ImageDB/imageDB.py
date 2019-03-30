@@ -72,21 +72,26 @@ class ImageDB:
     # check if the given file has desired header
     @classmethod
     def check_header(self, csv_header, required_header):
-        if required_header == config.IV_HEADER:
-            # for image video csv only, check if first nine headers are consistant
-            if csv_header[0:len(config.IV_HEADER)] == config.IV_HEADER:
+        if required_header == config.IF_HEADER:
+            # for image feature csv only, check if header is there is enough
+            if csv_header[0] == required_header[0]:
                 return 1
             else:
-                raise ValueError('IMAGE_VIDEO File does not having correct header.')
+                raise ValueError('File does not having correct header.')
+                return 0
         elif csv_header == required_header:
             return 1
         elif len(csv_header) < len(required_header):
             raise ValueError("File is missing required column.")
+            return 0
+
         elif len(csv_header) > len(required_header):
             raise ValueError("File exceeds the expected number of columns.")
+            return 0
         else:
-            raise ValueError('CAMERA File does not having correct header.')
-        return 0
+            raise ValueError('File does not having correct header.')
+            return 0
+
 
     # TODO: the csv file integrity check incorporate with Lakshya's code
     @classmethod
@@ -108,16 +113,18 @@ class ImageDB:
                 if ImageDB.check_header(reader[0], required_header):
                     header = reader[0]
                     reader = reader[1:]
-                    
                     for i in reader:
-                        if required_header != config.IV_HEADER and len(i) != len(required_header):
-                            raise ValueError("CAMERA File content column does not match header.")
-                        if required_header == config.IV_HEADER and len(i) != len(header):
-                            raise ValueError("IMAGE_VIDEO File content column does not match header.")
+                        if required_header == config.IF_HEADER and len(i) != len(header):
+                            raise ValueError("Feature file content column does not match header.")
+                        elif  required_header != config.IF_HEADER and len(i) != len(required_header):
+                            raise ValueError("File content column does not match header.")
                         if data_format == 'tuple':
                             items.append(tuple(i))
                         elif data_format == 'list':
                             items.append(i)
+                        elif data_format == 'dict':
+                            # key: image file name; value: entire row (list)
+                            items[i[0]] = i
                             
                     return items, header
                 
@@ -161,36 +168,34 @@ class ImageDB:
         # image_list is a list of list, each element is a row in csv
         image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list')
 
+        # image feature relation dict
+        # key: file name; value: csv row as list
+        if image_feature_csv != None:
+            relation_list, relation_header = ImageDB.read_data(image_feature_csv, config.IF_HEADER, 'dict')
+    
         if image_list and image_header: 
-
             try:
-                # extract the feature part of the image_video csv, as a dictionary
-                # key: image_video name; value: boolean value matched each feature in the header as list
-                relation_header = image_header[len(config.IV_HEADER):]
-                relation_list = {}
-                for i in image_list:
-                    relation_list[i[0]] = i[len(config.IV_HEADER):]
-                
-                # update the relatoin header from feature name to feature id
-                for i in range(len(relation_header)):
-                    # get featureID of the feature
-                    f_id = self.vitess.getFeature(relation_header[i])
+                if relation_header:
+                    for i in range(len(relation_header)):
+                        if i == 0:
+                            continue
+                        # get featureID of the feature
+                        f_id = self.vitess.getFeature(relation_header[i])
 
-                    # check if the feature has already exists;
-                    # if not, create new feature in the feature table
-                    if f_id is not None:
-                        relation_header[i] = f_id
-                    else:
-                        # generate feature id, insert new feature 
-                        f_id = str(uuid.uuid1())
-                        self.vitess.insertFeature([f_id, relation_header[i]])
-                        relation_header[i] = f_id
-            
+                        # check if the feature has already exists;
+                        # if not, create new feature in the feature table
+                        if f_id is not None:
+                            relation_header[i] = f_id
+                        else:
+                            # generate feature id, insert new feature
+                            f_id = str(uuid.uuid1())
+                            self.vitess.insertFeature((f_id, relation_header[i]))
+                            relation_header[i] = f_id
+
                 # insert image with metadata and feature inside the database one-by-one
                 for i in range(len(image_list)):
 
                     # image_list[i] is the i th row of image metadata
-
                     image_filename = image_list[i][0]
                     
                     # get image_video_id of the image_video
@@ -211,19 +216,20 @@ class ImageDB:
 
                     # save image metadata to DB
                     self.vitess.insertImage(tuple(image_list[i][0:len(config.IV_HEADER)+1]))
-                    
-                    # get list of feature ids that belong to this image
-                    feature_info_list = relation_list[image_filename]
-                    featureID_list = []
-                    for i in range(len(feature_info_list)):
-                        if feature_info_list[i] == '0':
-                            continue
-                        elif feature_info_list[i] != '0':
-                            featureID_list.append(relation_header[i])
 
-                    # zip into list of (feature id, image id) tuples
-                    if_list = zip(tuple(featureID_list), tuple([image_id] * len(featureID_list)))
-                    self.vitess.insertImagefeatures(if_list)
+                    # get list of feature ids that belong to this image
+                    if relation_list:
+                        feature_info_list = relation_list[image_filename]
+                        
+                        featureID_list = []
+                        for i in range(len(feature_info_list)):
+                            if i == 0:
+                                continue
+                            elif feature_info_list[i] == '1':
+                                featureID_list.append(relation_header[i])
+                        # zip into list of (feature id, image id) tuples
+                        if_list = zip(tuple(featureID_list), tuple([image_id] * len(featureID_list)))
+                        self.vitess.insertImagefeatures(if_list)
 
                 self.vitess.mydb.commit()
                 
