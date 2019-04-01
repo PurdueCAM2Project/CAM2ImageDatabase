@@ -175,7 +175,7 @@ class ImageDB:
 
                    
     # this function should read image and image feature file, 
-    def insert_image(self, image_csv, image_feature_csv=None):
+    def insert_image(self, image_csv, image_feature_csv=None, bucket_name, file_path):
         
         # image_list is a list of list, each element is a row in csv
         image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list')
@@ -265,4 +265,4 @@ class ImageDB:
         else:
             return 0
 
- 
+ 	self.minio.batch_download(mc, df)
