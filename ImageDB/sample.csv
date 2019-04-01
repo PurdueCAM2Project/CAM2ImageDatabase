@@ -1,0 +1,8 @@
+File_Names,Bucket_Name,Feature_1,Feature_2
+IMG_1.jpg,cam2,X,O
+IMG_2.png,cam2,O,X
+IMG_3.png,cam2,O,X
+IMG_4.png,cam2,O,O
+IMG_5.jpg,cam3,O,X
+IMG_6.png,cam3,X,X
+IMG_7.png,cam3,O,X
