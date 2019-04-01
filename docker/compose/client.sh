@@ -17,4 +17,6 @@
 
 set -e
 
+
 exec docker-compose run -v$(pwd):/vt/client vtgate go run /vt/client/client.go -server=vtgate:15999
+

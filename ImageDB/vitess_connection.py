@@ -50,7 +50,16 @@ class VitessConn:
 	def dropImageTable(self):
 		self.mycursor.execute('drop table IF EXISTS IMAGE_VIDEO')
 		print('IMAGE_VIDEO table dropped.')
-		
+
+	# drop test table IF NEEDED
+	def dropFeatureTable(self):
+		self.mycursor.execute('drop table IF EXISTS FEATURE')
+		print('FEATURE table dropped.')
+
+	# drop test table IF NEEDED
+	def dropRelationTable(self):
+		self.mycursor.execute('drop table IF EXISTS RELATION')
+		print('RELATION table dropped.')		
 
 	# CREATE CAMERA TABLE IF NEEDED
 	def createCameraTable(self):
@@ -61,7 +70,7 @@ class VitessConn:
 		except:
 			# create table
 			self.mycursor.execute('CREATE TABLE CAMERA(Camera_ID INT NOT NULL,\
-									Country VARCHAR(30) NOT NULL, State VARCHAR(30), City VARCHAR(30) NOT NULL, \
+									Country VARCHAR(30) NOT NULL, State VARCHAR(30) NOT NULL, City VARCHAR(30) NOT NULL, \
 									Latitude FLOAT NOT NULL, Longitude FLOAT NOT NULL, \
 									Resolution_w INT NOT NULL, Resolution_h INT NOT NULL, PRIMARY KEY (Camera_ID))')
 			print('CAMERA table created.')
@@ -71,13 +80,13 @@ class VitessConn:
 	def createImageTable(self):
 		try:
 			self.mycursor.execute('SELECT 1 FROM IMAGE_VIDEO LIMIT 1')
-			print('IMAGE_VIDEO table exist')
+			print('IMAGE_VIDEO table exist')		
 		except:
-			## create table
-			self.mycursor.execute('CREATE TABLE IMAGE_VIDEO(IV_ID INT, Camera_ID INT, \
-									IV_date DATE, IV_time TIME, \
-									File_type VARCHAR(10), File_size VARCHAR(10), \
-									Minio_link VARCHAR(500), Dataset VARCHAR(500), Is_processed INT, \
+			## create table      
+			self.mycursor.execute('CREATE TABLE IMAGE_VIDEO(IV_ID VARCHAR(50) NOT NULL, IV_Name VARCHAR(500) NOT NULL, Camera_ID INT NOT NULL, \
+									IV_date DATE NOT NULL, IV_time TIME NOT NULL, \
+									File_type VARCHAR(10) NOT NULL, File_size VARCHAR(10) NOT NULL, \
+									Minio_link VARCHAR(500) NOT NULL, Dataset VARCHAR(500) NOT NULL, Is_processed INT NOT NULL, \
 									PRIMARY KEY (IV_ID))')
 													
 			print('IMAGE_VIDEO table created.')
@@ -88,26 +97,27 @@ class VitessConn:
 		try:
 			self.mycursor.execute('SELECT 1 FROM FEATURE LIMIT 1')
 			print('FEATURE table exist')
+                              
 		except:
 			## create table
-			self.mycursor.execute('CREATE TABLE FEATURE(Feature_ID INT, \
-									Feature_Name VARCHAR(100)')
-			print('Feature table created.')
+			self.mycursor.execute('CREATE TABLE FEATURE(Feature_ID VARCHAR(50) NOT NULL, Feature_Name VARCHAR(100) NOT NULL, PRIMARY KEY (Feature_ID))')
+			print('FEATURE table created.')
 
 
-	def createImagefeatureTable(self):
+	def createRelationTable(self):
 		try:
 			self.mycursor.execute('SELECT 1 FROM RELATION LIMIT 1')
 			print('RELATION table exist.')
+			
 		except:
 			## create table
-			self.mycursor.execute('CREATE TABLE RELATION(Feature_ID INT NOT NULL, \
-									IV_ID INT NOT NULL, PRIMARY KEY (Feature_ID, IV_ID))')
-			print('Relation table created.')
+			self.mycursor.execute('CREATE TABLE RELATION(Feature_ID VARCHAR(50) NOT NULL, IV_ID VARCHAR(50) NOT NULL, PRIMARY KEY (Feature_ID, IV_ID))')
+			print('RELATION table created.')
 
 
 	# INSERT the element from the input into the database
 	# camera is tuple
+
 
 	# mannual commit after calling the method
 	def insertCameras(self, cameras):
@@ -117,27 +127,47 @@ class VitessConn:
 				VALUES (%s, %s, %s, %s, %s, %s, %s, %s) \
 				ON DUPLICATE KEY UPDATE \
 				Camera_ID=VALUES(Camera_ID), Country=VALUES(Country), State=VALUES(State), \
-				City=VALUES(City), Latitude=VALUES(Latitude), Longitude=VALUES(Longitude)'
+				City=VALUES(City), Latitude=VALUES(Latitude), Longitude=VALUES(Longitude), \
+				Resolution_w=VALUES(Resolution_w), Resolution_h=VALUES(Resolution_h)'
 
 		self.mycursor.executemany(sql, cameras)
 
+
+
+	# this function get image_video ID of a image_video name
+	def getIVID(self, image_video_name):
+		# see if the feature already exist
+		# if so, return the feature ID
+		sql = 'SELECT IV_ID FROM IMAGE_VIDEO WHERE IV_Name = \'' + image_video_name + '\''
+		self.mycursor.execute(sql)
+		result = self.mycursor.fetchall()
+		result = list(sum(result, ()))
+		if(len(result) > 0):
+			return result[0]
+		return None
+
+
 	# Insert one image tuple 
 	def insertImage(self, image):
-
-		sql = 'INSERT INTO IMAGE_VIDEO(IV_ID, Camera_ID, IV_date, IV_time, File_type, File_size, \
+		sql = 'INSERT INTO IMAGE_VIDEO(IV_ID, IV_Name, Camera_ID, IV_date, IV_time, File_type, File_size, \
 				Minio_link, Dataset, Is_processed) \
-				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)'
+				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
+				ON DUPLICATE KEY UPDATE \
+				Camera_ID=VALUES(Camera_ID), IV_date=VALUES(IV_date), IV_time=VALUES(IV_time), \
+				File_type=VALUES(File_type), File_size=VALUES(File_size), \
+				Minio_link=VALUES(Minio_link), Dataset=VALUES(Dataset), Is_processed=VALUES(Is_processed)'
 
 		self.mycursor.execute(sql, image)
 		
 
 	# this function get feature ID of a feature name
 	def getFeature(self, featureName):
-
 		# see if the feature already exist
 		# if so, return the feature ID
-		self.mycursor.execute('SELECT Feature_ID FROM feature WHERE Feature_Name=%s', featureName)
+		sql = 'SELECT Feature_ID FROM FEATURE WHERE Feature_Name = \'' + featureName + '\''
+		self.mycursor.execute(sql)
 		result = self.mycursor.fetchall()
+		result = list(sum(result, ()))
 		if(len(result) > 0):
 			return result[0]
 		return None
@@ -145,20 +175,13 @@ class VitessConn:
 
 	# this function takes in a list of feature tuples (Feature_ID, Feature_Name)
 	def insertFeature(self, feature):
-
-		sql = 'INSERT INTO feature(Feature_ID, Feature_Name) VALUES (%s, %s)'
+		sql = 'INSERT INTO FEATURE(Feature_ID, Feature_Name) VALUES (%s, %s)'
 		self.mycursor.execute(sql, feature)
 		
 
 	# this function takes a list of feature_ID-image_ID tuples
 	def insertImagefeatures(self, relations):
-		sql = 'INSERT INTO RELATION(Feature_ID, IV_ID) VALUES (%s, %s)'
+		sql = 'INSERT IGNORE INTO RELATION(Feature_ID, IV_ID) VALUES (%s, %s)'
 		self.mycursor.executemany(sql, relations)
 		
 	
-	## check permission if needed
-	def select(self, tablename):
-		self.mycursor.execute('SELECT * FROM ' + tablename)
-		myresult = self.mycursor.fetchall()
-		for x in myresult:
-			print(x)

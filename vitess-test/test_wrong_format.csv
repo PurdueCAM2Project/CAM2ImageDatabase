@@ -1,3 +1,0 @@
-Transaction id,Expired,country,city,latitude,longtitude,resolution_w,resolution_h
-1,String,USA,Boston,42.3692,-71.0658,2048,1536
-2,String,USA,New York,40.7047,-74.0211,1024,768

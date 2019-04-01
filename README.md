@@ -3,26 +3,33 @@ README
 
 Follow the steps below:
 
-1. If need to stop the cluster. NOTE: you will lose all the data
-	$docker-compose kill  
+1. Go to the directory ./docker/compose
 
 2. If need to stop the cluster. NOTE: you will lose all the data
+	$docker-compose kill  
+
+3. If need to stop the cluster. NOTE: you will lose all the data
 	$docker-compose rm  
 
-3. Start the cluster.
+4. Start the cluster
 	$docker-compose up -d
 
-4. Load the schema. Sometimes it needs to run twice, needed to fix.
+5. Load the schema. Sometimes it needs to run twice, needed to fix. If it still not working, run step 4 again 
 	$./lvtctl.sh ApplySchema -sql "$(cat create_test_table.sql)" test_keyspace 
 
-5. Complete starting the cluster.
+6. Update and complete starting the cluster
 	$docker-compose up -d
+
+7. Go to the directory ../../ImageDB 
 	
-6. Insert and read some data.
-	$python connect_vitess.py
+8. To see the sample test code. You can create your own
+	$python test.py
  
-7. Connect to vgate and run queries.
+9. Connect to vtgate and run queries.
 	$mysql --port=15306 --host=127.0.0.1
+	
+10. More test csv and test cases details are located in the vitess_test folder 
+
 
 
 
@@ -36,4 +43,3 @@ vtgate web ui: http://localhost:15099/debug/status
 
 
 Reference: https://github.com/vitessio/vitess/tree/master/examples/compose
-
