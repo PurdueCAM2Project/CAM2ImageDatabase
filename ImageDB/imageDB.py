@@ -189,7 +189,7 @@ class ImageDB:
                 self.minio.upload_single_file(mc, bucket_name, image_id, file_path)
                 minio_link = mc.endpoint + ":/" + bucket_name + ":/" + image_id
                 # TODO: which column is feature "minio_link"?
-                image_list[i][] = minio_link
+                image_list[i][6] = minio_link
 
                 # substitude the filename with image_id
                 image_list[i][0] = image_id
