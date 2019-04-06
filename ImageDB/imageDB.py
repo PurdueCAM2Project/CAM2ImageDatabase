@@ -131,6 +131,10 @@ class ImageDB:
                             raise ValueError("Feature file content column does not match header.")
                         elif  required_header != config.IF_HEADER and len(i) != len(required_header):
                             raise ValueError("File content column does not match header.")
+                        # check whether there's empty value
+                        for j in i:
+                            if j == '':
+                                raise ValueError("File content missing value.")
                         if data_format == 'tuple':
                             items.append(tuple(i))
                         elif data_format == 'list':
