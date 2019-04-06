@@ -2,41 +2,50 @@ import os, time
 import filetype
 import csv
 
-path = '/Users/sandeepgupta/Desktop/CAM2/script/results'
 minio_link = 'None'
 dataset = 'None'
 is_processed = 0
 
-try:
-    output_file = open('file_name.csv', 'w')
 
-    fields = ['file_name', 'camera_id', 'file_size', 'file_type', 'file_time', 'Minio_link', 'Dataset', 'isProcessed']
-    writer = csv.writer(output_file)
-    writer.writerow(fields)
+def image_metadata(path):
 
-    dirs = os.listdir(path)
+    try:
+        output_file = open('file_name.csv', 'w')
 
-    for subdir in dirs:
-        path2 = os.path.join(path, subdir)
-        if os.path.isfile(path2):
-            continue
-        for f in os.listdir(path2):
-            curr_path = os.path.join(path2, f)
-            if os.path.isdir(curr_path):
+        fields = ['IV_Name', 'Camera_ID', 'IV_date', 'IV_time', 'File_type', 'File_size', 'Minio_link', 'Dataset',
+                  'is_processed']
+        writer = csv.writer(output_file)
+        writer.writerow(fields)
+
+        try:
+            dirs = os.listdir(path)
+        except Exception as e:
+            print("Path is not a valid directory")
+
+        for subdir in dirs:
+            path2 = os.path.join(path, subdir)
+            if os.path.isfile(path2):
                 continue
-            st = os.stat(curr_path)
-            file_size = st.st_size
-            file_time = time.asctime(time.localtime(st.st_mtime))
+            for f in os.listdir(path2):
+                curr_path = os.path.join(path2, f)
+                if os.path.isdir(curr_path):
+                    continue
+                st = os.stat(curr_path)
+                file_size = st.st_size
+                file_date = time.strftime('%Y.%m.%d', time.localtime(os.path.getmtime(curr_path)))
+                file_time = time.strftime('%H:%M:%S', time.localtime(os.path.getmtime(curr_path)))
 
-            ftype = filetype.guess(curr_path)
-            if ftype:
-                file_type = ftype.extension
+                ftype = filetype.guess(curr_path)
+                if ftype:
+                    file_type = ftype.extension
 
-            writer.writerow([f, subdir, file_size, file_type, file_time, minio_link, dataset, is_processed])   # add the camera id to the csv file as well
+                writer.writerow([f, subdir, file_date, file_time, file_type, file_size, minio_link, dataset,
+                                 is_processed])  # add the camera id to the csv file as well
 
-except Exception as e:
-    if output_file:
-        output_file.close()
-    print(e)
+    except Exception as e:
+        if output_file:
+            output_file.close()
+        print(e)
 
-output_file.close()
+    output_file.close()
+
