@@ -26,6 +26,6 @@ setup(
         'Programming Language :: Python :: 3.6',
         #'License :: OSI Approved :: Apache Software License'
     ],
-    python_requires = '>=2.7',
+    python_requires = '>=3',
     install_requires = ['mysql-connector-python']
 )
