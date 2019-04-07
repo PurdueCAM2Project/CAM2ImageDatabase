@@ -266,7 +266,7 @@ class ImageDB:
                                 
                         # zip into list of (feature id, image id) tuples
                         if_list = zip(tuple(featureID_list), tuple([image_id] * len(featureID_list)))
-                        self.vitess.insertImagefeatures(if_list)
+                        self.vitess.insertImagefeatures(list(if_list))
 
                 self.vitess.mydb.commit()
                 
