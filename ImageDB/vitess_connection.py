@@ -10,6 +10,7 @@
 import mysql.connector
 from mysql.connector import errorcode
 import sys
+import config
 
 class VitessConn:
 
@@ -17,16 +18,16 @@ class VitessConn:
 	def __init__(self):
 
 		# Define database
-		mydatabase = 'test_keyspace'
+		mydatabase = config.KEYSPACE
 	
 		try:
 			self.mydb = mysql.connector.connect(
-				host='127.0.0.1',
+				host=config.VITESS_HOST,
 				#user='root',
 				#password='',
-				port='15306',
+				port=config.VITESS_PORT,
 				database = mydatabase,
-				auth_plugin='mysql_native_password'
+				auth_plugin=config.VITESS_PASS
 			)
 			print('Connected to mysql database ' + mydatabase)
 		except mysql.connector.Error as err:

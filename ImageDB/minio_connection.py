@@ -9,6 +9,8 @@ import pandas as pd
 import subprocess as sp
 import time
 import datetime
+import config
+
 
 
 class MinioConn:
@@ -16,9 +18,9 @@ class MinioConn:
     # Constructor
     def __init__(self):
 
-        self.endpoint = '172.18.0.11:9000'
-        self.access_key = 'FX770DGQ10M2ALSRVX3F'
-        self.secret_key = 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl'
+        self.endpoint = config.MINIO_ENDPOINT
+        self.access_key = config.MINIO_ACCESS_KEY
+        self.secret_key = config.MINIO_SECRET_KEY
 
         # Connect Minio Client to Minio Server
         self.mc = Minio(self.endpoint, access_key=self.access_key, secret_key=self.secret_key, secure=False)
@@ -82,9 +84,13 @@ class MinioConn:
         print("===============================================================")
         print("Finished in --%s-- seconds" % (time.time() - start_time))
 
+
+    # remove error handling, so that it can be caught in imageDB.py and allow rollback of vitess
+
+
     # Create a bucket on Minio server
     # Location choices: "us-east-1", "us-west-1", "us-west-2"
-    def create_bucket(self, bucket_name, location):
+    def create_bucket(self, bucket_name, location='us-east-1'):
         self.mc.make_bucket(bucket_name, location=location)
 
     # Upload a file from local storage to Minio server
