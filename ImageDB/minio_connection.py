@@ -14,13 +14,14 @@ import datetime
 class MinioConn:
 
     # Constructor
-    def __init__(self, endpoint, access_key, secret_key):
-        self.endpoint = endpoint
-        self.access_key = access_key
-        self.secret_key = secret_key
+    def __init__(self):
+
+        self.endpoint = '172.18.0.11:9000'
+        self.access_key = 'FX770DGQ10M2ALSRVX3F'
+        self.secret_key = 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl'
 
         # Connect Minio Client to Minio Server
-        self.mc = Minio(endpoint, access_key=access_key, secret_key=secret_key, secure=False)
+        self.mc = Minio(self.endpoint, access_key=self.access_key, secret_key=self.secret_key, secure=False)
 
     # Read in CSV file and output a data frame
     def read_csv(self, csv_file_name):
@@ -84,17 +85,11 @@ class MinioConn:
     # Create a bucket on Minio server
     # Location choices: "us-east-1", "us-west-1", "us-west-2"
     def create_bucket(self, bucket_name, location):
-        try:
-            self.mc.make_bucket(bucket_name, location=location)
-        except ResponseError as err:
-            print(err)
+        self.mc.make_bucket(bucket_name, location=location)
 
     # Upload a file from local storage to Minio server
     def upload_single_file(self, bucket_name, object_name, local_file_path):
-        try:
-            print(self.mc.fput_object(bucket_name, object_name, local_file_path))
-        except ResponseError as err:
-            print(err)
+        self.mc.fput_object(bucket_name, object_name, local_file_path)
 
 
 if __name__ == '__main__':
