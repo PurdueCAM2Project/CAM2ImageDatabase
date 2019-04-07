@@ -47,7 +47,7 @@ Minio
 
 import csv
 import uuid
-#import mysql.connector.errors.Error as mysqlError
+import sys
 import mysql.connector
 import config
 from vitess_connection import VitessConn
@@ -84,26 +84,26 @@ class ImageDB:
 
 	# check if the given file has desired header
 	@classmethod
-	def check_header(self, csv_header, required_header):
+	def check_header(self, csv_file, csv_header, required_header):
 
 		if required_header == config.IF_HEADER:
 			# for image feature csv only, check if header is there is enough
 			if csv_header[0] == required_header[0]:
 				return 1
 			else:
-				raise ValueError('\nFile does not have header.')
+				raise ValueError('\nFile ' + csv_file + ' does not have required header.')
 				return 0
 		elif csv_header == required_header:
 			return 1
 		elif len(csv_header) < len(required_header):
-			raise ValueError('\nFile is missing required column.')
+			raise ValueError('\nFile ' + csv_file + ' is missing required column.')
 			return 0
 
 		elif len(csv_header) > len(required_header):
-			raise ValueError('\nFile exceeds the expected number of columns.')
+			raise ValueError('\nFile ' + csv_file + ' exceeds the expected number of columns.')
 			return 0
 		else:
-			raise ValueError('\nFile does not have correct header. \nExpect: ' + str(required_header))
+			raise ValueError('\nFile ' + csv_file + ' does not have correct header. \nExpect: ' + str(required_header))
 			return 0
 
 
@@ -118,42 +118,33 @@ class ImageDB:
 		else:
 			print('Must specify to read as dict, list of lists or tuples.')
 			return 0, 0
-		
-		try:
-			with open(csv_file, 'rt', encoding = 'utf-8-sig') as csvfile:
-				reader = csv.reader(csvfile, delimiter=',')
-				reader = list(reader)
-				# check if it has the corret header
-				if ImageDB.check_header(reader[0], required_header):
-					header = reader[0]
-					reader = reader[1:]
-					for i in reader:
-						if ((required_header == config.IF_HEADER and len(i) != len(header)) or
-						   (required_header != config.IF_HEADER and len(i) != len(required_header))):
-							raise ValueError('\nFile content column does not match header.')
-						# check whether there's empty value
-						for j in i:
-							if j == '':
-								raise ValueError('\nFile content missing value.')
-						if data_format == 'tuple':
-							items.append(tuple(i))
-						elif data_format == 'list':
-							items.append(i)
-						elif data_format == 'dict':
-							# key: image file name; value: entire row (list)
-							items[i[0]] = i
-							
-					return items, header
-				
-				else:
-					return 0, 0
-				
-		except IOError as e:
-			print('IOError({0}): {1}'.format(e.errno, e.strerror))
-		except ValueError as e2:
-			print('Error processing file ' + csv_file + str(e2))
-		except Exception as e3:
-			print(e3)
+		with open(csv_file, 'rt', encoding = 'utf-8-sig') as csvfile:
+			reader = csv.reader(csvfile, delimiter=',')
+			reader = list(reader)
+			# check if it has the corret header
+			if ImageDB.check_header(csv_file, reader[0], required_header):
+				header = reader[0]
+				reader = reader[1:]
+				for i in reader:
+					if ((required_header == config.IF_HEADER and len(i) != len(header)) or
+					   (required_header != config.IF_HEADER and len(i) != len(required_header))):
+						raise ValueError('\nFile ' + csv_file + ' content column does not match header.')
+					# check whether there's empty value
+					for j in i:
+						if j == '':
+							raise ValueError('\nFile ' + csv_file + ' content missing value.')
+					if data_format == 'tuple':
+						items.append(tuple(i))
+					elif data_format == 'list':
+						items.append(i)
+					elif data_format == 'dict':
+						# key: image file name; value: entire row (list)
+						items[i[0]] = i
+						
+				return items, header
+			
+			else:
+				return 0, 0
 			
 		return 0, 0
 			
@@ -180,19 +171,30 @@ class ImageDB:
 				   
 	# this function should read image and image feature file, 
 	def insert_image(self, bucket_name, folder_path, image_csv, image_feature_csv=None):
-		
-		# image_list is a list of list, each element is a row in csv
-		image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list')
+		try:
+			
+			# image_list is a list of list, each element is a row in csv
+			image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list')
 
-		# image feature relation dict
-		# key: file name; value: csv row as list
+			# image feature relation dict
+			# key: file name; value: csv row as list
 
-		relation_header = None
-		relation_list = None
+			relation_header = None
+			relation_list = None
 
-		if image_feature_csv != None:
-			relation_list, relation_header = ImageDB.read_data(image_feature_csv, config.IF_HEADER, 'dict')
+			if image_feature_csv != None:
+				relation_list, relation_header = ImageDB.read_data(image_feature_csv, config.IF_HEADER, 'dict')
 	
+		except IOError as e:
+			print('IOError({0}): {1}'.format(e.errno, e.strerror))
+			sys.exit()
+		except ValueError as e2:
+			print('Error processing file ' + str(e2))
+			sys.exit()
+		except Exception as e3:
+			print(str(e3))
+			sys.exit()
+
 		if image_list and image_header: 
 			try:
 				# Process the image feature header list to a list of feature ids (except for first entry)
@@ -279,11 +281,14 @@ class ImageDB:
 			except mysql.connector.Error as e:
 				print('Error inserting image information: ' + str(e))
 				self.vitess.mydb.rollback()
+				sys.exit()
 			except ResponseError as e1:
 				print('Error uploading image: ' + str(e))
 				self.vitess.mydb.rollback()
+				sys.exit()
 			except Exception as e2:
 				print(e2)
+				sys.exit()
 		else:
 			return 0
 
