@@ -32,32 +32,32 @@ def test():
     ''' TEST ImageVideo FILE without feature csv'''
     
     ''' 1. test correct case'''
-    db.insert_image('any', './test_images', "./vitess_test/imageVideo_test_standard.csv")
+    #db.insert_image('any', './test_images/', "./vitess_test/imageVideo_test_standard.csv")
     
     ''' 8. test wrong hearder name '''
-    #db.insert_image("./vitess_test/imageVideo_test_checkHeader.csv")
+    #db.insert_image('any', './test_images/', "./vitess_test/imageVideo_test_checkHeader.csv")
     
     ''' 9. test exceed column '''
-    #db.insert_image("./vitess_test/imageVideo_test_checkExceedColumn.csv")
+    #db.insert_image('any', './test_images/', "./vitess_test/imageVideo_test_checkExceedColumn.csv")
     
     ''' 10. test missing column '''
-    #db.insert_image("./vitess_test/imageVideo_test_checkMissingColumn.csv")
+    #db.insert_image('any', './test_images/', "./vitess_test/imageVideo_test_checkMissingColumn.csv")
 
     ''' 11. test missing values '''
-    #db.insert_image("./vitess_test/imageVideo_test_checkMissingValues.csv")
+    #db.insert_image('any', './test_images/', "./vitess_test/imageVideo_test_checkMissingValues.csv")
 
-    ''' 12. test empty cell -- FAIL !!!!!!!!!!  '''
-    #db.insert_image("./vitess_test/imageVideo_test_checkEmptyCell.csv")
+    ''' 12. test empty cell '''
+    #db.insert_image('any', './test_images/', "./vitess_test/imageVideo_test_checkEmptyCell.csv")
 
     ''' 13. test add same things twice '''
-    #db.insert_image("./vitess_test/imageVideo_test_checkInsertExistValue.csv")
+    #db.insert_image('any', './test_images/', "./vitess_test/imageVideo_test_checkInsertExistValue.csv")
 
     
 
     ''' TEST ImageVideo FILE with feature csv, with feature csv correct all the time'''
     
     ''' 1. test correct case'''
-    #db.insert_image("any", ".", "./vitess_test/imageVideo_test_standard.csv", "./vitess_test/imageFeature_test_standard.csv")
+    db.insert_image('any', './test_images/', "./vitess_test/imageVideo_test_standard.csv", "./vitess_test/imageFeature_test_standard.csv")
 
     ''' test wrong hearder name '''
     #db.insert_image("./vitess_test/imageVideo_test_checkHeader.csv", "./vitess_test/imageFeature_test_standard.csv")

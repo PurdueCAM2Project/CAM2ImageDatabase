@@ -9,7 +9,7 @@ Follow the steps below:
 	$docker-compose kill  
 
 3. If need to stop the cluster. NOTE: you will lose all the data
-	$docker-compose rm  
+	$docker-compose rm -v 
 
 4. Start the cluster
 	$docker-compose up -d

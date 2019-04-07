@@ -19,9 +19,8 @@ class MinioConn:
         self.access_key = access_key
         self.secret_key = secret_key
 
-    # Connect Minio Client to Minio Server
-    def connect_to_minio_server(self, endpoint, access_key, secret_key):
-        return Minio(endpoint, access_key=access_key, secret_key=secret_key, secure=False)
+        # Connect Minio Client to Minio Server
+        self.mc = Minio(endpoint, access_key=access_key, secret_key=secret_key, secure=False)
 
     # Read in CSV file and output a data frame
     def read_csv(self, csv_file_name):
@@ -84,16 +83,16 @@ class MinioConn:
 
     # Create a bucket on Minio server
     # Location choices: "us-east-1", "us-west-1", "us-west-2"
-    def create_bucket(self, mc, bucket_name, location):
+    def create_bucket(self, bucket_name, location):
         try:
-            mc.make_bucket(bucket_name, location=location)
+            self.mc.make_bucket(bucket_name, location=location)
         except ResponseError as err:
             print(err)
 
     # Upload a file from local storage to Minio server
-    def upload_single_file(self, mc, bucket_name, object_name, local_file_path):
+    def upload_single_file(self, bucket_name, object_name, local_file_path):
         try:
-            print(mc.fput_object(bucket_name, object_name, local_file_path))
+            print(self.mc.fput_object(bucket_name, object_name, local_file_path))
         except ResponseError as err:
             print(err)
 
@@ -103,7 +102,7 @@ if __name__ == '__main__':
 
     df = new_mc.read_csv('nyc_traffic_sample.csv')
 
-    mc = new_mc.connect_to_minio_server(new_mc.endpoint, new_mc.access_key, new_mc.secret_key)
+    #mc = new_mc.connect_to_minio_server(new_mc.endpoint, new_mc.access_key, new_mc.secret_key)
 
     # new_mc.create_bucket(mc, "testing", "us-east-1")
 

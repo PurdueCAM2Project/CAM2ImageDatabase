@@ -9,6 +9,7 @@
 
 import mysql.connector
 from mysql.connector import errorcode
+import sys
 
 class VitessConn:
 
@@ -28,15 +29,15 @@ class VitessConn:
 				auth_plugin='mysql_native_password'
 			)
 			print('Connected to mysql database ' + mydatabase)
-			
 		except mysql.connector.Error as err:
-			if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-				print('Something is wrong with your user name or password.')
-			elif err.errno == errorcode.ER_BAD_DB_ERROR:
-				print('Database does not exist')
-			else:
-				print(err)
-			return
+			print(str(err))
+			sys.exit()
+		except _mysql_connector.MySQLInterfaceError as e:
+			print(str(e))
+			sys.exit()
+		except Exception as e:
+			print(str(e))
+			sys.exit()
 
 		self.mycursor = self.mydb.cursor(buffered=True)
 

@@ -47,8 +47,8 @@ Minio
 
 import csv
 import uuid
-import codecs
-import mysql.connector.errors as mysqlError
+#import mysql.connector.errors.Error as mysqlError
+import mysql.connector
 import config
 from vitess_connection import VitessConn
 from minio_connection import MinioConn
@@ -62,11 +62,11 @@ class ImageDB:
         # connect to Vitess-MySql and Minio
         self.vitess = VitessConn()
         # TODO: Haoran add a line for Mino connection
-        endpoint = 'localhost:9000'
+        endpoint = '172.18.0.11:9000'
         access_key = 'FX770DGQ10M2ALSRVX3F'
         secret_key = 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl'
-        self.minio_conf = MinioConn(endpoint, access_key, secret_key)
-        self.minio = self.minio_conf.connect_to_minio_server(endpoint, access_key, secret_key)
+        self.minio = MinioConn(endpoint, access_key, secret_key)
+        #self.minio = self.minio_conf.connect_to_minio_server(endpoint, access_key, secret_key)
     
     def init_tables(self):
         # drop if needed
@@ -168,7 +168,7 @@ class ImageDB:
                 self.vitess.insertCameras(camera_list)
                 self.vitess.mydb.commit()
                 print('Camera metadata updated')
-            except mysqlError as e:
+            except mysql.connector.Error as e:
                 print('Error inserting cameras: ' + str(e))
                 self.vitess.mydb.rollback()
             except Exception as e2:
@@ -233,10 +233,15 @@ class ImageDB:
                     # record the Minio name/bucket/link in the image_list
                     
                     # find the corresponding image in the folder
-                    file_path = image_list[i][0]
-                    print(file_path)
-                    self.minio_conf.upload_single_file(self.minio, bucket_name, image_id, file_path)
-                    minio_link = self.minio_conf.endpoint + ":/" + bucket_name + ":/" + image_id
+                    file_path = folder_path + image_list[i][0]
+
+                    # create the bucket if not existed
+                    if self.minio.mc.bucket_exists(bucket_name) is False:
+                    	self.minio.mc.make_bucket(bucket_name)
+
+                    # upload image to bucket
+                    self.minio.upload_single_file(bucket_name, image_id, file_path)
+                    minio_link = self.minio.endpoint + ":/" + bucket_name + ":/" + image_id
 
                     # TODO: which column is feature "minio_link"? -- 6
                     image_list[i][6] = minio_link
@@ -267,7 +272,7 @@ class ImageDB:
                 
                 print('Image_Video metadata updated')
                 
-            except mysqlError as e:
+            except mysql.connector.Error as e:
                 print('Error inserting cameras: ' + str(e))
                 self.vitess.mydb.rollback()
             except Exception as e2:

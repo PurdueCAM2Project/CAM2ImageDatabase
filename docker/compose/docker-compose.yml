@@ -128,3 +128,11 @@ services:
     command: ["sh", "-c", "/script/vttablet-up.sh 3"]
     depends_on:
       - vtctld
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9001:9000"
+    environment:
+      MINIO_ACCESS_KEY: $MINIO_ACCESS_KEY
+      MINIO_SECRET_KEY: $MINIO_SECRET_KEY
+    command: minio server /data
