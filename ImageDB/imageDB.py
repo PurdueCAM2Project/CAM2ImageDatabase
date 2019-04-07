@@ -65,16 +65,17 @@ class ImageDB:
         endpoint = 'localhost:9000'
         access_key = 'FX770DGQ10M2ALSRVX3F'
         secret_key = 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl'
-        self.minio = MinioConn(endpoint, access_key, secret_key)
+        self.minio_conf = MinioConn(endpoint, access_key, secret_key)
+        self.minio = self.minio_conf.connect_to_minio_server(endpoint, access_key, secret_key)
     
     def init_tables(self):
         # drop if needed
-        '''
+        
         self.vitess.dropCameraTable()
         self.vitess.dropImageTable()
         self.vitess.dropFeatureTable()
         self.vitess.dropRelationTable()
-        '''
+        
         self.vitess.createCameraTable()
         self.vitess.createImageTable()
         self.vitess.createFeatureTable()
@@ -84,25 +85,25 @@ class ImageDB:
     # check if the given file has desired header
     @classmethod
     def check_header(self, csv_header, required_header):
-        
+        #print(str(csv_header))
         if required_header == config.IF_HEADER:
             # for image feature csv only, check if header is there is enough
             if csv_header[0] == required_header[0]:
                 return 1
             else:
-                raise ValueError('File does not having correct header.')
+                raise ValueError('\nFile does not have header.')
                 return 0
         elif csv_header == required_header:
             return 1
         elif len(csv_header) < len(required_header):
-            raise ValueError("File is missing required column.")
+            raise ValueError('\nFile is missing required column.')
             return 0
 
         elif len(csv_header) > len(required_header):
-            raise ValueError("File exceeds the expected number of columns.")
+            raise ValueError('\nFile exceeds the expected number of columns.')
             return 0
         else:
-            raise ValueError('File does not having correct header.')
+            raise ValueError('\nFile does not have correct header. \nExpect: ' + str(required_header))
             return 0
 
 
@@ -119,22 +120,21 @@ class ImageDB:
             return 0, 0
         
         try:
-            with open(csv_file, 'rb') as csvfile:
-                reader = csv.reader(codecs.EncodedFile(csvfile, 'utf8', 'utf_8_sig'), delimiter=',')
+            with open(csv_file, 'rt', encoding = 'utf-8-sig') as csvfile:
+                reader = csv.reader(csvfile, delimiter=',')
                 reader = list(reader)
                 # check if it has the corret header
                 if ImageDB.check_header(reader[0], required_header):
                     header = reader[0]
                     reader = reader[1:]
                     for i in reader:
-                        if required_header == config.IF_HEADER and len(i) != len(header):
-                            raise ValueError("Feature file content column does not match header.")
-                        elif  required_header != config.IF_HEADER and len(i) != len(required_header):
-                            raise ValueError("File content column does not match header.")
+                        if ((required_header == config.IF_HEADER and len(i) != len(header)) or
+                           (required_header != config.IF_HEADER and len(i) != len(required_header))):
+                            raise ValueError('\nFile content column does not match header.')
                         # check whether there's empty value
                         for j in i:
                             if j == '':
-                                raise ValueError("File content missing value.")
+                                raise ValueError('\nFile content missing value.')
                         if data_format == 'tuple':
                             items.append(tuple(i))
                         elif data_format == 'list':
@@ -151,7 +151,7 @@ class ImageDB:
         except IOError as e:
             print('IOError({0}): {1}'.format(e.errno, e.strerror))
         except ValueError as e2:
-            print('Error processing file ' + csv_file + repr(e2))
+            print('Error processing file ' + csv_file + str(e2))
         except Exception as e3:
             print(e3)
             
@@ -169,7 +169,7 @@ class ImageDB:
                 self.vitess.mydb.commit()
                 print('Camera metadata updated')
             except mysqlError as e:
-                print('Error inserting cameras: ' + repr(e))
+                print('Error inserting cameras: ' + str(e))
                 self.vitess.mydb.rollback()
             except Exception as e2:
                 print(e2)
@@ -179,13 +179,16 @@ class ImageDB:
 
                    
     # this function should read image and image feature file, 
-    def insert_image(self, image_csv, image_feature_csv=None, bucket_name, file_path):
+    def insert_image(self, bucket_name, folder_path, image_csv, image_feature_csv=None):
         
         # image_list is a list of list, each element is a row in csv
         image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list')
 
         # image feature relation dict
         # key: file name; value: csv row as list
+
+        relation_header = None
+        relation_list = None
 
         if image_feature_csv != None:
             relation_list, relation_header = ImageDB.read_data(image_feature_csv, config.IF_HEADER, 'dict')
@@ -228,9 +231,12 @@ class ImageDB:
                     # TODO: image file by file name in the folder to Minio
                     # change its file name to image_id value
                     # record the Minio name/bucket/link in the image_list
-                    mc = self.minio.connect_to_minio_server(self.minio.endpoint, self.minio.access_key, self.minio.secret_key)
-                    self.minio.upload_single_file(mc, bucket_name, image_id, file_path)
-                    minio_link = mc.endpoint + ":/" + bucket_name + ":/" + image_id
+                    
+                    # find the corresponding image in the folder
+                    file_path = image_list[i][0]
+                    print(file_path)
+                    self.minio_conf.upload_single_file(self.minio, bucket_name, image_id, file_path)
+                    minio_link = self.minio_conf.endpoint + ":/" + bucket_name + ":/" + image_id
 
                     # TODO: which column is feature "minio_link"? -- 6
                     image_list[i][6] = minio_link
@@ -262,11 +268,11 @@ class ImageDB:
                 print('Image_Video metadata updated')
                 
             except mysqlError as e:
-                print('Error inserting cameras: ' + repr(e))
+                print('Error inserting cameras: ' + str(e))
                 self.vitess.mydb.rollback()
             except Exception as e2:
                 print(e2)
         else:
             return 0
 
- 	self.minio.batch_download(mc, df)
+ 	#self.minio.batch_download(mc, df)

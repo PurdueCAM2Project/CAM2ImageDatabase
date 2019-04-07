@@ -7,7 +7,7 @@ def test():
     ''' TEST CAMERA FILE '''
     
     ''' 1. test correct case '''
-    db.batch_insert_camera("./vitess_test/camera_test_standard.csv")
+    #db.batch_insert_camera("./vitess_test/camera_test_standard.csv")
     
     ''' 2. test wrong hearder name '''
     #db.batch_insert_camera("./vitess_test/camera_test_checkHeader.csv")
@@ -21,7 +21,7 @@ def test():
     ''' 5. test missing values '''
     #db.batch_insert_camera("./vitess_test/camera_test_checkMissingValues.csv")
 
-    ''' 6. test empty cell -- FAIL !!!!!!!!!!  '''
+    ''' 6. test empty cell '''
     #db.batch_insert_camera("./vitess_test/camera_test_checkEmptyCell.csv")
 
     ''' 7. test add same things twice '''
@@ -32,7 +32,7 @@ def test():
     ''' TEST ImageVideo FILE without feature csv'''
     
     ''' 1. test correct case'''
-    #db.insert_image("./vitess_test/imageVideo_test_standard.csv")
+    db.insert_image('any', './test_images', "./vitess_test/imageVideo_test_standard.csv")
     
     ''' 8. test wrong hearder name '''
     #db.insert_image("./vitess_test/imageVideo_test_checkHeader.csv")
@@ -57,7 +57,7 @@ def test():
     ''' TEST ImageVideo FILE with feature csv, with feature csv correct all the time'''
     
     ''' 1. test correct case'''
-    db.insert_image("./vitess_test/imageVideo_test_standard.csv", "./vitess_test/imageFeature_test_standard.csv")
+    #db.insert_image("any", ".", "./vitess_test/imageVideo_test_standard.csv", "./vitess_test/imageFeature_test_standard.csv")
 
     ''' test wrong hearder name '''
     #db.insert_image("./vitess_test/imageVideo_test_checkHeader.csv", "./vitess_test/imageFeature_test_standard.csv")
