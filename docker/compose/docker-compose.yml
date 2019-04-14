@@ -135,4 +135,5 @@ services:
     environment:
       MINIO_ACCESS_KEY: $MINIO_ACCESS_KEY
       MINIO_SECRET_KEY: $MINIO_SECRET_KEY
-    command: minio server /data
+      #command: minio server /data
+      command: ./start_minio_server_docker.sh

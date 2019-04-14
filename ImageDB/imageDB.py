@@ -5,7 +5,7 @@ This file contains the main functionalities of the imageDB system.
 ----- Table Initialization -----
 
 
-1. Initialize camera table 
+1. Initialize camera table
 2. Initialize image table
 3. Initialize feature table
 4. Initialize image-feature relation table
@@ -38,7 +38,7 @@ This file contains the main functionalities of the imageDB system.
 ----- To Be Added -----
 
 Minio
-1. Insert Images to Minio Server
+1. [Done] Insert Images to Minio Server
 2. [Done] Batch Download Images taken a data frame object as input (reduce I/O)
 3. [Done] Batch Download Images taken a CSV file as input (if user wants to download later)
 4. Transaction Rollback mechanism
@@ -65,22 +65,22 @@ class ImageDB:
 		self.vitess = VitessConn()
 		self.minio = MinioConn()
 		#self.minio = self.minio_conf.connect_to_minio_server(endpoint, access_key, secret_key)
-	
+
 	def init_tables(self):
 		# drop if needed
-		
+
 		'''
 		self.vitess.dropCameraTable()
 		self.vitess.dropImageTable()
 		self.vitess.dropFeatureTable()
 		self.vitess.dropRelationTable()
 		'''
-		
+
 		self.vitess.createCameraTable()
 		self.vitess.createImageTable()
 		self.vitess.createFeatureTable()
 		self.vitess.createRelationTable()
-		
+
 
 	# check if the given file has desired header
 	@classmethod
@@ -140,14 +140,14 @@ class ImageDB:
 					elif data_format == 'dict':
 						# key: image file name; value: entire row (list)
 						items[i[0]] = i
-						
+
 				return items, header
-			
+
 			else:
 				return 0, 0
-			
+
 		return 0, 0
-			
+
 
 	def batch_insert_camera(self, camera_csv):
 
@@ -168,11 +168,11 @@ class ImageDB:
 			return 0
 
 
-				   
-	# this function should read image and image feature file, 
+
+	# this function should read image and image feature file,
 	def insert_image(self, bucket_name, folder_path, image_csv, image_feature_csv=None):
 		try:
-			
+
 			# image_list is a list of list, each element is a row in csv
 			image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list')
 
@@ -184,7 +184,7 @@ class ImageDB:
 
 			if image_feature_csv != None:
 				relation_list, relation_header = ImageDB.read_data(image_feature_csv, config.IF_HEADER, 'dict')
-	
+
 		except IOError as e:
 			print('IOError({0}): {1}'.format(e.errno, e.strerror))
 			sys.exit()
@@ -195,7 +195,7 @@ class ImageDB:
 			print(str(e3))
 			sys.exit()
 
-		if image_list and image_header: 
+		if image_list and image_header:
 			try:
 				# Process the image feature header list to a list of feature ids (except for first entry)
 
@@ -221,16 +221,16 @@ class ImageDB:
 
 					# image_list[i] is the i th row of image metadata
 					image_filename = image_list[i][0]
-					
+
 					# get image_video_id of the image_video
-					# allowing updating image information 
+					# allowing updating image information
 					iv_id = self.vitess.getIVID(image_filename)
-					
+
 					if iv_id is not None:
 						image_id = iv_id
 					else:
 						image_id = str(uuid.uuid1())
-				  
+
 					# find the corresponding image in the folder, save for later image uploading
 					file_path = folder_path + image_list[i][0]
 
@@ -250,14 +250,14 @@ class ImageDB:
 					# get list of feature ids that belong to this image
 					if relation_list:
 						feature_info_list = relation_list[image_filename]
-						
+
 						featureID_list = []
 						for i in range(len(feature_info_list)):
 							if i == 0:
 								continue
 							elif feature_info_list[i] == '1':
 								featureID_list.append(relation_header[i])
-								
+
 						# zip into list of (feature id, image id) tuples
 						if_list = zip(tuple(featureID_list), tuple([image_id] * len(featureID_list)))
 						self.vitess.insertImagefeatures(list(if_list))
@@ -275,9 +275,9 @@ class ImageDB:
 
 
 				self.vitess.mydb.commit()
-				
+
 				print('Image_Video metadata updated')
-				
+
 			except mysql.connector.Error as e:
 				print('Error inserting image information: ' + str(e))
 				self.vitess.mydb.rollback()
