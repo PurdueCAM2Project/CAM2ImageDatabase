@@ -129,10 +129,14 @@ services:
     depends_on:
       - vtctld
   minio:
+    hostname: minio
     image: minio/minio:latest
+    volumes:
+      - './minio/data/:/data'
+      - './minio/config:/root/.minio'
     ports:
       - "9001:9000"
     environment:
       MINIO_ACCESS_KEY: $MINIO_ACCESS_KEY
       MINIO_SECRET_KEY: $MINIO_SECRET_KEY
-    command: minio server /data
+    command: server /data
