@@ -1,6 +1,7 @@
 import os, time
 import filetype
 import csv
+import sys
 
 minio_link = 'None'
 dataset = 'None'
@@ -21,6 +22,7 @@ def image_metadata(path):
             dirs = os.listdir(path)
         except Exception as e:
             print("Path is not a valid directory")
+            sys.exit(1)
 
         for subdir in dirs:
             path2 = os.path.join(path, subdir)
