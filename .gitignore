@@ -102,3 +102,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# mac os
+.DS_Store
+
+# local Minio
+minio/
+
+# idea
+.idea/
