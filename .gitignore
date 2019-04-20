@@ -108,6 +108,7 @@ venv.bak/
 
 # local Minio
 minio/
+minio_test_server/
 
 # idea
 .idea/
