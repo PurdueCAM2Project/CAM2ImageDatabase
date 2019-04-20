@@ -80,17 +80,17 @@ class ImageDB:
 		self.vitess.createFeatureTable()
 		self.vitess.createRelationTable()
 
-    # TODO: the csv file integrity check incorporate with Lakshya's code
-    @classmethod
-    def read_data(csv_file, required_header, data_format):
-        header = []
-        if data_format == 'dict':
-            items = {}
-        else:
-            items = []
-        try:
-            with open(csv_file, 'rb') as csvfile:
-                reader = csv.reader(csvfile, delimiter=',')
+	# TODO: the csv file integrity check incorporate with Lakshya's code
+	@classmethod
+	def read_data(csv_file, required_header, data_format):
+		header = []
+		if data_format == 'dict':
+			items = {}
+		else:
+			items = []
+		try:
+			with open(csv_file, 'rb') as csvfile:
+				reader = csv.reader(csvfile, delimiter=',')
 
 	# check if the given file has desired header
 	@classmethod
@@ -121,10 +121,10 @@ class ImageDB:
 	@classmethod
 	def read_data(self, csv_file, required_header, data_format, folder_path):
 		# Get the list of files in the folder containing the images
-        files_in_folder = os.listdir(folder_path)
-        # List of names of files that are missing in either the CSV or folder
-        missing_from_CSV = []
-        missing_from_folder = []
+		files_in_folder = os.listdir(folder_path)
+		# List of names of files that are missing in either the CSV or folder
+		missing_from_CSV = []
+		missing_from_folder = []
 
 		header = []
 		if data_format == 'dict':
@@ -162,25 +162,25 @@ class ImageDB:
 						raise ValueError('\nMust specify to read as dict, list of lists or tuples.')
 					
 					# If the data_format is not a 'tuple' then it means that image files are being
-                    # inserted. Comparison takes place here to check for file existance
+					# inserted. Comparison takes place here to check for file existance
 					if data_format != 'tuple':
 						
-                        items.append(row)
+						items.append(row)
 
-                        # Check if file name exists in the folder
-                        if row[0] not in files_in_folder:
-                            missing_from_folder.append(row[0])
-                        # Else, if the file exists in both, remove it from the list of files in the folder. files_in_folder will be left with the files which aren't in the CSV
-                        else:
-                            files_in_folder.remove(row[0])
+						# Check if file name exists in the folder
+						if row[0] not in files_in_folder:
+							missing_from_folder.append(row[0])
+						# Else, if the file exists in both, remove it from the list of files in the folder. files_in_folder will be left with the files which aren't in the CSV
+						else:
+							files_in_folder.remove(row[0])
 
-                        # If there are missing files, in the folder, print them
-                        if missing_from_folder:
-                        	raise ValueError('\nFiles ' + str(missing_from_folder) + ' are missing from folder.')
+						# If there are missing files, in the folder, print them
+						if missing_from_folder:
+							raise ValueError('\nFiles ' + str(missing_from_folder) + ' are missing from folder.')
 
-                        # If there are missing files, in the CSV, print them
-                        if files_in_folder:
-                        	raise ValueError('\nFilenames ' + str(missing_from_CSV) + ' are missing from CSV.')
+						# If there are missing files, in the CSV, print them
+						if files_in_folder:
+							raise ValueError('\nFilenames ' + str(missing_from_CSV) + ' are missing from CSV.')
 
 				return items, header
 
