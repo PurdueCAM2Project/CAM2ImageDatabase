@@ -119,7 +119,13 @@ class ImageDB:
 
 	# TODO: the csv file integrity check incorporate with Lakshya's code
 	@classmethod
-	def read_data(self, csv_file, required_header, data_format):
+	def read_data(self, csv_file, required_header, data_format, folder_path):
+		# Get the list of files in the folder containing the images
+        files_in_folder = os.listdir(folder_path)
+        # List of names of files that are missing in either the CSV or folder
+        missing_from_CSV = []
+        missing_from_folder = []
+
 		header = []
 		if data_format == 'dict':
 			items = {}
@@ -139,10 +145,12 @@ class ImageDB:
 					if ((required_header == config.IF_HEADER and len(i) != len(header)) or
 					   (required_header != config.IF_HEADER and len(i) != len(required_header))):
 						raise ValueError('\nFile ' + csv_file + ' content column does not match header.')
+					
 					# check whether there's empty value
 					for j in i:
 						if j == '':
 							raise ValueError('\nFile ' + csv_file + ' content missing value.')
+					
 					if data_format == 'tuple':
 						items.append(tuple(i))
 					elif data_format == 'list':
@@ -150,6 +158,29 @@ class ImageDB:
 					elif data_format == 'dict':
 						# key: image file name; value: entire row (list)
 						items[i[0]] = i
+					else:
+						raise ValueError('\nMust specify to read as dict, list of lists or tuples.')
+					
+					# If the data_format is not a 'tuple' then it means that image files are being
+                    # inserted. Comparison takes place here to check for file existance
+					if data_format != 'tuple':
+						
+                        items.append(row)
+
+                        # Check if file name exists in the folder
+                        if row[0] not in files_in_folder:
+                            missing_from_folder.append(row[0])
+                        # Else, if the file exists in both, remove it from the list of files in the folder. files_in_folder will be left with the files which aren't in the CSV
+                        else:
+                            files_in_folder.remove(row[0])
+
+                        # If there are missing files, in the folder, print them
+                        if missing_from_folder:
+                        	raise ValueError('\nFiles ' + str(missing_from_folder) + ' are missing from folder.')
+
+                        # If there are missing files, in the CSV, print them
+                        if files_in_folder:
+                        	raise ValueError('\nFilenames ' + str(missing_from_CSV) + ' are missing from CSV.')
 
 				return items, header
 
