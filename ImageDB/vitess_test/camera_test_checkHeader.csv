@@ -1,0 +1,3 @@
+﻿Camera_ID,Country_ID,State,City,Latitude,Longtitude,Resolution_w,Resolution_h
+1,USA,MA,Boston,42.3692,-71.0658,2048,1536
+2,USA,NY,New York,40.7047,-74.0211,1024,768
