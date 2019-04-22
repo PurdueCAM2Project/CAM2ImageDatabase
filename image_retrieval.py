@@ -8,21 +8,10 @@ db = cam2.Client(clientID, clientSecret)
 
 archiver = CAM2ImageArchiver(num_processes=1)
 
-cameras = db.search_camera(offset=0)
-
 # To search camera by all camera ids:
 i = 0
-while len(cameras) != 0:
+while len(db.search_camera(offset=i)) != 0:
     cameras = db.search_camera(offset=i)
     i += 100
+    archiver.archive(cameras, duration=1, interval=1)
 
-IDList = []
-for camera in cameras:
-    IDList.append(camera['cameraID'])
-
-cameras1 = []
-
-for camId in IDList:
-    cameras1.append(db.camera_by_id(camId))
-
-archiver.archive(cameras1, duration=1, interval=1)
