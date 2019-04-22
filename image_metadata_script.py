@@ -3,12 +3,12 @@ import filetype
 import csv
 import sys
 
-minio_link = 'None'
-dataset = 'None'
-is_processed = 0
-
 
 def image_metadata(path):
+
+    minio_link = 'None'
+    dataset = 'None'
+    is_processed = 0
 
     try:
         output_file = open('file_name.csv', 'w')
