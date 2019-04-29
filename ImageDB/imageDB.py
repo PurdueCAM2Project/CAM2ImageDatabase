@@ -296,15 +296,26 @@ class ImageDB:
 
 
 
-	# this function should read image and image feature file,
+	'''This fucntion takes a dictionary of arguments from the CLI and performs the following tasks - 1. Retreieved Image ID's from
+	the Vitess database that match the query parameters. 2. Stores a csv file of all the results. 3. Calls the minio docwnload 
+	function to download the images if the download flag was specified.'''
 	def get_image(self, arguments):
 		try:
 			if arguments != None:
 				result = self.vitess.getImage(arguments)
-				if result == -1:
+				if result == 0:
 					print("No files match your query. Please try again.")
+				elif result == -1 :
+					print("Please pass valid arguments.")
 				else:
-					if arguments['download'] != None:
+					fp = open('query_result.csv', 'w')
+					outputFile = csv.writer(fp, lineterminator='\n')
+					outputFile.writerow(["IV_ID", "IV_Name", "Image_Camera_ID","IV_date","IV_time","File_type","File_size","Minio_link","Dataset"
+							,"Is_processed","Camera_ID","Country","State","City","Latitude","Longitude","Resolution_w","Resolution_h"])
+					outputFile.writerows(result)
+					fp.close()
+					print("Results were found and successfully stored in the CSV file.")
+					if arguments['download'] is not None:
 						data_dict = {}
 						file_names= []
 						bucket_names = []
@@ -314,17 +325,7 @@ class ImageDB:
 						data_dict["File_Name"] = file_names
 						data_dict["Bucket_Name"] = bucket_names
 						self.minio.batch_download(mc, data_dict)
-
-					elif result != -1:
-						fp = open('querY_result.csv', 'w')
-						outputFile = csv.writer(fp, lineterminator='\n')
-						outputFile.writerow(["IV_ID", "IV_Name", "Image_Camera_ID","IV_date","IV_time","File_type","File_size","Minio_link","Dataset"
-							,"Is_processed","Camera_ID","Country","State","City","Latitude","Longitude","Resolution_w","Resolution_h"])
-						outputFile.writerows(result)
-						fp.close()
-						print("Results found and stored in csv.")
-					else:
-						print("Please pass valid arguments.")
+											
 
 		except mysql.connector.Error as e:
 			print('Error retreiving image information: ' + str(e))
