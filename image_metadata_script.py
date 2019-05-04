@@ -27,6 +27,17 @@ def image_metadata(path):
         for subdir in dirs:
             path2 = os.path.join(path, subdir)
             if os.path.isfile(path2):
+                st = os.stat(path2)
+                file_size = st.st_size
+                file_date = time.strftime('%Y.%m.%d', time.localtime(os.path.getmtime(path2)))
+                file_time = time.strftime('%H:%M:%S', time.localtime(os.path.getmtime(path2)))
+
+                ftype = filetype.guess(curr_path)
+                if ftype:
+                    file_type = ftype.extension
+
+                writer.writerow([subdir, 'None', file_date, file_time, file_type, file_size, minio_link, dataset,
+                                 is_processed])  # add the camera id to the csv file as well
                 continue
             for f in os.listdir(path2):
                 curr_path = os.path.join(path2, f)
@@ -51,3 +62,4 @@ def image_metadata(path):
 
     output_file.close()
 
+image_metadata('/Users/sandeepgupta/Desktop/CAM2/script/CAM2ImageDatabase/results')
