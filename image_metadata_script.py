@@ -61,5 +61,3 @@ def image_metadata(path):
         print(e)
 
     output_file.close()
-
-image_metadata('/Users/sandeepgupta/Desktop/CAM2/script/CAM2ImageDatabase/results')
