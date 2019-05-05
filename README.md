@@ -61,7 +61,7 @@ It checks to make sure all the files, in the directory that is going to be uploa
 
 The purpose of this is to prevent the uploading of image features without a corresponding image, and vice-versa.
 
-## CAM2ImageDatabase
+# CAM2ImageDatabase - Extract image and camera metdata
 
 To run the program:
 The 2 python scripts (image_metadata_script.py and camera_metadata_script.py) are standalone applications which can be run by simply copying them into an IDE
@@ -75,7 +75,7 @@ To run the camera_metadata_script.py:
 The camera_metadata function accepts teh image metadata csv file generated in the previous step. Therefore, run the image_metadata_script.py before running this file.
 This will create the camera metadata csv file.
 
-###
+##
 The compare.py function will be incorporated into the ImageDB.py script. This is so that the CSV file isn't opened and iterated through multiple times, increasing efficiency.
 
 The compare function will go in the read_data method (in ImageDB.py)
