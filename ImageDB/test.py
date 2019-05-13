@@ -132,44 +132,42 @@ def test():
 
     #test image retrieval 
 
-    #db.batch_insert_camera("./vitess_test/camera_test_standard.csv")
+    db.batch_insert_camera("./vitess_test/camera_test_standard.csv")
 
     '''test time range query''' 
-    #arg1 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': None, 'camera_id': None, 'date': None, 'start_time': '13:00:00', 'end_time': '14:00:00', 'download': None}
+    #arg1 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': None, 'Camera_ID: None, 'date': None, 'start_time': '13:00:00', 'end_time': '14:00:00', 'download': None}
     #db.get_image(arg1)
 
     ''' test time range and date query '''
-    #arg2 = {'latitude': 72.06, 'longitude': None, 'city': None, 'state': 'NY', 'country': None, 'camera_id': None, 'date': '02/01/2019', 'start_time': '20:00:00', 'end_time': '18:00:00', 'download': None}
+    #arg2 = {'latitude': 72.06, 'longitude': None, 'city': None, 'state': 'NY', 'country': None, 'Camera_ID': None, 'date': '02/01/2019', 'start_time': '20:00:00', 'end_time': '18:00:00', 'download': None,'feature':None}
     #db.get_image(arg2)
 
 
     '''test camera_id and city query'''
-    #arg3 = {'latitude': None, 'longitude': None, 'city': 'Boston', 'state': None, 'country': None, 'camera_id': '1', 'date': None, 'start_time': None, 'end_time': None, 'download': None}
+    #arg3 = {'latitude': None, 'longitude': None, 'city': 'Boston', 'state': None, 'country': None, 'Camera_ID': '1', 'date': None, 'start_time': None, 'end_time': None, 'download': None,'feature':None}
     #db.get_image(arg3)
 
     '''test state and camera_id query'''
-    #arg4 = {'latitude': None, 'longitude': None, 'city': None, 'state': 'MA', 'country': None, 'camera_id': '1', 'date': None, 'start_time': None, 'end_time': None, 'download': None}
+    #arg4 = {'latitude': None, 'longitude': None, 'city': None, 'state': 'MA', 'country': None, 'Camera_ID': '1', 'date': None, 'start_time': None, 'end_time': None, 'download': None,'feature':None}
     #db.get_image(arg4)
 
     '''test country only query'''
-    #arg5 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': 'USA', 'camera_id': None, 'date': None, 'start_time': None, 'end_time': None, 'download': None}
+    #arg5 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': 'USA', 'Camera_ID': None, 'date': None, 'start_time': None, 'end_time': None, 'download': None,'feature':None}
     #db.get_image(arg5)
-
-    ''' test latitude and longitude '''
 
 
     ''' test no matching results '''
-    #arg6 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': 'UK', 'camera_id': '1', 'date': None, 'start_time': None, 'end_time': None, 'download': None}
+    #arg6 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': 'UK', 'Camera_ID': '1', 'date': None, 'start_time': None, 'end_time': None, 'download': None,'feature':None}
     #db.get_image(arg6)
 
 
     ''' test download data '''
-    #arg7 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': None, 'camera_id': '1', 'date': None, 'start_time': None, 'end_time': None, 'download': '1'}
+    #arg7 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': None, 'Camera_ID': '1', 'date': None, 'start_time': None, 'end_time': None, 'download': 'True','feature':None}
     #db.get_image(arg7)
 
 
     '''test city only query'''
-    #arg8 = {'latitude': None, 'longitude': None, 'city': 'Boston', 'state': None, 'country': None, 'camera_id': None, 'date': None, 'start_time': None, 'end_time': None, 'download': None}
+    #arg8 = {'latitude': None, 'longitude': None, 'city': 'Boston', 'state': None, 'country': None, 'Camera_ID': None, 'date': None, 'start_time': None, 'end_time': None, 'download': None,'feature':None}
     #db.get_image(arg8)
 
 

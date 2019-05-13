@@ -187,38 +187,30 @@ class VitessConn:
 		self.mycursor.executemany(sql, relations)
 
 
-	#this function takes a dictionary of arguments and queries the Vitess database 
+	'''this function takes a dictionary of arguments and queries the Vitess database, returns 0 if no results are found, -1 if
+	there was an error in the query response and the results if matches were found. '''
 	def getImage(self,arguments):
 
 		query = "SELECT * FROM IMAGE_VIDEO INNER JOIN CAMERA ON IMAGE_VIDEO.Camera_ID = CAMERA.Camera_ID WHERE ";
+		image_arguments = ["date","start_time","end_time"]
+		camera_arguments = ["latitude","longitude","city","state","country","Camera_ID"]
+		feature_parameters = ["feature"]
 
 		camera_parameters = ""
-		for argument in arguments:
-			if arguments[argument] != None and argument != "date" and argument != "start_time" and argument != "end_time":
-				camera_parameters = camera_parameters + "CAMERA."+ argument + " = " +"'"+ str(arguments[argument])+"'" + " AND "
+		for arg in camera_arguments:
+			if arguments[arg] is not None:
+				camera_parameters = camera_parameters + "CAMERA."+ arg + " = " +"'"+ str(arguments[arg])+"'" + " AND "
 
-
-
-		if camera_parameters.endswith("AND "):
-			camera_parameters = camera_parameters[:-5]
-
-		image_parameters =""
-		if len(camera_parameters) != 0:
-			query = query + camera_parameters
-			image_parameters = " AND "
+		image_parameters = ""
+		if arguments["date"] is not None:
+			image_parameters = image_parameters + "IMAGE_VIDEO.IV_date = " + str(arguments["date"]) + " AND "
+		if arguments["start_time"] is not None:
+			image_parameters = image_parameters + "IMAGE_VIDEO.IV_time BETWEEN " + "'"+str(arguments["start_time"])+"'" + " AND " + "'"+str(arguments["end_time"])+"'"
 		
-		if(arguments["date"] != None):
-			image_parameters = image_parameters + "IMAGE_VIDEO.date = " + str(arguments["date"]) + " AND "
-		if(arguments["start_time"] != None):
-			image_parameters = image_parameters + "IMAGE_VIDEO.time BETWEEN " + "'"+str(arguments["start_time"])+"'" + " AND " + "'"+str(arguments["end_time"])+"'"
-		if image_parameters.endswith("AND "):
-			image_parameters = image_parameters[:-5]
-			image_parameters = image_parameters + ";"
 
-		if len(image_parameters) != 3:
-			query = query + image_parameters
-			if (not query.endswith(";")):
-				query = query + ";"
+		image_parameters = image_parameters[:-5] if image_parameters.endswith("AND ") else image_parameters
+		camera_parameters = camera_parameters[:-5] if len(image_parameters) == 0 else camera_parameters
+		query = query + camera_parameters + image_parameters
 
 		result = ""
 		try:
@@ -226,7 +218,7 @@ class VitessConn:
 			rows = self.mycursor.execute(query)
 			result = self.mycursor.fetchall()
 			if self.mycursor.rowcount == 0:
-				return -1
+				return 0
 			else:
 				return result
 		
