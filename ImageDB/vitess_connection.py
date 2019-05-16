@@ -194,7 +194,13 @@ class VitessConn:
 		query = "SELECT * FROM IMAGE_VIDEO INNER JOIN CAMERA ON IMAGE_VIDEO.Camera_ID = CAMERA.Camera_ID WHERE ";
 		image_arguments = ["date","start_time","end_time"]
 		camera_arguments = ["latitude","longitude","city","state","country","Camera_ID"]
-		feature_parameters = ["feature"]
+		feature_parameters = arguments["feature"]
+		if feature_parameters is not None:
+			features = "("
+			for feat in feature_parameters:
+				features += "'"+ feat +"'" + ","
+			features = features[:-1]
+			features += ")"
 
 		camera_parameters = ""
 		for arg in camera_arguments:
@@ -212,9 +218,15 @@ class VitessConn:
 		camera_parameters = camera_parameters[:-5] if len(image_parameters) == 0 else camera_parameters
 		query = query + camera_parameters + image_parameters
 
+		if feature_parameters is None:
+			fquery = query + ";"
+		else:
+			fquery = "SELECT * FROM (SELECT * FROM RELATION left join feature on RELATION.Feature_ID = FEATURE.Feature_ID WHERE Feature_Name IN " + features
+			fquery += " as bTable INNER JOIN (" + query + ") AS aTable ON aTable.IV_ID = bTable.IV_ID;"
+
 		result = ""
 		try:
-			print (query)
+			#print (fquery)
 			rows = self.mycursor.execute(query)
 			result = self.mycursor.fetchall()
 			if self.mycursor.rowcount == 0:
