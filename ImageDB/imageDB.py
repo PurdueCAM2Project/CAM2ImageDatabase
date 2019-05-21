@@ -334,3 +334,49 @@ class ImageDB:
 			return 0
 
 	#self.minio.batch_download(mc, df)
+
+
+
+	'''This fucntion takes a dictionary of arguments from the CLI and performs the following tasks - 1. Retreieved Image ID's from
+	the Vitess database that match the query parameters. 2. Stores a csv file of all the results. 3. Calls the minio docwnload 
+	function to download the images if the download flag was specified.'''
+	def get_image(self, arguments):
+		try:
+			if arguments != None:
+				result = self.vitess.getImage(arguments)
+				if result == 0:
+					print("No files match your query. Please try again.")
+				elif result == -1 :
+					print("Please pass valid arguments.")
+				else:
+					fp = open('query_result.csv', 'w')
+					outputFile = csv.writer(fp, lineterminator='\n')
+					outputFile.writerow(["IV_ID", "IV_Name", "Image_Camera_ID","IV_date","IV_time","File_type","File_size","Minio_link","Dataset"
+							,"Is_processed","Camera_ID","Country","State","City","Latitude","Longitude","Resolution_w","Resolution_h"])
+					outputFile.writerows(result)
+					fp.close()
+					print("Results were found and successfully stored in the CSV file.")
+					if arguments['download'] is not None:
+						data_dict = {}
+						file_names= []
+						bucket_names = []
+						for row in result:
+							file_names.append(row[0])
+							bucket_names.append(row[7])
+						data_dict["File_Name"] = file_names
+						data_dict["Bucket_Name"] = bucket_names
+						self.minio.batch_download(mc, data_dict)
+											
+
+		except mysql.connector.Error as e:
+			print('Error retreiving image information: ' + str(e))
+			sys.exit()
+		except ResponseError as e1:
+			print('Error downloading image: ' + str(e))
+			sys.exit()
+		except Exception as e2:
+			print(e2)
+			sys.exit()
+
+
+	#self.minio.batch_download(mc, df)

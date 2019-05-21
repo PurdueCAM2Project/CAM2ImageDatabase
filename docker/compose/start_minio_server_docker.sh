@@ -1,7 +1,7 @@
 #Author: Haoran Wang
 #Purpose: Start / Stop Minio server in a Docker container
 
-#!/bin/zsh
+#!/bin/bash
 
 # Parameters
 # folder path that contains the images
@@ -15,7 +15,7 @@ read response
 if [ $response == 'N' ];
 then
 	echo "A new Minio server is being set up in this container..."
-	docker run -p 9000:9000 --name CAM2Minio \
+	docker run -p 9000:9000 --name cam2minio \
   		-e "MINIO_ACCESS_KEY=$MINIO_ACCESS_KEY" \
   		-e "MINIO_SECRET_KEY=$MINIO_SECRET_KEY" \
   		-v $folder:$folder \

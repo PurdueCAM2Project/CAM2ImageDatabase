@@ -12,5 +12,5 @@ echo ""
 
 echo "Please set Secret Key for Minio server"
 read secret
-export MINIO_ACCESS_KEY=$secret
+export MINIO_SECRET_KEY=$secret
 echo "Secret Key has been set to $MINIO_SECRET_KEY"
