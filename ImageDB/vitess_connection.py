@@ -1,11 +1,11 @@
-#!/usr/bin/env python3
+	#!/usr/bin/env python3
 
-# When using this class, all transactions invloving
-# DML(data manipulation language), including insert, delete, update, etc.,
-# needs to be commited by calling [vitessConnObject].mydb.commit()
-# and [vitessConnObject].mydb.rollback() when thrwoing exception
+	# When using this class, all transactions invloving 
+	# DML(data manipulation language), including insert, delete, update, etc.,
+	# needs to be commited by calling [vitessConnObject].mydb.commit()
+	# and [vitessConnObject].mydb.rollback() when thrwoing exception
 
-# Developers are encouraged to lookup the diffrence between DDL and DML in SQL
+	# Developers are encouraged to lookup the diffrence between DDL and DML in SQL
 
 import mysql.connector
 from mysql.connector import errorcode
@@ -19,7 +19,7 @@ class VitessConn:
 
 		# Define database
 		mydatabase = config.KEYSPACE
-	
+
 		try:
 			self.mydb = mysql.connector.connect(
 				host=config.VITESS_HOST,
@@ -99,7 +99,7 @@ class VitessConn:
 		try:
 			self.mycursor.execute('SELECT 1 FROM FEATURE LIMIT 1')
 			print('FEATURE table exist')
-                              
+	                          
 		except:
 			## create table
 			self.mycursor.execute('CREATE TABLE FEATURE(Feature_ID VARCHAR(50) NOT NULL, Feature_Name VARCHAR(100) NOT NULL, PRIMARY KEY (Feature_ID))')
@@ -197,5 +197,62 @@ class VitessConn:
 	def insertImagefeatures(self, relations):
 		sql = 'INSERT IGNORE INTO RELATION(Feature_ID, IV_ID) VALUES (%s, %s)'
 		self.mycursor.executemany(sql, relations)
+
+
+	'''this function takes a dictionary of arguments and queries the Vitess database, returns 0 if no results are found, -1 if
+	there was an error in the query response and the results if matches were found. '''
+	def getImage(self,arguments):
+
+		query = "SELECT * FROM IMAGE_VIDEO INNER JOIN CAMERA ON IMAGE_VIDEO.Camera_ID = CAMERA.Camera_ID WHERE ";
+		image_arguments = ["date","start_time","end_time"]
+		camera_arguments = ["latitude","longitude","city","state","country","Camera_ID"]
+		feature_parameters = arguments["feature"]
+		if feature_parameters is not None:
+			features = "("
+			for feat in feature_parameters:
+				features += "'"+ feat +"'" + ","
+			features = features[:-1]
+			features += ")"
+
+		camera_parameters = ""
+		for arg in camera_arguments:
+			if arguments[arg] is not None:
+				camera_parameters = camera_parameters + "CAMERA."+ arg + " = " +"'"+ str(arguments[arg])+"'" + " AND "
+
+		image_parameters = ""
+		if arguments["date"] is not None:
+			image_parameters = image_parameters + "IMAGE_VIDEO.IV_date = " + str(arguments["date"]) + " AND "
+		if arguments["start_time"] is not None:
+			image_parameters = image_parameters + "IMAGE_VIDEO.IV_time BETWEEN " + "'"+str(arguments["start_time"])+"'" + " AND " + "'"+str(arguments["end_time"])+"'"
 		
-	
+
+		image_parameters = image_parameters[:-5] if image_parameters.endswith("AND ") else image_parameters
+		camera_parameters = camera_parameters[:-5] if len(image_parameters) == 0 else camera_parameters
+		query = query + camera_parameters + image_parameters
+
+		if feature_parameters is None:
+			fquery = query + ";"
+		else:
+			fquery = "SELECT * FROM (SELECT * FROM RELATION left join feature on RELATION.Feature_ID = FEATURE.Feature_ID WHERE Feature_Name IN " + features
+			fquery += " as bTable INNER JOIN (" + query + ") AS aTable ON aTable.IV_ID = bTable.IV_ID;"
+
+		result = ""
+		try:
+			#print (fquery)
+			rows = self.mycursor.execute(query)
+			result = self.mycursor.fetchall()
+			if self.mycursor.rowcount == 0:
+				return 0
+			else:
+				return result
+		
+		except:
+			print("There was an error in the query response")
+			return -1
+
+		
+
+
+
+		
+
