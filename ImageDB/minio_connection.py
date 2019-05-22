@@ -12,7 +12,6 @@ import datetime
 import config
 
 
-
 class MinioConn:
 
     # Constructor
@@ -99,7 +98,7 @@ class MinioConn:
 
 
 if __name__ == '__main__':
-    new_mc = MinioConn('localhost:9000', 'FX770DGQ10M2ALSRVX3F', 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl')
+    new_mc = MinioConn()#('localhost:9000', 'FX770DGQ10M2ALSRVX3F', 'qCO+rTTAGoPdaf5m39dleP5+vr9f15sCT0RGAbLl')
 
     df = new_mc.read_csv('nyc_traffic_sample.csv')
 

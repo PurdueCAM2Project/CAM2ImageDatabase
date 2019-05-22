@@ -47,6 +47,7 @@ Minio
 import csv
 import uuid
 import sys
+import os
 import mysql.connector
 import config
 from vitess_connection import VitessConn
@@ -80,18 +81,6 @@ class ImageDB:
 		self.vitess.createFeatureTable()
 		self.vitess.createRelationTable()
 
-	# TODO: the csv file integrity check incorporate with Lakshya's code
-	@classmethod
-	def read_data(csv_file, required_header, data_format):
-		header = []
-		if data_format == 'dict':
-			items = {}
-		else:
-			items = []
-		try:
-			with open(csv_file, 'rb') as csvfile:
-				reader = csv.reader(csvfile, delimiter=',')
-
 	# check if the given file has desired header
 	@classmethod
 	def check_header(self, csv_file, csv_header, required_header):
@@ -121,7 +110,9 @@ class ImageDB:
 	@classmethod
 	def read_data(self, csv_file, required_header, data_format, folder_path):
 		# Get the list of files in the folder containing the images
-		files_in_folder = os.listdir(folder_path)
+		if data_format != 'tuple':
+			files_in_folder = os.listdir(folder_path)
+
 		# List of names of files that are missing in either the CSV or folder
 		missing_from_CSV = []
 		missing_from_folder = []
@@ -165,14 +156,14 @@ class ImageDB:
 					# inserted. Comparison takes place here to check for file existance
 					if data_format != 'tuple':
 						
-						items.append(row)
+						items.append(i)
 
 						# Check if file name exists in the folder
-						if row[0] not in files_in_folder:
-							missing_from_folder.append(row[0])
+						if i[0] not in files_in_folder:
+							missing_from_folder.append(i[0])
 						# Else, if the file exists in both, remove it from the list of files in the folder. files_in_folder will be left with the files which aren't in the CSV
 						else:
-							files_in_folder.remove(row[0])
+							files_in_folder.remove(i[0])
 
 						# If there are missing files, in the folder, print them
 						if missing_from_folder:
@@ -193,7 +184,7 @@ class ImageDB:
 	def batch_insert_camera(self, camera_csv):
 
 		# camera_list is a list of tuple, each element is a row in csv
-		camera_list, camera_header = ImageDB.read_data(camera_csv, config.CAM_HEADER, 'tuple')
+		camera_list, camera_header = ImageDB.read_data(camera_csv, config.CAM_HEADER, 'tuple', None)
 		if camera_list and camera_header:
 			try:
 				# save it into vitess-mysql
@@ -215,7 +206,7 @@ class ImageDB:
 		try:
 
 			# image_list is a list of list, each element is a row in csv
-			image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list')
+			image_list, image_header = ImageDB.read_data(image_csv, config.IV_HEADER, 'list', None)
 
 			# image feature relation dict
 			# key: file name; value: csv row as list
@@ -224,7 +215,7 @@ class ImageDB:
 			relation_list = None
 
 			if image_feature_csv != None:
-				relation_list, relation_header = ImageDB.read_data(image_feature_csv, config.IF_HEADER, 'dict')
+				relation_list, relation_header = ImageDB.read_data(image_feature_csv, config.IF_HEADER, 'dict', None)
 
 		except IOError as e:
 			print('IOError({0}): {1}'.format(e.errno, e.strerror))
@@ -365,7 +356,7 @@ class ImageDB:
 							bucket_names.append(row[7])
 						data_dict["File_Name"] = file_names
 						data_dict["Bucket_Name"] = bucket_names
-						self.minio.batch_download(mc, data_dict)
+						self.minio.batch_download(self.minio.mc, data_dict)
 											
 
 		except mysql.connector.Error as e:
