@@ -68,7 +68,7 @@ class VitessConn:
 		try:
 			self.mycursor.execute('SELECT 1 FROM CAMERA LIMIT 1')
 			print('CAMERA table exist')
-			
+
 		except:
 			# create table
 			self.mycursor.execute('CREATE TABLE CAMERA(Camera_ID INT NOT NULL,\
@@ -76,7 +76,7 @@ class VitessConn:
 									Latitude FLOAT NOT NULL, Longitude FLOAT NOT NULL, \
 									Resolution_w INT NOT NULL, Resolution_h INT NOT NULL, PRIMARY KEY (Camera_ID))')
 			print('CAMERA table created.')
-		
+
 
 	# CREATE IMAGE TABLE IF NEEDED
 	def createImageTable(self):
@@ -90,11 +90,11 @@ class VitessConn:
 									File_type VARCHAR(10) NOT NULL, File_size VARCHAR(10) NOT NULL, \
 									Minio_link VARCHAR(500) NOT NULL, Dataset VARCHAR(500) NOT NULL, Is_processed INT NOT NULL, \
 									PRIMARY KEY (IV_ID))')
-													
+
 			print('IMAGE_VIDEO table created.')
 
 
-	# CREATE FEATURE TABLE IF NEEDED	
+	# CREATE FEATURE TABLE IF NEEDED
 	def createFeatureTable(self):
 		try:
 			self.mycursor.execute('SELECT 1 FROM FEATURE LIMIT 1')
@@ -123,7 +123,7 @@ class VitessConn:
 
 	# mannual commit after calling the method
 	def insertCameras(self, cameras):
-		
+
 		sql = 'INSERT INTO CAMERA(Camera_ID, Country, State, City, Latitude, Longitude, \
 				Resolution_w, Resolution_h) \
 				VALUES (%s, %s, %s, %s, %s, %s, %s, %s) \
@@ -134,7 +134,19 @@ class VitessConn:
 
 		self.mycursor.executemany(sql, cameras)
 
+	# Update the camera information in the camera table
+	# Update using Camera_ID as key and so first swap the order of tuple elements
+	def updateCamera(self, camera):
 
+		camID = camera[0]
+		camData = camera[1:]
+		data = (camData, camID) # The tuple with Camera_ID as the last element
+
+		sql = 'UPDATE CAMERA SET \
+				Country=%s, State=%s, City=%s, Latitude=%s, Longitude=%s \
+				WHERE Camera_ID=%s'
+
+		self.mycursor.executemany(sql, data)
 
 	# this function get image_video ID of a image_video name
 	def getIVID(self, image_video_name):
@@ -160,7 +172,7 @@ class VitessConn:
 				Minio_link=VALUES(Minio_link), Dataset=VALUES(Dataset), Is_processed=VALUES(Is_processed)'
 
 		self.mycursor.execute(sql, image)
-		
+
 
 	# this function get feature ID of a feature name
 	def getFeature(self, featureName):
@@ -179,7 +191,7 @@ class VitessConn:
 	def insertFeature(self, feature):
 		sql = 'INSERT INTO FEATURE(Feature_ID, Feature_Name) VALUES (%s, %s)'
 		self.mycursor.execute(sql, feature)
-		
+
 
 	# this function takes a list of feature_ID-image_ID tuples
 	def insertImagefeatures(self, relations):
