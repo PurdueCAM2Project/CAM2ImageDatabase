@@ -1,5 +1,23 @@
-version: "3"
+version: '2'
+
 services:
+  tests:
+    build: .
+    container_name: tests
+    restart: always
+
+  minio1:
+    image: minio/minio:RELEASE.2019-05-23T00-29-34Z
+    volumes:
+    - data1:/data
+    ports:
+    - "9001:9000"
+    environment:
+     MINIO_ACCESS_KEY: minio
+     MINIO_SECRET_KEY: minio123
+    command: server http://minio1/data http://minio2/data http://minio3/data http://minio4/data 
+
+############################### vitese below
   consul1:
     image: consul:latest
     hostname: "consul1"
@@ -7,7 +25,7 @@ services:
       - "8400:8400"
       - "8500:8500"
       - "8600:8600"
-    command: "agent -server -bootstrap-expect 3 -ui -disable-host-node-id -client 0.0.0.0 "
+    command: "agent -server -bootstrap-expect 3 -ui -disable-host-node-id -client 0.0.0.0"
   consul2:
     image: consul:latest
     hostname: "consul2"
@@ -48,7 +66,7 @@ services:
         -port $WEB_PORT \
         -grpc_port $GRPC_PORT \
         -pid_file $$VTDATAROOT/tmp/vtctld.pid
-        ",]
+        "]
     depends_on:
       - consul1
       - consul2
@@ -128,15 +146,6 @@ services:
     command: ["sh", "-c", "/script/vttablet-up.sh 3"]
     depends_on:
       - vtctld
-  minio:
-    hostname: minio
-    image: minio/minio:latest
-    volumes:
-      - './minio/data/:/data'
-      - './minio/config:/root/.minio'
-    ports:
-      - "9001:9000"
-    environment:
-      MINIO_ACCESS_KEY: $MINIO_ACCESS_KEY
-      MINIO_SECRET_KEY: $MINIO_SECRET_KEY
-    command: server /data
+
+volumes:
+  data1:
