@@ -7,7 +7,7 @@ def test():
     ''' TEST CAMERA FILE '''
     
     ''' 1. test correct case '''
-    #db.batch_insert_camera("./vitess_test/camera_test_standard.csv")
+    db.batch_insert_camera("./vitess_test/camera_test_standard.csv")
     
     ''' 2. test wrong hearder name '''
     #db.batch_insert_camera("./vitess_test/camera_test_checkHeader.csv")
@@ -131,8 +131,8 @@ def test():
     #db.batch_insert_camera("./vitess_test/camera_test_standard.csv")
 
     '''test time range query''' 
-    arg1 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': None, 'Camera_ID': None, 'date': None, 'start_time': '13:00:00', 'end_time': '14:00:00', 'download': None}
-    db.get_image(arg1)
+    #arg1 = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': None, 'Camera_ID': None, 'date': None, 'start_time': '13:00:00', 'end_time': '14:00:00', 'download': None}
+    #db.get_image(arg1)
 
     ''' test time range and date query '''
     #arg2 = {'latitude': 72.06, 'longitude': None, 'city': None, 'state': 'NY', 'country': None, 'Camera_ID': None, 'date': '02/01/2019', 'start_time': '20:00:00', 'end_time': '18:00:00', 'download': None,'feature':None}
