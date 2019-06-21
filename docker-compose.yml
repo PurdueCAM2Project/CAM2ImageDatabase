@@ -1,17 +1,21 @@
 version: '2'
 
 services:
+  imagedb:
+    build: .
+    container_name: imagedb
+    restart: always
 
-  minio1:
-    image: minio/minio:RELEASE.2019-05-23T00-29-34Z
+  minio:
+    image: minio/minio:latest
     volumes:
-    - data1:/data
+    - data:/data
     ports:
     - "9001:9000"
     environment:
      MINIO_ACCESS_KEY: minio
      MINIO_SECRET_KEY: minio123
-    command: server http://minio1/data
+    command: "server minio/data"
 
 ############################### vitese below
   consul1:
@@ -61,8 +65,7 @@ services:
         -logtostderr=true \
         -port $WEB_PORT \
         -grpc_port $GRPC_PORT \
-        -pid_file $$VTDATAROOT/tmp/vtctld.pid
-        "]
+        -pid_file $$VTDATAROOT/tmp/vtctld.pid"]
     depends_on:
       - consul1
       - consul2
@@ -86,8 +89,7 @@ services:
         -tablet_types_to_wait MASTER,REPLICA \
         -gateway_implementation discoverygateway \
         -service_map 'grpc-vtgateservice' \
-        -pid_file $$VTDATAROOT/tmp/vtgate.pid \
-        "]
+        -pid_file $$VTDATAROOT/tmp/vtgate.pid"]
     depends_on:
       - vtctld
 
@@ -142,19 +144,6 @@ services:
     command: ["sh", "-c", "/script/vttablet-up.sh 3"]
     depends_on:
       - vtctld
-  tests:
-    build: .
-    container_name: tests
-    restart: always
-    depends_on:
-      - consul1
-      - consul2
-      - consul3
-      - minio1
-      - vtctld
-      - vtgate
-      - vttablet1
-      - vttablet2
-      - vttablet3
+
 volumes:
-  data1:
+  data:
