@@ -56,11 +56,12 @@ class MinioConn:
         # Extract from Data Frame
         file_names = df.File_Names.tolist()
         bucket_name = df.Bucket_Name.tolist()
+        bucket_link = df.Bucket_Link.tolist()
 
         # Check if two lists are valid before proceeding
         for i in range(file_names.__len__()):
-            if isinstance(file_names[i], str) is False or isinstance(bucket_name[i], str) is False or \
-                    file_names[i] == "" or bucket_name[i] == "":
+            if isinstance(file_names[i], str) is False or isinstance(bucket_name[i], str) is False or  isinstance(bucket_link[i], str) is False or \
+                    file_names[i] == "" or bucket_name[i] == "" or bucket_link[i] == "":
                 print("Please Fix CSV Before Proceeding")
                 sys.exit()
 
@@ -70,7 +71,7 @@ class MinioConn:
         # Get a full object and prints the original object stat information.
         try:
             for i in range(file_names.__len__()):
-                mc.fget_object('testhahaha3', file_names[i], './' + folder_name + '/' + file_names[i])
+                mc.fget_object(bucket_name[i], file_names[i], './' + folder_name + '/' + file_names[i])
         except ResponseError as err:
             print(err)
 
@@ -93,11 +94,12 @@ class MinioConn:
         # Extract from Data Frame
         file_names = df.File_Names.tolist()
         bucket_name = df.Bucket_Name.tolist()
+        bucket_link = df.Bucket_Link
 
         # Check if two lists are valid before proceeding
         for i in range(file_names.__len__()):
             if isinstance(file_names[i], str) is False or isinstance(bucket_name[i], str) is False or \
-                    file_names[i] == "" or bucket_name[i] == "":
+                    file_names[i] == "" or bucket_name[i] == "" or bucket_link[i] == "":
                 print("Please Fix CSV Before Proceeding")
                 sys.exit()
 
@@ -107,7 +109,7 @@ class MinioConn:
         # Get a full object and prints the original object stat information.
         try:
             for i in range(file_names.__len__()):
-                mc.fget_object('car', file_names[i], './' + folder_name + '/' + file_names[i])
+                mc.fget_object(bucket_name[i], file_names[i], './' + folder_name + '/' + file_names[i])
         except ResponseError as err:
            
             print(err)

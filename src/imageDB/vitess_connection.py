@@ -276,7 +276,7 @@ class VitessConn:
 	'''this function takes a dictionary of arguments and queries the Vitess database, returns 0 if no results are found, -1 if
 	there was an error in the query response and the results if matches were found. '''
 	def getImage(self,arguments):
-		query = "SELECT CAMERA.CAMERA_ID, IMAGE_VIDEO.IV_ID, IMAGE_VIDEO.IV_date, IMAGE_VIDEO.IV_time, IMAGE_VIDEO.Minio_link FROM IMAGE_VIDEO INNER JOIN CAMERA ON IMAGE_VIDEO.Camera_ID = CAMERA.Camera_ID WHERE "
+		query = "SELECT CAMERA.CAMERA_ID, IMAGE_VIDEO.IV_ID, IMAGE_VIDEO.IV_date, IMAGE_VIDEO.IV_time, IMAGE_VIDEO.Minio_link, IMAGE_VIDEO.Dataset FROM IMAGE_VIDEO INNER JOIN CAMERA ON IMAGE_VIDEO.Camera_ID = CAMERA.Camera_ID WHERE "
 		image_arguments = ["date","start_time","end_time"]
 		camera_arguments = ["latitude","longitude","city","state","country","Camera_ID"]
 		feature_parameters = arguments["feature"]
@@ -307,7 +307,7 @@ class VitessConn:
 		if feature_parameters is None:
 			fquery = query + ";"
 		else:
-			fquery = "SELECT aTable.Camera_ID, aTable.IV_ID, aTable.IV_date, aTable.IV_time, aTable.Minio_link FROM (SELECT RELATION.IV_ID FROM RELATION left join FEATURE on RELATION.Feature_ID = FEATURE.Feature_ID WHERE Feature_Name IN " + features
+			fquery = "SELECT aTable.Camera_ID, aTable.IV_ID, aTable.IV_date, aTable.IV_time, aTable.Minio_link, aTable.Dataset FROM (SELECT RELATION.IV_ID FROM RELATION left join FEATURE on RELATION.Feature_ID = FEATURE.Feature_ID WHERE Feature_Name IN " + features
 			fquery += ") AS bTable INNER JOIN (" + query + ") AS aTable ON aTable.IV_ID = bTable.IV_ID;"
 		result = ""
 		try:

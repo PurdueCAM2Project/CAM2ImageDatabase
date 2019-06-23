@@ -313,7 +313,7 @@ class ImageDB:
 				bucket_name = 'none'
 
 			minio_link = self.minio.endpoint + "/" + bucket_name + "/" + image_id
-			dataset = ""
+			dataset = bucket_name
 
 			image = [image_id, name, cam_ID, image_date, image_time, image_type, image_size, minio_link, dataset,
 					 isprocessed]
@@ -508,13 +508,16 @@ class ImageDB:
 				'''
 				if arguments['download'] is not None:
 					data_dict = {}
-					file_names= []
+					file_names = []
 					bucket_names = []
+					bucket_link = []
 					for row in result:
 						file_names.append(row[0])
-						bucket_names.append(row[4])
+						bucket_names.append(row[5])
+						bucket_link.append(row[4])
 					data_dict["File_Names"] = file_names
 					data_dict["Bucket_Name"] = bucket_names
+					data_dict["Bucket_Link"] = bucket_link
 					df = pd.DataFrame(data_dict)
 					self.minio.batch_download(self.minio.mc, df)
 
@@ -560,7 +563,7 @@ class ImageDB:
 							if i == 0 or len(frames_list) == 0:
 								frames_list.append(sameID_list[i])
 							else:
-								if len(frames_list) > 100:
+								if len(frames_list) > 20:
 									video_list.append(frames_list)
 									frames_list = []
 
@@ -580,13 +583,16 @@ class ImageDB:
 					for i in range(len(video_list)):
 						frames_list = video_list[i]
 						data_dict = {}
-						file_names= []
+						file_names = []
 						bucket_names = []
+						bucket_link = []
 						for row in frames_list:
 							file_names.append(row[1])
-							bucket_names.append(row[4])
+							bucket_names.append(row[5])
+							bucket_link.append(row[4])
 						data_dict["File_Names"] = file_names
 						data_dict["Bucket_Name"] = bucket_names
+						data_dict["Bucket_Link"] = bucket_link
 						df = pd.DataFrame(data_dict)
 						self.minio.batch_video_download(self.minio.mc, df)
 						print("download complete")
