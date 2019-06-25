@@ -58,6 +58,9 @@ import config
 from vitess_connection import VitessConn
 from minio_connection import MinioConn
 
+# Time Measurements
+from time_measurements import TimeMeasurements
+
 import detection.utils as utils
 import detection.config as cfg
 
@@ -71,6 +74,7 @@ class ImageDB:
 		# connect to Vitess-MySql and Minio
 		self.vitess = VitessConn()
 		self.minio = MinioConn()
+		self.time_measure = TimeMeasurements()
 		# self.minio = self.minio_conf.connect_to_minio_server(endpoint, access_key, secret_key)
 
 	def init_tables(self):
@@ -269,6 +273,7 @@ class ImageDB:
 
 	# this function should read one image and corresponding bounding box
 	def insert_image(self, folder_path, image_name, cam_ID, isprocessed, bounding_box):
+            # Variables for recording time taken to insert images
 		try:
 			# generate the image metadata for image_table
 			image_id = str(uuid.uuid1())
@@ -317,29 +322,36 @@ class ImageDB:
 
 			image = [image_id, name, cam_ID, image_date, image_time, image_type, image_size, minio_link, dataset,
 					 isprocessed]
+			insert_start = time.time()
 			self.vitess.insertImage(tuple(image))
+			insert_time = insert_start - time.time()
+			self.time_measure.WriteUploadTimes(insert_time)
 
 			# Image is inserted after all database interaction as there is no rollback supported by minio.
 			# We thus make sure that we only insert image when information is written to database.
 			# If error occurs while inserting the image, we only need to rollback database operations
 
 			# create the bucket if not existed
+			'''
 			if self.minio.mc.bucket_exists(bucket_name) is False:
 				self.minio.create_bucket(bucket_name)
 			# upload image to bucket
 			self.minio.upload_single_file(bucket_name, image_id, path)
 			self.vitess.mydb.commit()
 			#print('Image_Video metadata updated')
-
+			'''
 		except mysql.connector.Error as e:
+			self.time_measure.CloseWriters()
 			print('Error inserting image information: ' + str(e))
 			self.vitess.mydb.rollback()
 			sys.exit()
 		except ResponseError as e1:
+			self.time_measure.CloseWriters()
 			print('Error uploading image: ' + str(e))
 			self.vitess.mydb.rollback()
 			sys.exit()
 		except Exception as e2:
+			self.time_measure.CloseWriters()
 			print(e2)
 			sys.exit()
 

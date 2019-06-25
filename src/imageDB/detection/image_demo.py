@@ -4,6 +4,7 @@ import detection.utils as utils
 import tensorflow as tf
 from PIL import Image
 import os
+from tensorflow.python.client import device_lib
 
 def getBbox(image_dir, image_name, show_plot=False):
     return_elements = ["input/input_data:0", "pred_sbbox/concat_2:0", "pred_mbbox/concat_2:0", "pred_lbbox/concat_2:0"]
@@ -20,13 +21,16 @@ def getBbox(image_dir, image_name, show_plot=False):
     image_data = image_data[np.newaxis, ...]
 
     return_tensors = utils.read_pb_return_tensors(graph, pb_file, return_elements)
-    device_name = tf.test.gpu_device_name()
+    device_name = "/gpu:1"
+
+    local_device_protos = device_lib.list_local_devices()
+    print(x.name for x in local_device_protos if x.device_type == 'GPU')
     '''
-    if device_name != 'device:gpu:0':
+    if device_name != 'device:gpu:1':
         raise SystemError('GPU device not found')
     print('Found GPU at: {}'.format(device_name))
     '''
-    with tf.device('/gpu:0'):
+    with tf.device('/gpu:1'):
         with tf.Session(graph=graph) as sess:
             #devices = sess.list_devices()
             #print(devices)
