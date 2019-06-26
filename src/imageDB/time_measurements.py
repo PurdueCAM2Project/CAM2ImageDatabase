@@ -2,28 +2,28 @@ import csv
 
 class TimeMeasurements(object):
     def __init__(self):
-        with open('image_uploading_times.csv', 'w', newline='') as file1:
-            upload_writer = csv.writer(file1)
-            upload_writer.writerow(['Image Uploaded Number', 'Time to Upload Image'])
-
-        self.upload_time = file1
-        self.image_upload_count = 0
-
+        """ Initialize files """
+        # uif = upload image file
+        with open('image_upload_times.csv', 'w', newline='') as file1:
+            ui_writer = csv.writer(file1)
+            ui_writer.writerow(['Camera Upload Times'])
+        self.uif = file1
+        # vq = video query file
         with open('video_query_times.csv', 'w', newline='') as file2:
             vq_writer = csv.writer(file2)
-            vq_writer.writerow(['Video Number', 'Time to Query Video'])
+            vq_writer.writerow(['Video Query Times'])
+        self.vqf = file2
 
-        self.vq_time = vq_writer
-        self.vq_count = 0
+    def WriteUploadTimes(self, ui_times=[]):
+        """ Write list of times to output file 'image_upload_times.csv' """
+        for i in ui_times:
+            self.uif.writerow(i)
+        self.uif.close()
 
-    def WriteUploadTimes(time, self):
-        self.image_upload_count = self.image_upload_count + 1
-        self.upload_time.writerow([self.image_upload_count, time])
+    def WriteVideoQueryTimes(self, vq_times=[]):
+        """ Write list of times to output file 'video_query_times.csv' """
+        for i in vq_times:
+            self.vqf.writerow(i)
+        self.vqf.close()
 
-    def WriteVideoQueryTimes(time, self):
-        self.vq_count = self.vq_count + 1
-        self.vq_time.writerow([self.vq_count, time])
 
-    def CloseWriters(self):
-        print('<=================================================================>')
-        #self.upload_time.close()

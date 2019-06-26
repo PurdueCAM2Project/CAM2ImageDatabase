@@ -75,10 +75,10 @@ class ImageDB:
 		self.vitess = VitessConn()
 		self.minio = MinioConn()
 		self.time_measure = TimeMeasurements()
-		# self.minio = self.minio_conf.connect_to_minio_server(endpoint, access_key, secret_key)
 
 	def init_tables(self):
 		# drop if needed
+
 		self.vitess.dropCameraTable()
 		self.vitess.dropImageTable()
 		self.vitess.dropFeatureTable()
@@ -322,10 +322,7 @@ class ImageDB:
 
 			image = [image_id, name, cam_ID, image_date, image_time, image_type, image_size, minio_link, dataset,
 					 isprocessed]
-			insert_start = time.time()
 			self.vitess.insertImage(tuple(image))
-			insert_time = insert_start - time.time()
-			self.time_measure.WriteUploadTimes(insert_time)
 
 			# Image is inserted after all database interaction as there is no rollback supported by minio.
 			# We thus make sure that we only insert image when information is written to database.
@@ -338,20 +335,16 @@ class ImageDB:
 			# upload image to bucket
 			self.minio.upload_single_file(bucket_name, image_id, path)
 			self.vitess.mydb.commit()
-			#print('Image_Video metadata updated')
 			'''
 		except mysql.connector.Error as e:
-			self.time_measure.CloseWriters()
 			print('Error inserting image information: ' + str(e))
 			self.vitess.mydb.rollback()
 			sys.exit()
 		except ResponseError as e1:
-			self.time_measure.CloseWriters()
 			print('Error uploading image: ' + str(e))
 			self.vitess.mydb.rollback()
 			sys.exit()
 		except Exception as e2:
-			self.time_measure.CloseWriters()
 			print(e2)
 			sys.exit()
 
@@ -495,7 +488,6 @@ class ImageDB:
 
 		return camera_data
 
-
 	'''This fucntion takes a dictionary of arguments from the CLI and performs the following tasks - 1. Retreieved Image ID's from
 	the Vitess database that match the query parameters. 2. Stores a csv file of all the results. 3. Calls the minio docwnload
 	function to download the images if the download flag was specified.'''
@@ -503,21 +495,21 @@ class ImageDB:
 		try:
 			if arguments != None:
 				result = self.vitess.getImage(arguments)
-
-				'''
 				if result == 0:
 					print("No files match your query. Please try again.")
-				elif result == -1 :
+				elif result == -1:
 					print("Please pass valid arguments.")
 				else:
+					'''
 					fp = open('query_result.csv', 'w')
 					outputFile = csv.writer(fp, lineterminator='\n')
-					outputFile.writerow(["IV_ID", "IV_Name", "Image_Camera_ID","IV_date","IV_time","File_type","File_size","Minio_link","Dataset"
-							,"Is_processed","Camera_ID","Country","State","City","Latitude","Longitude","Resolution_w","Resolution_h"])
+					outputFile.writerow(["IV_ID", "IV_Name", "Image_Camera_ID", "IV_date", "IV_time", "File_type", "File_size", "Minio_link", "Dataset", 
+										"Is_processed", "Camera_ID", "Country", "State", "City", "Latitude", "Longitude", "Resolution_w", "Resolution_h"])
 					outputFile.writerows(result)
 					fp.close()
-					print("Results were found and successfully stored in the CSV file.")
-				'''
+					'''
+					print("Results were found.")
+
 				if arguments['download'] is not None:
 					data_dict = {}
 					file_names = []
@@ -538,7 +530,7 @@ class ImageDB:
 			print('Error retreiving image information: ' + str(e))
 			sys.exit()
 		except ResponseError as e1:
-			print('Error downloading image: ' + str(e))
+			print('Error downloading image: ' + str(e1))
 			sys.exit()
 		except Exception as e2:
 			print(e2)
@@ -560,38 +552,38 @@ class ImageDB:
 					sorted_list = df_results.groupby([0])
 
 					video_list = []
-					#Gap between frames. Depends on fps thereshold
+					#Gap between frames. Depends on fps threshold
 					fps = 10.0
 					frame_gap = 100#1.0 / fps
-					video_length = 60 # default to be 60 sec
+					video_length = 2 # default to be 60 sec
 
 					for cam in unique_camID:
 						#sort[2,3] sorts by IV_date and IV_time
 						sameID_list = sorted_list.get_group(cam).sort_values(by=[2,3]).values.tolist()
-						j = 0
+
 						frames_list = [] #emptying list
 						for i in range(len(sameID_list)):
 							#first image in frame list requires no check
 							if i == 0 or len(frames_list) == 0:
 								frames_list.append(sameID_list[i])
 							else:
-								if len(frames_list) > 20:
+								if len(frames_list) > fps * video_length:
 									video_list.append(frames_list)
 									frames_list = []
 
 								d1 = datetime.strptime(str(sameID_list[i-1][2]) + str(sameID_list[i-1][3])[6:], '%Y-%m-%d %H:%M:%S')
 								d2 = datetime.strptime(str(sameID_list[i][2]) + str(sameID_list[i][3])[6:], '%Y-%m-%d %H:%M:%S')
 								time_gap =(d2 - d1).total_seconds()
-								#continue or break frames_list depending on time_gap
+								# continue or break frames_list depending on time_gap
 								if time_gap > frame_gap:
-									#if condition is experitmental. Not sure details about thereshold and implementation
-									#thereshold len set to min 10fps for 10sec => 100 images
+									# if condition is experimental. Not sure details about threshold and implementation
+									# threshold len set to min 10fps for 10sec => 100 images
 									if len(frames_list) >= 10:
 										video_list.append(frames_list)
 									frames_list = []
 								else:
 									frames_list.append(sameID_list[i])
-					#print(video_list)
+
 					for i in range(len(video_list)):
 						frames_list = video_list[i]
 						data_dict = {}
@@ -643,8 +635,27 @@ class ImageDB:
 			print('Error retreiving image information: ' + str(e))
 			sys.exit()
 		except ResponseError as e1:
-			print('Error downloading image: ' + str(e))
+			print('Error downloading image: ' + str(e1))
 			sys.exit()
 		except Exception as e2:
 			print(e2)
 			sys.exit()
+
+	def get_all(self):
+		try:
+			results = self.vitess.getAll()
+			data_dict={}
+			file_names = []
+			bucket_names = []
+			bucket_link = []
+
+			for row in results:
+				file_names.append(row[0])
+				bucket_names.append(row[5])
+				bucket_link.append(row[4])
+
+			data_dict["File_Names"] = file_names
+			data_dict["Bucket_Name"] = bucket_names
+			data_dict["Bucket_Link"] = bucket_link
+			df = pd.DataFrame(data_dict)
+			self.minio.batch_download(self.minio.mc, df)

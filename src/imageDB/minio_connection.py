@@ -103,9 +103,6 @@ class MinioConn:
                 print("Please Fix CSV Before Proceeding")
                 sys.exit()
 
-        # Make a folder named with timestamp
-        #MinioConn.mkdir_cmd(self, folder_name)
-
         # Get a full object and prints the original object stat information.
         try:
             for i in range(file_names.__len__()):

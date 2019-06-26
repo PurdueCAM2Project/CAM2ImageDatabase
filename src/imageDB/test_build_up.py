@@ -6,11 +6,11 @@ def build_up_test():
     db = ImageDB()
     db.init_tables()
 
-    # Insert info and keep updating the camera table every 1 month
-    example = Routine()
-    example.updateCameraTable()
+    # Insert info for the camera table
+    db.single_insert_camera('camera_list.csv')
     
     # Keep retrieving images from camera
+    example = Routine()
     example.retrieveImage(0.2, 10)
 
 

@@ -8,27 +8,16 @@ from imageDB import ImageDB
 from camera import Camera, Ip_Camera, Non_Ip_Camera, Stream
 from check_active import *
 import detection.image_demo as detection
+from time_measurements import TimeMeasurements
 
 
 class Routine:
     def __init__(self):
         self.db = ImageDB()
-
-    # Read cameras from CAM2DB every month
-    def updateCameraTable(self):
-        '''try:
-            cron = CronTab()
-            job = cron.new(command='python updateCameraTable.py')
-            job.every(1).month  # can change according to requirement (hours, week, month, etc.)
-            cron.write('cronjob.tab')
-        except:
-            print('Error updating camera table')
-            sys.exit()'''
-        self.db.single_insert_camera('camera_list.csv')
-        
+        self.tm = TimeMeasurements()
         
     # Retrieve image from camera every second
-    def retrieveImage(self, threshold, max_fps):
+    def retrieveImage(self, threshold, max_fps, store_interval):
         # Set up cameras
         cam_data = self.db.get_all_cameras()
         cam_list = []
@@ -41,59 +30,53 @@ class Routine:
                 cam = Stream(camera_id=data[0], camera_type=data[1], m3u8_url=data[2])
             cam_list.append(cam)
         
-        
-        while (True):
-            #bucket_name = 'testhahaha5'
+        # TODO: Check if output_images folder exists
+        ui_time = 0
+        ui_time_list = []
+        loop_start_time = time.time()
+        while (time.time() - loop_start_time < 120):
             folder_path = 'output_images/'
             for cam in cam_list:
-                ts = datetime.datetime.now()
-                image_name = cam.camera_id + "_" + ts.strftime("%Y-%m-%d") + "_" + ts.strftime("%H:%M:%S") + ".jpg"
-
-                # check whether reach the retrieve interval
-                #if time.time() - cam.last_ret_check >= cam.ret_interval:
-                    #cam = check_active(cam, max_fps)
-                    # check whether the camera is active
-                    # TODO: when stream type of camera working, add on is_active_video
-                    #if cam.is_active_image:
-                        
-                        # check the difference between the current image and the previous image
                 try:
+                    ui_time = time.time()
+                    ts = datetime.datetime.now()
                     cam.get_image()
+                    image_name = cam.camera_id + "_" + ts.strftime("%Y-%m-%d") + "_" + ts.strftime("%H:%M:%S") + ".jpg"
                     difference = np.count_nonzero(np.absolute(cam.oldImage - cam.newImage)) / cam.image_size
-                    if difference > threshold:
-                        cam.oldImage = cam.newImage
-                        cam.last_dif_check = time.time()
-                        cam.store_interval = 0.1
-                        cv2.imwrite(folder_path + image_name, cam.newImage)
 
-                        isprocessed = 0
+                    if difference > threshold:
+                        cam.last_dif_check = time.time()
+                        cam.oldImage = cam.newImage
+                        cam.store_interval = store_interval
+                        cv2.imwrite(folder_path + image_name, cam.newImage)
 
                         # object detection
                         bounding_box = detection.getBbox(folder_path, image_name)
 
-                        # If there's no error raised from object detection    
-                        if True:
-                            isprocessed = 1
+                        # If there's no error raised from object detection
+                        isprocessed = 1
+
 
                         # store into database
                         self.db.insert_image(folder_path, image_name, cam.camera_id, isprocessed, bounding_box)
+                        ui_time = time.time() - ui_time
+                        ui_time_list.append(ui_time)
 
                     elif time.time() - cam.last_dif_check >= cam.store_interval:
-                        cam.oldImage = cam.newImage
                         cam.last_dif_check = time.time()
+                        cam.oldImage = cam.newImage
                         cv2.imwrite(folder_path + image_name, cam.newImage)
-
-                        isprocessed = 0
 
                         # object detection
                         bounding_box = detection.getBbox(folder_path, image_name)
 
-                        # If there's no error raised from object detection    
-                        if True:
-                            isprocessed = 1
+                        # If there's no error raised from object detection
+                        isprocessed = 1
 
                         # Store into database
                         self.db.insert_image(folder_path, image_name, cam.camera_id, isprocessed, bounding_box)
+                        ui_time = time.time() - ui_time
+                        ui_time_list.append(ui_time)
 
                         if difference < threshold/2:
                             cam.store_interval *= 2
@@ -107,7 +90,4 @@ class Routine:
                     print(e)
                     pass
 
-            # sleep for 0.1 sec for every round
-            time.sleep(0.1)
-
-
+        self.tm.WriteUploadTimes(ui_time_list)

@@ -78,11 +78,11 @@ class VitessConn:
 
 		except:
 			# create table
-			self.mycursor.execute('CREATE TABLE CAMERA(Camera_ID VARCHAR(40), type VARCHAR(10),\
+			self.mycursor.execute('CREATE TABLE CAMERA(Camera_ID VARCHAR(25), type VARCHAR(6),\
 									Country VARCHAR(30), State VARCHAR(30), City VARCHAR(30), \
 									Latitude VARCHAR(15), Longitude VARCHAR(15), \
-									Resolution_w VARCHAR(15), Resolution_h VARCHAR(15), \
-									Ip VARCHAR(15), Port VARCHAR(15), Image_path VARCHAR(100), Video_path VARCHAR(100), \
+									Resolution_w VARCHAR(5), Resolution_h VARCHAR(5), \
+									Ip VARCHAR(15), Port VARCHAR(5), Image_path VARCHAR(100), Video_path VARCHAR(100), \
 									Snapshot_url VARCHAR(300), m3u8_url VARCHAR(50),\
 									PRIMARY KEY (Camera_ID))')
 			print('CAMERA table created.')
@@ -95,10 +95,10 @@ class VitessConn:
 			print('IMAGE_VIDEO table exist')
 		except:
 			## create table
-			self.mycursor.execute('CREATE TABLE IMAGE_VIDEO(IV_ID VARCHAR(50) NOT NULL, IV_Name VARCHAR(500) NOT NULL, Camera_ID VARCHAR(40) NOT NULL, \
+			self.mycursor.execute('CREATE TABLE IMAGE_VIDEO(IV_ID VARCHAR(36) NOT NULL, IV_Name VARCHAR(50) NOT NULL, Camera_ID VARCHAR(25) NOT NULL, \
 									IV_date DATE NOT NULL, IV_time TIME NOT NULL, \
-									File_type VARCHAR(10) NOT NULL, File_size VARCHAR(10) NOT NULL, \
-									Minio_link VARCHAR(500) NOT NULL, Dataset VARCHAR(500) NOT NULL, Is_processed INT NOT NULL, \
+									File_type VARCHAR(5) NOT NULL, File_size VARCHAR(10) NOT NULL, \
+									Minio_link VARCHAR(100) NOT NULL, Dataset VARCHAR(10) NOT NULL, Is_processed INT NOT NULL, \
 									PRIMARY KEY (IV_ID))')
 
 			print('IMAGE_VIDEO table created.')
@@ -112,7 +112,7 @@ class VitessConn:
 
 		except:
 			## create table
-			self.mycursor.execute('CREATE TABLE FEATURE(Feature_ID VARCHAR(50) NOT NULL, Feature_Name VARCHAR(100) NOT NULL, \
+			self.mycursor.execute('CREATE TABLE FEATURE(Feature_ID VARCHAR(36) NOT NULL, Feature_Name VARCHAR(10) NOT NULL, \
 			PRIMARY KEY (Feature_ID))')
 			print('FEATURE table created.')
 
@@ -124,7 +124,7 @@ class VitessConn:
 
 		except:
 			## create table
-			self.mycursor.execute('CREATE TABLE RELATION(Feature_ID VARCHAR(50) NOT NULL, IV_ID VARCHAR(50) NOT NULL, Feature_Num INT, \
+			self.mycursor.execute('CREATE TABLE RELATION(Feature_ID VARCHAR(36) NOT NULL, IV_ID VARCHAR(36) NOT NULL, Feature_Num INT, \
 			PRIMARY KEY (Feature_ID, IV_ID))')
 			print('RELATION table created.')
 
@@ -138,7 +138,7 @@ class VitessConn:
 			print('BOUND_BOX table exist.')
 		except:
 			## create table
-			self.mycursor.execute('CREATE TABLE BOUND_BOX(IV_ID VARCHAR(50), Feature_ID VARCHAR(50), Confidence VARCHAR(20), Xmin VARCHAR(20), Xmax VARCHAR(20), Ymin VARCHAR(20), Ymax VARCHAR(20), PRIMARY KEY(IV_ID, Feature_ID, Xmin, Xmax, Ymin, Ymax))')
+			self.mycursor.execute('CREATE TABLE BOUND_BOX(IV_ID VARCHAR(36), Feature_ID VARCHAR(36), Confidence VARCHAR(5), Xmin VARCHAR(10), Xmax VARCHAR(10), Ymin VARCHAR(10), Ymax VARCHAR(10), PRIMARY KEY(IV_ID, Feature_ID, Xmin, Xmax, Ymin, Ymax))')
 			print('BOUND_BOX table created.')
 
 	def insertCamera(self, camera):
@@ -267,14 +267,9 @@ class VitessConn:
 		cam_data.extend(self.mycursor.fetchall())
 
 		return cam_data
-		'''
-		except:
-			print("There was an error in the camera query response")
-			return -1
-		'''
 
-	'''this function takes a dictionary of arguments and queries the Vitess database, returns 0 if no results are found, -1 if
-	there was an error in the query response and the results if matches were found. '''
+	'''this function takes a dictionary of arguments and queries the Vitess database, returns 0 if no results are found,
+	-1 if there was an error in the query response and the results if matches were found.'''
 	def getImage(self,arguments):
 		query = "SELECT CAMERA.CAMERA_ID, IMAGE_VIDEO.IV_ID, IMAGE_VIDEO.IV_date, IMAGE_VIDEO.IV_time, IMAGE_VIDEO.Minio_link, IMAGE_VIDEO.Dataset FROM IMAGE_VIDEO INNER JOIN CAMERA ON IMAGE_VIDEO.Camera_ID = CAMERA.Camera_ID WHERE "
 		image_arguments = ["date","start_time","end_time"]
@@ -311,7 +306,7 @@ class VitessConn:
 			fquery += ") AS bTable INNER JOIN (" + query + ") AS aTable ON aTable.IV_ID = bTable.IV_ID;"
 		result = ""
 		try:
-			print(fquery)
+			#print(fquery)
 			self.mycursor.execute(fquery)
 			result = self.mycursor.fetchall()
 			if self.mycursor.rowcount == 0:
@@ -322,3 +317,13 @@ class VitessConn:
 		except:
 			print("There was an error in the image query response")
 			return -1
+
+	def getAll(self):
+		query = "SELECT Camera_ID, IV_ID, IV_date, IV_time, Minio_link, Dataset FROM IMAGE_VIDEO"
+
+		self.mycursor.excute(query)
+		results = self.mycursor.fetchall()
+		if self.mycursor.rowcount == 0:
+			return 0
+		else:
+			return results
