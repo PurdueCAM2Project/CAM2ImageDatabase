@@ -1,22 +1,24 @@
-#! /usr/bin/env python
-# coding=utf-8
-#================================================================
-#   Copyright (C) 2019 * Ltd. All rights reserved.
-#
-#   Editor      : VIM
-#   File name   : utils.py
-#   Author      : YunYang1994
-#   Created date: 2019-02-28 13:14:19
-#   Description :
-#
-#================================================================
-
 import cv2
 import random
 import colorsys
 import numpy as np
+import numba
 import tensorflow as tf
 from detection.config import cfg
+import time
+
+
+def write_to_file(bboxes, image_name, classes):
+    with open('detection/detected/' + image_name + '.txt', 'w'):
+        for bblist in bboxes:
+            f.write('%s ', classes[bboxes[5]])
+            f.write('%s ', str(bboxes[4]))
+            f.write('%s ', str(bboxes[0]))
+            f.write('%s ', str(bboxes[3]))
+            f.write('%s ', str(bboxes[2]))
+            f.write('%s\n', str(bboxes[1]))
+
+
 
 def read_class_names(class_file_name):
     '''loads class name from a file'''
@@ -33,7 +35,6 @@ def get_anchors(anchors_path):
         anchors = f.readline()
     anchors = np.array(anchors.split(','), dtype=np.float32)
     return anchors.reshape(3, 3, 2)
-
 
 def image_preprocess(image, target_size, gt_boxes=None):
 
@@ -95,10 +96,7 @@ def draw_bbox(image, bboxes, classes=read_class_names(cfg.YOLO.CLASSES), show_la
 
     return image
 
-
-
 def bboxes_iou(boxes1, boxes2):
-
     boxes1 = np.array(boxes1)
     boxes2 = np.array(boxes2)
 
@@ -163,7 +161,6 @@ def nms(bboxes, iou_threshold, sigma=0.3, method='nms'):
             cls_bboxes[:, 4] = cls_bboxes[:, 4] * weight
             score_mask = cls_bboxes[:, 4] > 0.
             cls_bboxes = cls_bboxes[score_mask]
-
     return best_bboxes
 
 

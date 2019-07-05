@@ -78,12 +78,11 @@ class VitessConn:
 
 		except:
 			# create table
-			self.mycursor.execute('CREATE TABLE CAMERA(Camera_ID VARCHAR(25), type VARCHAR(6),\
+			self.mycursor.execute('CREATE TABLE CAMERA(Camera_ID VARCHAR(25),\
 									Country VARCHAR(30), State VARCHAR(30), City VARCHAR(30), \
 									Latitude VARCHAR(15), Longitude VARCHAR(15), \
 									Resolution_w VARCHAR(5), Resolution_h VARCHAR(5), \
 									Ip VARCHAR(15), Port VARCHAR(5), Image_path VARCHAR(100), Video_path VARCHAR(100), \
-									Snapshot_url VARCHAR(300), m3u8_url VARCHAR(50),\
 									PRIMARY KEY (Camera_ID))')
 			print('CAMERA table created.')
 
@@ -138,35 +137,33 @@ class VitessConn:
 			print('BOUND_BOX table exist.')
 		except:
 			## create table
-			self.mycursor.execute('CREATE TABLE BOUND_BOX(IV_ID VARCHAR(36), Feature_ID VARCHAR(36), Confidence VARCHAR(5), Xmin VARCHAR(10), Xmax VARCHAR(10), Ymin VARCHAR(10), Ymax VARCHAR(10), PRIMARY KEY(IV_ID, Feature_ID, Xmin, Xmax, Ymin, Ymax))')
+			self.mycursor.execute('CREATE TABLE BOUND_BOX(IV_ID VARCHAR(36), Feature_ID VARCHAR(36), Confidence VARCHAR(30), Xmin VARCHAR(30), Xmax VARCHAR(30), Ymin VARCHAR(30), Ymax VARCHAR(30), PRIMARY KEY(IV_ID, Feature_ID, Xmin, Xmax, Ymin, Ymax))')
 			print('BOUND_BOX table created.')
 
 	def insertCamera(self, camera):
 
-		sql = 'INSERT INTO CAMERA(Camera_ID, type, Country, State, City, Latitude, Longitude, Resolution_w, Resolution_h, \
-				Ip, Port, Image_path, Video_path, Snapshot_url, m3u8_url) \
-				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
+		sql = 'INSERT INTO CAMERA(Camera_ID, Country, State, City, Latitude, Longitude, Resolution_w, Resolution_h, \
+				Ip, Port, Image_path, Video_path) \
+				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
 				ON DUPLICATE KEY UPDATE \
-				Camera_ID=VALUES(Camera_ID), type = VALUES(type), Country=VALUES(Country), State=VALUES(State), \
+				Camera_ID=VALUES(Camera_ID), Country=VALUES(Country), State=VALUES(State), \
 				City=VALUES(City), Latitude=VALUES(Latitude), Longitude=VALUES(Longitude), \
 				Resolution_w=VALUES(Resolution_w), Resolution_h=VALUES(Resolution_h), \
-				Ip=VALUES(Ip), Port= VALUES(Port), Image_path=VALUES(Image_path), Video_path=VALUES(Video_path), \
-				Snapshot_url=VALUES(Snapshot_url), m3u8_url=VALUES(m3u8_url)'
+				Ip=VALUES(Ip), Port= VALUES(Port), Image_path=VALUES(Image_path), Video_path=VALUES(Video_path)'
 
 		self.mycursor.execute(sql, camera)
 
 	# mannual commit after calling the method
 	def insertCameras(self, cameras):
 
-		sql = 'INSERT INTO CAMERA(Camera_ID, type, Country, State, City, Latitude, Longitude, Resolution_w, Resolution_h, \
-				Ip, Port, Image_path, Video_path, Snapshot_url, m3u8_url) \
-				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
+		sql = 'INSERT INTO CAMERA(Camera_ID, Country, State, City, Latitude, Longitude, Resolution_w, Resolution_h, \
+				Ip, Port, Image_path, Video_path) \
+				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
 				ON DUPLICATE KEY UPDATE \
-				Camera_ID=VALUES(Camera_ID), type = VALUES(type), Country=VALUES(Country), State=VALUES(State), \
+				Camera_ID=VALUES(Camera_ID), Country=VALUES(Country), State=VALUES(State), \
 				City=VALUES(City), Latitude=VALUES(Latitude), Longitude=VALUES(Longitude), \
 				Resolution_w=VALUES(Resolution_w), Resolution_h=VALUES(Resolution_h), \
-				Ip=VALUES(Ip), Port= VALUES(Port), Image_path=VALUES(Image_path), Video_path=VALUES(Video_path), \
-				Snapshot_url=VALUES(Snapshot_url), m3u8_url=VALUES(m3u8_url)'
+				Ip=VALUES(Ip), Port= VALUES(Port), Image_path=VALUES(Image_path), Video_path=VALUES(Video_path)'
 
 		self.mycursor.executemany(sql, cameras)
 
@@ -180,7 +177,7 @@ class VitessConn:
 
 		sql = 'UPDATE CAMERA SET \
 				Country=%s, State=%s, City=%s, Latitude=%s, Longitude=%s \
-				Ip=%s, Port=%s, Image_path=%s, Video_path=%s, Snapshot_url=%s, m3u8_url=%s\
+				Ip=%s, Port=%s, Image_path=%s, Video_path=%s\
 				WHERE Camera_ID=%s'
 
 		self.mycursor.executemany(sql, data)
@@ -244,7 +241,7 @@ class VitessConn:
 		self.mycursor.execute(sql,bound_boxes)
 
 
-	def getAllCameras(self):
+	def getAllCameras(self, num_of_cams):
 		'''
 		This function get all the cameras in the camera table, store in cam_data as
 
@@ -256,16 +253,8 @@ class VitessConn:
 
 		'''
 		cam_data = []
-		#try:
-		self.mycursor.execute("SELECT Camera_ID, type, Ip, Image_path, Video_path FROM CAMERA WHERE type='ip'")
+		self.mycursor.execute("SELECT Camera_ID, Ip, Image_path, Video_path FROM CAMERA LIMIT {}".format(num_of_cams))
 		cam_data.extend(self.mycursor.fetchall())
-
-		self.mycursor.execute("SELECT Camera_ID, type, Snapshot_url FROM CAMERA WHERE type='non-ip'")
-		cam_data.extend(self.mycursor.fetchall())
-
-		self.mycursor.execute("SELECT Camera_ID, type, m3u8_url FROM CAMERA WHERE type='stream'")
-		cam_data.extend(self.mycursor.fetchall())
-
 		return cam_data
 
 	'''this function takes a dictionary of arguments and queries the Vitess database, returns 0 if no results are found,
@@ -298,7 +287,7 @@ class VitessConn:
 
 		else:
 			query = query + camera_parameters + image_parameters
-		
+
 		if feature_parameters is None:
 			fquery = query + ";"
 		else:

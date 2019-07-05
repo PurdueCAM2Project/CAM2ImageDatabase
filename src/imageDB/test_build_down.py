@@ -1,4 +1,4 @@
-from routine import Routine
+from routine_no_down import Routine
 import time
 
 def build_up_test():

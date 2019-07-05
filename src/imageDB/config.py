@@ -1,7 +1,7 @@
-CAM_HEADER=["Camera_ID", "type", "Country", "State", \
+CAM_HEADER=["Camera_ID", "Country", "State", \
                 "City", "Latitude", "Longtitude", \
                 "Resolution_w", "Resolution_h", \
-				"Ip", "Port", "Image_path", "Video_path", "Snapshot_url", "m3u8_url"]
+				"Ip", "Port", "Image_path", "Video_path"]
 
 IV_HEADER=['IV_Name', 'Camera_ID', 'IV_date', 'IV_time', 'File_type', \
                 'File_size', 'Minio_link', 'Dataset', 'Is_processed']
