@@ -270,52 +270,47 @@ class ImageDB:
 
 
     # this function should read one image and corresponding bounding box
-    def insert_image(self, folder_path, image_name, cam_ID, isprocessed, bounding_box):
+    def insert_image(self, npImage, image_name, cam_ID, isprocessed, bounding_box, classes, image_date, image_time,
+                     image_size, class_dict):
         # Variables for recording time taken to insert images
         try:
             # generate the image metadata for image_table
             image_id = str(uuid.uuid1())
-            path = folder_path + image_name
-            image_date = time.strftime('%Y-%m-%d', time.localtime(os.path.getmtime(path)))
-            image_time = time.strftime('%H:%M:%S', time.localtime(os.path.getmtime(path)))
             name = os.path.splitext(image_name)[0]
             image_type = os.path.splitext(image_name)[1][1:]
-            image_size = os.stat(path).st_size
-
-            # generate the feature information for feature_table, and the bounding box information for box feature
             num_of_feature = {}
-            class_dir = "./detection/data/classes/coco.names"
-            classes = utils.read_class_names(class_dir)
+
             for box in bounding_box:
-                if box[5] == 0 or box[5] == 2:
-                    feature_name = classes[box[5]]
-                    if feature_name not in num_of_feature:
-                        num_of_feature[feature_name] = 1
-                        feature_id = self.vitess.getFeature(feature_name)
-                        if not feature_id:
-                            self.vitess.insertFeature(tuple([str(uuid.uuid1()), feature_name]))
-                    else:
-                        num_of_feature[feature_name] += 1
-                    # confidence, xmin, xmax, ymin, ymax
-                    self.vitess.insertBox(tuple([image_id, self.vitess.getFeature(feature_name), box[4], box[0], box[2], box[1], box[3]]))
+                feature_name = classes[box[5]]
+                if feature_name not in num_of_feature:
+                    num_of_feature[feature_name] = 1
+                else:
+                    num_of_feature[feature_name] += 1
+                self.vitess.insertBox(
+                    tuple([image_id, class_dict[feature_name], box[4], box[0], box[2], box[1], box[3]]))
+            # confidence, xmin, xmax, ymin, ymax
+            #self.vitess.insertBox(tuple([image_id, self.vitess.getFeature(feature_name), box[4], box[0], box[2], box[1], box[3]]))
+
+
 
             # Insert metadata into the relation table
             for key in num_of_feature:
-                self.vitess.insertImagefeatures(tuple([self.vitess.getFeature(key), image_id, num_of_feature[key]]))
+                #self.vitess.insertImagefeatures(tuple([self.vitess.getFeature(key), image_id, num_of_feature[key]]))
+                self.vitess.insertImagefeatures(tuple([class_dict[key], image_id, num_of_feature[key]]))
 
             # sort features in descending
             # most popular feature is going to being the bucket_name
             '''sorted_features = sorted(num_of_feature.items(), key=lambda item: item[1], reverse=True)
             bucket_name = sorted_features[0][0]'''
-            if('person' not in num_of_feature) and ('car' not in num_of_feature):
-                bucket_name = 'none'
-            elif ('person' not in num_of_feature) or (num_of_feature['car'] > num_of_feature['person']):
-                bucket_name = 'car'
-            elif('car' not in num_of_feature) or (num_of_feature['car'] < num_of_feature['person']):
-                bucket_name = 'person'
-            else:
-                bucket_name = 'none'
-
+            try:
+                if num_of_feature.get('car', -1) > num_of_feature.get('person', -1):
+                    bucket_name = 'car'
+                elif num_of_feature.get('car', -1) < num_of_feature.get('person', -1):
+                    bucket_name = 'person'
+                else:
+                    bucket_name = 'none'
+            except Exception as e:
+                print(e)
 
             minio_link = self.minio.endpoint + "/" + bucket_name + "/" + image_id
             dataset = bucket_name
@@ -323,32 +318,32 @@ class ImageDB:
             image = [image_id, name, cam_ID, image_date, image_time, image_type, image_size, minio_link, dataset,
                      isprocessed]
             self.vitess.insertImage(tuple(image))
-
             # Image is inserted after all database interaction as there is no rollback supported by minio.
             # We thus make sure that we only insert image when information is written to database.
             # If error occurs while inserting the image, we only need to rollback database operations
 
             # create the bucket if not existed
-            '''
             if self.minio.mc.bucket_exists(bucket_name) is False:
                 self.minio.create_bucket(bucket_name)
             # upload image to bucket
-            self.minio.upload_single_file(bucket_name, image_id, path)
-            '''
+            self.minio.upload_single_file(bucket_name, image_id, npImage)
 
             self.vitess.mydb.commit()
 
         except mysql.connector.Error as e:
             print('Error inserting image information: ' + str(e))
             self.vitess.mydb.rollback()
-            sys.exit()
+            #sys.exit()
+            pass
         except ResponseError as e1:
             print('Error uploading image: ' + str(e1))
             self.vitess.mydb.rollback()
-            sys.exit()
+            #sys.exit()
+            pass
         except Exception as e2:
             print(e2)
-            sys.exit()
+            #sys.exit()
+            pass
 
 
 

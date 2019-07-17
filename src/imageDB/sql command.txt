@@ -1,5 +1,0 @@
-select aTable.Camera_ID, aTable.IV_ID, aTable.IV_date, aTable.IV_time, aTable.Minio_link from (select RELATION.IV_ID from RELATION inner join FEATURE on RELATION.Feature_ID = FEATURE.Feature_ID) as bTable inner join (select CAMERA.CAMERA_ID, IMAGE_VIDEO.IV_ID, IMAGE_VIDEO.IV_date, IMAGE_VIDEO.IV_time, IMAGE_VIDEO.Minio_link from IMAGE_VIDEO inner join CAMERA on IMAGE_VIDEO.Camera_ID = CAMERA.Camera_ID) as aTable on aTable.IV_ID = bTable.IV_ID;
-
-docker run -p 9000:9000 --name minio1 \-e "MINIO_ACCESS_KEY=minio" \-e "MINIO_SECRET_KEY=minio123" \-v /mnt/data:/data \-v /mnt/config:/root/.minio \minio/minio server /data
-
-server http://minio1/data

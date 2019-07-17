@@ -4,135 +4,182 @@ import os
 import numpy as np
 import datetime
 from imageDB import ImageDB
-from camera import Camera, Ip_Camera
+from camera import Camera
 import detection.image_demo as detection
+from detection.detect_objects import YoloTest as YOLO
 import csv
 from PIL import Image
 import cv2
-#from skimage.measure import compare_ssim
-from SSIM_PIL import compare_ssim
+from sys import getsizeof
+from cam_setup import *
+
 
 class Routine:
     def __init__(self):
         self.db = ImageDB()
 
     # Retrieve image from camera every second
-    def retrieveImage(self, threshold, max_fps, store_interval, num_of_cams):
+    def retrieveImage(self, media_list, is_real_camera, threshold, store_interval, PID, class_dict):
+        from SSIM_PIL import compare_ssim
 
-        print("\t{0: <25}".format("querying camera data..."), "------>", end="")
+        information = ""
+        runtime = 0
+        information += "querying camera data..." + "------>"
         timestamp = time.perf_counter()
 
-        # Set up cameras
-        cam_data = self.db.get_all_cameras(num_of_cams)
-        cam_list = []
-        for data in cam_data:
-            cam = Ip_Camera(camera_id=data[0], ip_address=data[1], image_path=data[2], video_path=data[3])
-            cam_list.append(cam)
-        print(time.perf_counter() - timestamp, " seconds")
+        if is_real_camera:
+            cam = setup_cams(media_list[PID])
+        else:
+            cam = setup_vids(media_list[PID], PID)
 
-        tensors, graph, sess = detection.initial()
-
+        information += str(time.perf_counter() - timestamp) + " seconds\n"
+        yolo = YOLO()
         # TODO: Check if output_images folder exists
-        #ui_time_list = []
         start_time = time.time()
-        #size = 0
+
+        size = 0
         i = 0
+        j = 0
 
-        while(time.time() - start_time < 10):
-        #while(size < 1073741824):       # 1 gig
-        #while(size < 5368709120):      # 5 gigs
+        count_proc1 = 0
+        count_proc2 = 0
+        count_proc3 = 0
+
+        # TODO:
+        #while True:
+        while(time.time() - start_time < 60):
+        #while(size < 8589934592):       # 1 gig in bits
+        #while (size < 42949672960):     # 5gb in bits
+        #while (size < 85899345920):  # 10 gig in bits
         #for i in range(21):
+            if PID == 0:
+                count_proc1 += 1
+            elif PID == 1:
+                count_proc2 += 1
+            else:
+                count_proc3 += 1
+
             folder_path = 'output_images/'
-            for cam in cam_list:
-                try:
-                    ui_time = time.perf_counter()
-                    ts = datetime.datetime.now()
 
-                    ####
-                    #print("\t{0: <25}".format("retrieving image..."), "------>", end = "")
-                    #timestamp = time.perf_counter()
-                    ####
-                    cam.get_image()
-                    ####
-                    #print(time.perf_counter() - timestamp, "seconds")
-                    ####
-                    score = 0
-                    image_name = cam.camera_id + "_" + ts.strftime("%Y-%m-%d") + "_" + ts.strftime("%H:%M:%S.%f")[:-3] + ".jpg"
-                    grayImage = cv2.cvtColor(cam.newImage, cv2.COLOR_BGR2GRAY)
-                    cv2.imwrite(folder_path + image_name, grayImage)
-                    cam.newImage = Image.open(folder_path + image_name)
-                    if i >= 1:
-                        timestamp = time.perf_counter()
-                        score = compare_ssim(cam.oldImage, cam.newImage)
-                        print("\tDifference calculations: {}".format(time.perf_counter() - timestamp), "seconds")
-                        ####
-                        # print("\tSSIM {} : {}".format(i, 1 - score))
+            try:
 
-                    if score < threshold:
-                        cam.last_dif_check = time.time()
-                        cam.oldImage = cam.newImage
-                        cam.store_interval = store_interval
-                        # size += cam.image_size
+                ui_time = time.perf_counter()
+                ts = datetime.datetime.now()
 
-                        # object detection
-                        timestamp = time.perf_counter()
-                        ####
-                        bounding_box = detection.getBbox(tensors, folder_path, image_name, sess)# [['1', '1', 1, 1, 1, 1]]
-                        isprocessed = 1
-                        ####
-                        print("\tObject Detection: {}".format(time.perf_counter() - timestamp), "seconds")
+                information += "retrieving image ------>"
+                timestamp = time.perf_counter()
+                cam.get_image()
 
-                        # store into database
-                        timestamp = time.perf_counter()
-                        self.db.insert_image(folder_path, image_name, cam.camera_id, isprocessed, bounding_box)
-                        print("\tImage Insertion: {}".format(time.perf_counter() - timestamp), "seconds")
+                image_date = ts.strftime("%Y-%m-%d")
+                image_time = ts.strftime("%H:%M:%S.%f")[:-3]
+                j += 1
 
-                        #fi_time = time.perf_counter() - ui_time
-                        #ui_time_list.append(fi_time)
+                information += str(time.perf_counter() - timestamp) + "seconds\n"
 
-                    elif time.time() - cam.last_dif_check >= cam.store_interval:
-                        cam.last_dif_check = time.time()
-                        cam.oldImage = cam.newImage
+                score = 0
+                image_name = cam.camera_id + "_" + image_date + "_" + image_time + ".jpg"
 
-                        # object detection
-                        # size += cam.image_size
-                        timestamp = time.perf_counter()
-                        ####
-                        bounding_box = detection.getBbox(tensors, folder_path, image_name, sess)# [['1', '1', 1, 1, 1, 1]]
-                        isprocessed = 1
-                        ####
-                        print("\tObject Detection: {}".format(time.perf_counter() - timestamp, "seconds"))
+                grayImage = Image.fromarray(cam.newImage)
 
-                        # Store into database
-                        timestamp = time.perf_counter()
-                        self.db.insert_image(folder_path, image_name, cam.camera_id, isprocessed, bounding_box)
-                        print("\tImage Insertion: {}".format(time.perf_counter() - timestamp, "seconds"))
+                if i >= 1:
+                    timestamp = time.perf_counter()
+                    score = compare_ssim(cam.oldImage, grayImage)
+                    information += "Difference calculations: " + str(time.perf_counter() - timestamp) + "seconds\n"
 
-                        #fi_time = time.perf_counter() - ui_time
-                        #ui_time_list.append(fi_time)
-                        # print(cam.store_interval)
+                if score < threshold:
+                    cam.last_dif_check = time.time()
+                    cam.oldImage = grayImage
+                    cam.store_interval = store_interval
+                    #a = time.perf_counter()
+                    #cv2.imwrite(folder_path + image_name, cam.newImage)
+                    #print("Writing time: {}".format(time.perf_counter() - a), "seconds\n")
+                    image_size = getsizeof(cam.newImage)
+                    size += image_size
 
-                        if (1 - score) < (1 - threshold) / 2:
-                            cam.store_interval *= 2
-                            # print(cam.store_interval)
 
-                    print("\tSingle Round for cam {}: {} seconds\n".format(cam.camera_id, time.perf_counter() - ui_time))
+                    # object detection
+                    timestamp = time.perf_counter()
+                    bounding_box, classes = yolo.predict(cam.newImage)
+                    isprocessed = 1
 
-                    '''try:
-                        os.remove(folder_path + image_name)
-                    except Exception as e2:
-                        #print(e2)
-                        pass'''
+                    '''save bbox in txt file for eval
+                    with open ('detection/detected/' + image_name[:-4] + '.txt', 'w') as f:
+                        for box in bounding_box:
+                            f.write(str(classes[box[5]]) + ' ')
+                            f.write(str(box[4]) + ' ')
+                            f.write(str(box[0]) + ' ')
+                            f.write(str(box[1]) + ' ')
+                            f.write(str(box[2]) + ' ')
+                            f.write(str(box[3]) + '\n')
+                            #f.write('\n')
+                    '''
+                    information += "Object Detection: " + str(time.perf_counter() - timestamp) + "seconds\n"
 
-                except Exception as e:
-                    print(e)
-                    pass
+                    # store into database
+                    timestamp = time.perf_counter()
+
+                    self.db.insert_image(cam.newImage, image_name, cam.camera_id, isprocessed,
+                                         bounding_box, classes, image_date, image_time, image_size, class_dict)
+
+                    information += "Image Insertion: " + str(time.perf_counter() - timestamp) + "seconds\n"
+
+                elif time.time() - cam.last_dif_check >= cam.store_interval:
+                    cam.last_dif_check = time.time()
+                    cam.oldImage = grayImage
+                    #a = time.perf_counter()
+                    #cv2.imwrite(folder_path + image_name, cam.newImage)
+                    #print("Writing time : {}".format(time.perf_counter() - a), "seconds\n")
+                    image_size = getsizeof(cam.newImage)
+                    size += image_size
+
+                    # object detection
+                    timestamp = time.perf_counter()
+                    bounding_box, classes = yolo.predict(cam.newImage)
+                    isprocessed = 1
+                    '''
+                    save bbox in txt file for eval
+                    with open ('detection/detected/' + image_name[:-4] + '.txt', 'w') as f:
+                        for box in bounding_box:
+                            f.write(str(classes[box[5]]) + ' ')
+                            f.write(str(box[4]) + ' ')
+                            f.write(str(box[0]) + ' ')
+                            f.write(str(box[1]) + ' ')
+                            f.write(str(box[2]) + ' ')
+                            f.write(str(box[3]) + '\n')
+                            #f.write('\n')
+                    '''
+                    information += "Object Detection: " + str(time.perf_counter() - timestamp) + "seconds\n"
+
+                    # Store into database
+                    timestamp = time.perf_counter()
+
+                    self.db.insert_image(cam.newImage, image_name, cam.camera_id, isprocessed,
+                                         bounding_box, classes, image_date, image_time, image_size)
+
+                    information += "Image Insertion: " + str(time.perf_counter() - timestamp) + "seconds\n"
+
+                    if (1 - score) < (1 - threshold) / 2:
+                        cam.store_interval *= 2
+
+                if i >= 1:
+                    runtime += time.perf_counter() - ui_time
+
+                information += "Single Round for cam " + cam.camera_id + ":" + str(time.perf_counter() - ui_time) + "seconds\n"
+                information += "\n"
+
+            except Exception as e:
+                print(e)
+                size = 429496729600
+                #sys.exit()
+                #pass
+                break
             i += 1
 
-        #print("{0: <25}".format("Interval between images"), "------>", time.perf_counter() - gb_time)
+        print ('process 1: ', count_proc1, 'process 2: ', count_proc2, 'process 3: ', count_proc3)
+        print("Number of frames processed : {}".format(j))
+        print("Runtime for system : {}".format(runtime), " seconds\n")
+        cam.capture.release()
 
-        '''ith open('image_upload_times.csv', 'w', newline='') as file1:
-            ui_writer = csv.writer(file1)
-            ui_writer.writerow(['Camera Upload Times'])
-            for i in ui_time_list:
-                ui_writer.writerow([i])'''
+        file = open('image_upload_times.txt', 'w')
+        file.write(information)
+        file.close()

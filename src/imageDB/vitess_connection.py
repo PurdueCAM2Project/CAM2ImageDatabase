@@ -224,8 +224,12 @@ class VitessConn:
 
 	# this function takes in a list of feature tuples (Feature_ID, Feature_Name)
 	def insertFeature(self, feature):
-		sql = 'INSERT INTO FEATURE(Feature_ID, Feature_Name) VALUES (%s, %s)'
-		self.mycursor.execute(sql, feature)
+		try:
+			sql = 'INSERT INTO FEATURE(Feature_ID, Feature_Name) VALUES (%s, %s)'
+			self.mycursor.execute(sql, feature)
+		except Exception as e:
+			print(e)
+			sys.exit()
 
 
 	# this function takes a list of feature_ID-image_ID tuples

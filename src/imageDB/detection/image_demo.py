@@ -22,7 +22,7 @@ def initial():
 
 
 #Seems like the program is running on gpu but the time is increased because the session is being started everytime in the loop and it is taking time to start and asssign the gpu for a certain computation
-def getBbox(return_tensors, image_dir, image_name, sess, show_plot=False):
+def getBbox(return_tensors, image_dir, image_name, sess, show_plot=True):
 
     image_path      = os.path.join(image_dir, image_name)
     num_classes     = 80
@@ -37,7 +37,7 @@ def getBbox(return_tensors, image_dir, image_name, sess, show_plot=False):
     original_image = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
     original_image_size = original_image.shape[:2]
     a = time.time()
-    image_data = utils.image_preprocess(np.copy(original_image), [input_size, input_size])
+    image_data = utils.image_preporcess(np.copy(original_image), [input_size, input_size])
     #print("================>preprocess :", time.time() - a)
     image_data = image_data[np.newaxis, ...]
 
@@ -70,6 +70,6 @@ def getBbox(return_tensors, image_dir, image_name, sess, show_plot=False):
 
         #image.show()
         filename = str(time.time())
-        cv2.imwrite("./output_images/" + filename + ".jpg", image)
+        cv2.imwrite("./detected_images/" + filename + ".jpg", image)
 
     return bboxes

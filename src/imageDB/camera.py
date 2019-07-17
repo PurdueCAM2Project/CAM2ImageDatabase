@@ -4,18 +4,16 @@ will have all the necessary attributes and
 functions
 
 '''
-
-from stream_parser import *
-
+import time
 
 class Camera():
 
-    def __init__(self, camera_id):
+    def __init__(self, camera_id, ip_address, image_path, video_path):
         self.camera_id = camera_id                 # This is ID of a camera
 
         self.parser = None
-        self.image_path = None
-        self.video_path = None
+        self.image_path = 'http://' + ip_address + image_path
+        self.video_path = 'http://' + ip_address + video_path
 
         self.store_interval = 1             # Time interval to store image from camera
 
@@ -25,27 +23,15 @@ class Camera():
         self.newImage = 0                # Holds the current image
 
         self.image_size = 0
+        self.capture = None
 
 
     def get_image(self):
-        try:
-            # Download the image
-            self.newImage, self.image_size = self.parser.get_image()
+         try:
+            ret, self.newImage = self.capture.read()
+            self.image_size = 0 #self.newImage.shape[0] * self.newImage.shape[1] * self.newImage.shape[2]
             return True
-            
-        except error.unreachable_camera_error as unreachable_camera_error:
-            print(unreachable_camera_error, 'get_ref_image_ERROR: Image could not be retrieved')
+
+         except Exception as e:
+            print("Error possibly caused by incorrect format.", e)
             return False
-
-        except Exception as e:
-            print(e)
-            return False
-
-
-class Ip_Camera(Camera):
-    def __init__(self, camera_id, ip_address, image_path, video_path):
-        super().__init__(camera_id)
-        self.image_path = 'http://' + ip_address + image_path        # Image path for ip types
-        self.video_path = 'http://' + ip_address + video_path        # Video path for ip types
-        self.parser = ImageStreamParser(self.image_path)  # This is the StreamParser object responsible for grabbing image/video
-

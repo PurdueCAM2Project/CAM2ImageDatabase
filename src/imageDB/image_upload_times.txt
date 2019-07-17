@@ -1,0 +1,888 @@
+querying camera data...------>0.004327047150582075 seconds
+retrieving image ------>0.20101207494735718seconds
+Object Detection: 6.0588992070406675seconds
+Image Insertion: 0.026984934927895665seconds
+Single Round for cam 1:6.29376935493201seconds
+
+retrieving image ------>0.00544415507465601seconds
+Difference calculations: 0.056386166950687766seconds
+Object Detection: 0.2965051371138543seconds
+Image Insertion: 0.025044128065928817seconds
+Single Round for cam 1:0.3864208369050175seconds
+
+retrieving image ------>0.003737121121957898seconds
+Difference calculations: 0.047052549198269844seconds
+Object Detection: 0.20357886119745672seconds
+Image Insertion: 0.025074785109609365seconds
+Single Round for cam 1:0.28155080205760896seconds
+
+retrieving image ------>0.004823207855224609seconds
+Difference calculations: 0.05782664311118424seconds
+Object Detection: 0.23971232096664608seconds
+Image Insertion: 0.034377261996269226seconds
+Single Round for cam 1:0.34002090292051435seconds
+
+retrieving image ------>0.004093317082151771seconds
+Difference calculations: 0.05391524103470147seconds
+Object Detection: 0.30602857982739806seconds
+Image Insertion: 0.013565324014052749seconds
+Single Round for cam 1:0.37989160884171724seconds
+
+retrieving image ------>0.006248004036024213seconds
+Difference calculations: 0.04881849605590105seconds
+Object Detection: 0.27237629517912865seconds
+Image Insertion: 0.02197407092899084seconds
+Single Round for cam 1:0.3530376360286027seconds
+
+retrieving image ------>0.004660455975681543seconds
+Difference calculations: 0.0632648509927094seconds
+Object Detection: 0.26383858593180776seconds
+Image Insertion: 0.020262193167582154seconds
+Single Round for cam 1:0.35493657807819545seconds
+
+retrieving image ------>0.004029880044981837seconds
+Difference calculations: 0.06246436410583556seconds
+Object Detection: 0.2661418120842427seconds
+Image Insertion: 0.023190177977085114seconds
+Single Round for cam 1:0.3580419789068401seconds
+
+retrieving image ------>0.0040811889339238405seconds
+Difference calculations: 0.05658163595944643seconds
+Object Detection: 0.279694956028834seconds
+Image Insertion: 0.01940615801140666seconds
+Single Round for cam 1:0.36195160495117307seconds
+
+retrieving image ------>0.005921653006225824seconds
+Difference calculations: 0.054546070052310824seconds
+Object Detection: 0.3036989108659327seconds
+Image Insertion: 0.02164687914773822seconds
+Single Round for cam 1:0.39045066293329seconds
+
+retrieving image ------>0.005044074030593038seconds
+Difference calculations: 0.05698006902821362seconds
+Object Detection: 0.31509896111674607seconds
+Image Insertion: 0.023569802986457944seconds
+Single Round for cam 1:0.4039206048473716seconds
+
+retrieving image ------>0.005000096978619695seconds
+Difference calculations: 0.056301143020391464seconds
+Object Detection: 0.2940048258751631seconds
+Image Insertion: 0.026802387088537216seconds
+Single Round for cam 1:0.38531093089841306seconds
+
+retrieving image ------>0.0050799730233848095seconds
+Difference calculations: 0.05002228100784123seconds
+Object Detection: 0.27861176687292755seconds
+Image Insertion: 0.032630481058731675seconds
+Single Round for cam 1:0.3706643460318446seconds
+
+retrieving image ------>0.005697151180356741seconds
+Difference calculations: 0.043320561992004514seconds
+Object Detection: 0.2658647040370852seconds
+Image Insertion: 0.025494794826954603seconds
+Single Round for cam 1:0.3435301010031253seconds
+
+retrieving image ------>0.005382610950618982seconds
+Difference calculations: 0.04984591715037823seconds
+Object Detection: 0.31544525106437504seconds
+Image Insertion: 0.029469670029357076seconds
+Single Round for cam 1:0.40334398089908063seconds
+
+retrieving image ------>0.008269672049209476seconds
+Difference calculations: 0.04005733015947044seconds
+Object Detection: 0.25151557894423604seconds
+Image Insertion: 0.02818310190923512seconds
+Single Round for cam 1:0.33150168997235596seconds
+
+retrieving image ------>0.014469671063125134seconds
+Difference calculations: 0.05874328501522541seconds
+Object Detection: 0.19144491199404seconds
+Image Insertion: 0.021979850018396974seconds
+Single Round for cam 1:0.2897416949272156seconds
+
+retrieving image ------>0.0036490720231086016seconds
+Difference calculations: 0.06322519993409514seconds
+Object Detection: 0.29952509608119726seconds
+Image Insertion: 0.025619569001719356seconds
+Single Round for cam 1:0.3948397289495915seconds
+
+retrieving image ------>0.01033714902587235seconds
+Difference calculations: 0.0524046269711107seconds
+Object Detection: 0.2396131979767233seconds
+Image Insertion: 0.028923031175509095seconds
+Single Round for cam 1:0.33545576594769955seconds
+
+retrieving image ------>0.004506004974246025seconds
+Difference calculations: 0.05816020118072629seconds
+Object Detection: 0.20343778794631362seconds
+Image Insertion: 0.031495012110099196seconds
+Single Round for cam 1:0.2998597761616111seconds
+
+retrieving image ------>0.004645604873076081seconds
+Difference calculations: 0.06354711507447064seconds
+Object Detection: 0.30017295107245445seconds
+Image Insertion: 0.02482317015528679seconds
+Single Round for cam 1:0.39652693504467607seconds
+
+retrieving image ------>0.006836189888417721seconds
+Difference calculations: 0.04954097606241703seconds
+Object Detection: 0.29041846888139844seconds
+Image Insertion: 0.0267992930021137seconds
+Single Round for cam 1:0.3771414540242404seconds
+
+retrieving image ------>0.005012204172089696seconds
+Difference calculations: 0.051598843885585666seconds
+Object Detection: 0.21141305193305016seconds
+Image Insertion: 0.021832213969901204seconds
+Single Round for cam 1:0.2989537580870092seconds
+
+retrieving image ------>0.004663980100303888seconds
+Difference calculations: 0.07064968394115567seconds
+Object Detection: 0.25329083716496825seconds
+Image Insertion: 0.028962257085368037seconds
+Single Round for cam 1:0.36010379204526544seconds
+
+retrieving image ------>0.005291977198794484seconds
+Difference calculations: 0.05705493804998696seconds
+Object Detection: 0.3297253099735826seconds
+Image Insertion: 0.023375818971544504seconds
+Single Round for cam 1:0.42051762295886874seconds
+
+retrieving image ------>0.0043506131041795015seconds
+Difference calculations: 0.06384353409521282seconds
+Object Detection: 0.2845350429415703seconds
+Image Insertion: 0.024867438012734056seconds
+Single Round for cam 1:0.38019624911248684seconds
+
+retrieving image ------>0.005012755980715156seconds
+Difference calculations: 0.06340934010222554seconds
+Object Detection: 0.22230444895103574seconds
+Image Insertion: 0.03038476104848087seconds
+Single Round for cam 1:0.3244622009806335seconds
+
+retrieving image ------>0.003976918989792466seconds
+Difference calculations: 0.06886700401082635seconds
+Object Detection: 0.24015861097723246seconds
+Image Insertion: 0.024969933088868856seconds
+Single Round for cam 1:0.3451776329893619seconds
+
+retrieving image ------>0.006524067837744951seconds
+Difference calculations: 0.060437846928834915seconds
+Object Detection: 0.3222394238691777seconds
+Image Insertion: 0.025771302171051502seconds
+Single Round for cam 1:0.41972144204191864seconds
+
+retrieving image ------>0.005061198025941849seconds
+Difference calculations: 0.03576634009368718seconds
+Object Detection: 0.25093299988657236seconds
+Image Insertion: 0.02306655701249838seconds
+Single Round for cam 1:0.3178521429654211seconds
+
+retrieving image ------>0.004650834947824478seconds
+Difference calculations: 0.07085360400378704seconds
+Object Detection: 0.23709954600781202seconds
+Image Insertion: 0.02462618099525571seconds
+Single Round for cam 1:0.3397454370278865seconds
+
+retrieving image ------>0.004610608099028468seconds
+Difference calculations: 0.06368081690743566seconds
+Object Detection: 0.2721398661378771seconds
+Image Insertion: 0.013974608154967427seconds
+Single Round for cam 1:0.35760260093957186seconds
+
+retrieving image ------>0.003822044003754854seconds
+Difference calculations: 0.04916035896167159seconds
+Object Detection: 0.280118475202471seconds
+Image Insertion: 0.026064357021823525seconds
+Single Round for cam 1:0.36137199588119984seconds
+
+retrieving image ------>0.0065133520402014256seconds
+Difference calculations: 0.05934747983701527seconds
+Object Detection: 0.18870554002933204seconds
+Image Insertion: 0.023672186071053147seconds
+Single Round for cam 1:0.28427953901700675seconds
+
+retrieving image ------>0.004869791911914945seconds
+Difference calculations: 0.0661439171526581seconds
+Object Detection: 0.24614016897976398seconds
+Image Insertion: 0.27902692812494934seconds
+Single Round for cam 1:0.599617533152923seconds
+
+retrieving image ------>0.005592044908553362seconds
+Difference calculations: 0.03771700197830796seconds
+Object Detection: 0.22612041304819286seconds
+Image Insertion: 0.023168287007138133seconds
+Single Round for cam 1:0.29704644600860775seconds
+
+retrieving image ------>0.006004006834700704seconds
+Difference calculations: 0.06737927906215191seconds
+Object Detection: 0.23113946407102048seconds
+Image Insertion: 0.26550888107158244seconds
+Single Round for cam 1:0.5728498178068548seconds
+
+retrieving image ------>0.005315311020240188seconds
+Difference calculations: 0.0487464489415288seconds
+Object Detection: 0.27090745605528355seconds
+Image Insertion: 0.025405582040548325seconds
+Single Round for cam 1:0.3552205809392035seconds
+
+retrieving image ------>0.004717870848253369seconds
+Difference calculations: 0.06277606799267232seconds
+Object Detection: 0.1856446648016572seconds
+Image Insertion: 0.02672720211558044seconds
+Single Round for cam 1:0.28316915896721184seconds
+
+retrieving image ------>0.00648446986451745seconds
+Difference calculations: 0.062245058827102184seconds
+Object Detection: 0.2803975350689143seconds
+Image Insertion: 0.023284367052838206seconds
+Single Round for cam 1:0.3809796280693263seconds
+
+retrieving image ------>0.005264192121103406seconds
+Difference calculations: 0.06936950283125043seconds
+Object Detection: 0.3395169610157609seconds
+Image Insertion: 0.022899195086210966seconds
+Single Round for cam 1:0.44041947019286454seconds
+
+retrieving image ------>0.00891184201464057seconds
+Difference calculations: 0.046182645950466394seconds
+Object Detection: 0.2127327648922801seconds
+Image Insertion: 0.09168178704567254seconds
+Single Round for cam 1:0.36374227702617645seconds
+
+retrieving image ------>0.015926245134323835seconds
+Difference calculations: 0.060052552027627826seconds
+Object Detection: 0.28245097608305514seconds
+Image Insertion: 0.021967510925605893seconds
+Single Round for cam 1:0.39206439908593893seconds
+
+retrieving image ------>0.009762563044205308seconds
+Difference calculations: 0.062076295958831906seconds
+Object Detection: 0.2751531219109893seconds
+Image Insertion: 0.025118501856923103seconds
+Single Round for cam 1:0.3755604908801615seconds
+
+retrieving image ------>0.011579534970223904seconds
+Difference calculations: 0.0536165579687804seconds
+Object Detection: 0.3026562640443444seconds
+Image Insertion: 0.02437363495118916seconds
+Single Round for cam 1:0.39538630610331893seconds
+
+retrieving image ------>0.004679966950789094seconds
+Difference calculations: 0.05526792607270181seconds
+Object Detection: 0.2725256709381938seconds
+Image Insertion: 0.026743198977783322seconds
+Single Round for cam 1:0.3624701469670981seconds
+
+retrieving image ------>0.004227213095873594seconds
+Difference calculations: 0.050933244870975614seconds
+Object Detection: 0.27422630693763494seconds
+Image Insertion: 0.02657788898795843seconds
+Single Round for cam 1:0.35842431406490505seconds
+
+retrieving image ------>0.005952132865786552seconds
+Difference calculations: 0.04443770204670727seconds
+Object Detection: 0.30531266890466213seconds
+Image Insertion: 0.03304438921622932seconds
+Single Round for cam 1:0.3925585609395057seconds
+
+retrieving image ------>0.006640687119215727seconds
+Difference calculations: 0.04497152799740434seconds
+Object Detection: 0.26103727286681533seconds
+Image Insertion: 0.024708823999390006seconds
+Single Round for cam 1:0.34526916197501123seconds
+
+retrieving image ------>0.0056402969639748335seconds
+Difference calculations: 0.06304150191135705seconds
+Object Detection: 0.18650718685239553seconds
+Image Insertion: 0.022698428016155958seconds
+Single Round for cam 1:0.28147521312348545seconds
+
+retrieving image ------>0.006149776047095656seconds
+Difference calculations: 0.060236991848796606seconds
+Object Detection: 0.28955054213292897seconds
+Image Insertion: 0.02269227895885706seconds
+Single Round for cam 1:0.38309988006949425seconds
+
+retrieving image ------>0.00506621808744967seconds
+Difference calculations: 0.044188498985022306seconds
+Object Detection: 0.267292657867074seconds
+Image Insertion: 0.023087233072146773seconds
+Single Round for cam 1:0.3427651599049568seconds
+
+retrieving image ------>0.004777737893164158seconds
+Difference calculations: 0.06381375598721206seconds
+Object Detection: 0.20965935895219445seconds
+Image Insertion: 0.02374869491904974seconds
+Single Round for cam 1:0.3051704971585423seconds
+
+retrieving image ------>0.0057744530495256186seconds
+Difference calculations: 0.0676146768964827seconds
+Object Detection: 0.27137891692109406seconds
+Image Insertion: 0.03941744612529874seconds
+Single Round for cam 1:0.38790486683137715seconds
+
+retrieving image ------>0.005807777866721153seconds
+Difference calculations: 0.0463871278334409seconds
+Object Detection: 0.3073947138618678seconds
+Image Insertion: 0.025094529846683145seconds
+Single Round for cam 1:0.3880214770324528seconds
+
+retrieving image ------>0.003952225903049111seconds
+Difference calculations: 0.05762813100591302seconds
+Object Detection: 0.28732204413972795seconds
+Image Insertion: 0.021358754951506853seconds
+Single Round for cam 1:0.3726255130022764seconds
+
+retrieving image ------>0.00822387496009469seconds
+Difference calculations: 0.055003070970997214seconds
+Object Detection: 0.2788249540608376seconds
+Image Insertion: 0.02697706315666437seconds
+Single Round for cam 1:0.37360726203769445seconds
+
+retrieving image ------>0.017601273022592068seconds
+Difference calculations: 0.052818371914327145seconds
+Object Detection: 0.2690679831430316seconds
+Image Insertion: 0.028181882109493017seconds
+Single Round for cam 1:0.3727878141216934seconds
+
+retrieving image ------>0.004782791016623378seconds
+Difference calculations: 0.05020818882621825seconds
+Object Detection: 0.27780032390728593seconds
+Image Insertion: 0.02515673404559493seconds
+Single Round for cam 1:0.3608787648845464seconds
+
+retrieving image ------>0.005096175009384751seconds
+Difference calculations: 0.05670718988403678seconds
+Object Detection: 0.2888441560789943seconds
+Image Insertion: 0.02374457591213286seconds
+Single Round for cam 1:0.376999749802053seconds
+
+retrieving image ------>0.004683922976255417seconds
+Difference calculations: 0.04852147400379181seconds
+Object Detection: 0.16413275594823062seconds
+Image Insertion: 0.029080266132950783seconds
+Single Round for cam 1:0.24964751303195953seconds
+
+retrieving image ------>0.005241607083007693seconds
+Difference calculations: 0.07119270088151097seconds
+Object Detection: 0.28561930800788105seconds
+Image Insertion: 0.03184725297614932seconds
+Single Round for cam 1:0.3979582511819899seconds
+
+retrieving image ------>0.004576695151627064seconds
+Difference calculations: 0.06337870797142386seconds
+Object Detection: 0.27587522799149156seconds
+Image Insertion: 0.02750821691006422seconds
+Single Round for cam 1:0.3750502171460539seconds
+
+retrieving image ------>0.0038404890801757574seconds
+Difference calculations: 0.05406487290747464seconds
+Object Detection: 0.2562161481473595seconds
+Image Insertion: 0.021912100026383996seconds
+Single Round for cam 1:0.33821395691484213seconds
+
+retrieving image ------>0.00601168186403811seconds
+Difference calculations: 0.0681626449804753seconds
+Object Detection: 0.24812647816725075seconds
+Image Insertion: 0.0258398549631238seconds
+Single Round for cam 1:0.35234156413935125seconds
+
+retrieving image ------>0.005311216926202178seconds
+Difference calculations: 0.06052750116214156seconds
+Object Detection: 0.2854977778624743seconds
+Image Insertion: 0.017717652022838593seconds
+Single Round for cam 1:0.3722147229127586seconds
+
+retrieving image ------>0.006551963975653052seconds
+Difference calculations: 0.06401593494229019seconds
+Object Detection: 0.3168920751195401seconds
+Image Insertion: 0.018972082063555717seconds
+Single Round for cam 1:0.4107547190506011seconds
+
+retrieving image ------>0.004925750894472003seconds
+Difference calculations: 0.05464298208244145seconds
+Object Detection: 0.2933787580113858seconds
+Image Insertion: 0.019656630931422114seconds
+Single Round for cam 1:0.3754950328730047seconds
+
+retrieving image ------>0.00519072893075645seconds
+Difference calculations: 0.05493264482356608seconds
+Object Detection: 0.2801645318977535seconds
+Image Insertion: 0.024903255980461836seconds
+Single Round for cam 1:0.3687025939580053seconds
+
+retrieving image ------>0.003931582905352116seconds
+Difference calculations: 0.0490822559222579seconds
+Object Detection: 0.28075106791220605seconds
+Image Insertion: 0.023553016129881144seconds
+Single Round for cam 1:0.35967693803831935seconds
+
+retrieving image ------>0.004906506976112723seconds
+Difference calculations: 0.05637551308609545seconds
+Object Detection: 0.27539636800065637seconds
+Image Insertion: 0.024034732952713966seconds
+Single Round for cam 1:0.3639346470590681seconds
+
+retrieving image ------>0.005415701773017645seconds
+Difference calculations: 0.05453988607041538seconds
+Object Detection: 0.27773997792974114seconds
+Image Insertion: 0.016955608036369085seconds
+Single Round for cam 1:0.35799151798710227seconds
+
+retrieving image ------>0.004997058073058724seconds
+Difference calculations: 0.04567429004237056seconds
+Object Detection: 0.25734318094328046seconds
+Image Insertion: 0.028842814033851027seconds
+Single Round for cam 1:0.3405279649887234seconds
+
+retrieving image ------>0.004699762910604477seconds
+Difference calculations: 0.06944731087423861seconds
+Object Detection: 0.18369901203550398seconds
+Image Insertion: 0.030765046132728457seconds
+Single Round for cam 1:0.2921951699536294seconds
+
+retrieving image ------>0.004738050978630781seconds
+Difference calculations: 0.05887460592202842seconds
+Object Detection: 0.27667154488153756seconds
+Image Insertion: 0.028415837790817022seconds
+Single Round for cam 1:0.3722046101465821seconds
+
+retrieving image ------>0.007675030035898089seconds
+Difference calculations: 0.05422767880372703seconds
+Object Detection: 0.16164258890785277seconds
+Image Insertion: 0.04200372309423983seconds
+Single Round for cam 1:0.27089477400295436seconds
+
+retrieving image ------>0.005159827880561352seconds
+Difference calculations: 0.05190404108725488seconds
+Object Detection: 0.2985121048986912seconds
+Image Insertion: 0.027035834034904838seconds
+Single Round for cam 1:0.3864192678593099seconds
+
+retrieving image ------>0.004752728156745434seconds
+Difference calculations: 0.05534174107015133seconds
+Object Detection: 0.2518373359926045seconds
+Image Insertion: 0.028231899021193385seconds
+Single Round for cam 1:0.3458040119148791seconds
+
+retrieving image ------>0.0059631699696183205seconds
+Difference calculations: 0.07477523991838098seconds
+Object Detection: 0.21857004496268928seconds
+Image Insertion: 0.024994161911308765seconds
+Single Round for cam 1:0.3283623671159148seconds
+
+retrieving image ------>0.0038695628754794598seconds
+Difference calculations: 0.06571755395270884seconds
+Object Detection: 0.2523416350595653seconds
+Image Insertion: 0.037321021081879735seconds
+Single Round for cam 1:0.36137729207985103seconds
+
+retrieving image ------>0.004646559013053775seconds
+Difference calculations: 0.05199188110418618seconds
+Object Detection: 0.35305967298336327seconds
+Image Insertion: 0.02241356810554862seconds
+Single Round for cam 1:0.435286529827863seconds
+
+retrieving image ------>0.006984157953411341seconds
+Difference calculations: 0.03668265603482723seconds
+Object Detection: 0.34228447708301246seconds
+Image Insertion: 0.059558985056355596seconds
+Single Round for cam 1:0.4487109000328928seconds
+
+retrieving image ------>0.004886857001110911seconds
+Difference calculations: 0.0489397409837693seconds
+Object Detection: 0.2237925089430064seconds
+Image Insertion: 0.014435322023928165seconds
+Single Round for cam 1:0.29517480195499957seconds
+
+retrieving image ------>0.004960494115948677seconds
+Difference calculations: 0.0375667370390147seconds
+Object Detection: 0.3194529169704765seconds
+Image Insertion: 0.02773263701237738seconds
+Single Round for cam 1:0.3922045649960637seconds
+
+retrieving image ------>0.004947050008922815seconds
+Difference calculations: 0.036789261968806386seconds
+Object Detection: 0.25510684796608984seconds
+Image Insertion: 0.02982091996818781seconds
+Single Round for cam 1:0.3303283080458641seconds
+
+retrieving image ------>0.005506624933332205seconds
+Difference calculations: 0.05734595516696572seconds
+Object Detection: 0.25768834189511836seconds
+Image Insertion: 0.024284224025905132seconds
+Single Round for cam 1:0.3474793329369277seconds
+
+retrieving image ------>0.004813709994778037seconds
+Difference calculations: 0.066012152004987seconds
+Object Detection: 0.2831120730843395seconds
+Image Insertion: 0.024188105016946793seconds
+Single Round for cam 1:0.38113982090726495seconds
+
+retrieving image ------>0.005313172936439514seconds
+Difference calculations: 0.06025198707357049seconds
+Object Detection: 0.30862288386560977seconds
+Image Insertion: 0.024506629910320044seconds
+Single Round for cam 1:0.403657766059041seconds
+
+retrieving image ------>0.00680616102181375seconds
+Difference calculations: 0.05169347277842462seconds
+Object Detection: 0.3042144179344177seconds
+Image Insertion: 0.02274093613959849seconds
+Single Round for cam 1:0.3898963250685483seconds
+
+retrieving image ------>0.005988620920106769seconds
+Difference calculations: 0.05122775584459305seconds
+Object Detection: 0.19020099798217416seconds
+Image Insertion: 0.031226871069520712seconds
+Single Round for cam 1:0.28351142699830234seconds
+
+retrieving image ------>0.007154854014515877seconds
+Difference calculations: 0.07237988291308284seconds
+Object Detection: 0.2360322291497141seconds
+Image Insertion: 0.022488713962957263seconds
+Single Round for cam 1:0.3435422829352319seconds
+
+retrieving image ------>0.0050836000591516495seconds
+Difference calculations: 0.05358229111880064seconds
+Object Detection: 0.30690121999941766seconds
+Image Insertion: 0.025264068972319365seconds
+Single Round for cam 1:0.393683236092329seconds
+
+retrieving image ------>0.007237802958115935seconds
+Difference calculations: 0.06564879487268627seconds
+Object Detection: 0.22362214094027877seconds
+Image Insertion: 0.026650690007954836seconds
+Single Round for cam 1:0.32679525995627046seconds
+
+retrieving image ------>0.004710207926109433seconds
+Difference calculations: 0.062463664915412664seconds
+Object Detection: 0.21804446494206786seconds
+Image Insertion: 0.03119650692678988seconds
+Single Round for cam 1:0.3196020338218659seconds
+
+retrieving image ------>0.005064863013103604seconds
+Difference calculations: 0.07257976406253874seconds
+Object Detection: 0.3138713620137423seconds
+Image Insertion: 0.026826875051483512seconds
+Single Round for cam 1:0.4217966019641608seconds
+
+retrieving image ------>0.007086378987878561seconds
+Difference calculations: 0.05405240994878113seconds
+Object Detection: 0.2514823169913143seconds
+Image Insertion: 0.02500437689013779seconds
+Single Round for cam 1:0.3412380579393357seconds
+
+retrieving image ------>0.0038846000097692013seconds
+Difference calculations: 0.06147821596823633seconds
+Object Detection: 0.1811616220511496seconds
+Image Insertion: 0.033634081948548555seconds
+Single Round for cam 1:0.2823377940803766seconds
+
+retrieving image ------>0.005795729113742709seconds
+Difference calculations: 0.05460866820067167seconds
+Object Detection: 0.31507488805800676seconds
+Image Insertion: 0.026743350084871054seconds
+Single Round for cam 1:0.4070293989498168seconds
+
+retrieving image ------>0.021159241907298565seconds
+Difference calculations: 0.05097027309238911seconds
+Object Detection: 0.35209481604397297seconds
+Image Insertion: 0.023069976130500436seconds
+Single Round for cam 1:0.45138659002259374seconds
+
+retrieving image ------>0.012817085022106767seconds
+Difference calculations: 0.04247828898951411seconds
+Object Detection: 0.30771538196131587seconds
+Image Insertion: 0.022330246167257428seconds
+Single Round for cam 1:0.3912451220676303seconds
+
+retrieving image ------>0.004177602007985115seconds
+Difference calculations: 0.05121407192200422seconds
+Object Detection: 0.20200850581750274seconds
+Image Insertion: 0.024169364012777805seconds
+Single Round for cam 1:0.28375089680776seconds
+
+retrieving image ------>0.00397670897655189seconds
+Difference calculations: 0.05692789307795465seconds
+Object Detection: 0.2567653749138117seconds
+Image Insertion: 0.02260014181956649seconds
+Single Round for cam 1:0.3430090539623052seconds
+
+retrieving image ------>0.0050941279623657465seconds
+Difference calculations: 0.06360621098428965seconds
+Object Detection: 0.303699370007962seconds
+Image Insertion: 0.023427199805155396seconds
+Single Round for cam 1:0.39955424098297954seconds
+
+retrieving image ------>0.005948699079453945seconds
+Difference calculations: 0.04374496708624065seconds
+Object Detection: 0.21298669185489416seconds
+Image Insertion: 0.025664385175332427seconds
+Single Round for cam 1:0.29184217494912446seconds
+
+retrieving image ------>0.004447020823135972seconds
+Difference calculations: 0.0712558850646019seconds
+Object Detection: 0.21010177209973335seconds
+Image Insertion: 0.0324712919536978seconds
+Single Round for cam 1:0.3207996101118624seconds
+
+retrieving image ------>0.020546806044876575seconds
+Difference calculations: 0.06390088004991412seconds
+Object Detection: 0.3157045079860836seconds
+Image Insertion: 0.017163156997412443seconds
+Single Round for cam 1:0.4231133891735226seconds
+
+retrieving image ------>0.005129124969244003seconds
+Difference calculations: 0.044993718853220344seconds
+Object Detection: 0.331452946877107seconds
+Image Insertion: 0.024685662938281894seconds
+Single Round for cam 1:0.41103690094314516seconds
+
+retrieving image ------>0.004806523909792304seconds
+Difference calculations: 0.05839191400445998seconds
+Object Detection: 0.2725090419407934seconds
+Image Insertion: 0.025942523032426834seconds
+Single Round for cam 1:0.366394461132586seconds
+
+retrieving image ------>0.003975176019594073seconds
+Difference calculations: 0.0786324751097709seconds
+Object Detection: 0.2381183549296111seconds
+Image Insertion: 0.024290148867294192seconds
+Single Round for cam 1:0.3483041760046035seconds
+
+retrieving image ------>0.007040543016046286seconds
+Difference calculations: 0.0680700980592519seconds
+Object Detection: 0.23392860894091427seconds
+Image Insertion: 0.027059361105784774seconds
+Single Round for cam 1:0.3410605730023235seconds
+
+retrieving image ------>0.004506055032834411seconds
+Difference calculations: 0.06584078492596745seconds
+Object Detection: 0.3224493651650846seconds
+Image Insertion: 0.030093743931502104seconds
+Single Round for cam 1:0.42674478609114885seconds
+
+retrieving image ------>0.004950617207214236seconds
+Difference calculations: 0.06417567399330437seconds
+Object Detection: 0.29854763811454177seconds
+Image Insertion: 0.020574714988470078seconds
+Single Round for cam 1:0.39194432203657925seconds
+
+retrieving image ------>0.00996008887887001seconds
+Difference calculations: 0.06795369391329587seconds
+Object Detection: 0.25264272512868047seconds
+Image Insertion: 0.021257973974570632seconds
+Single Round for cam 1:0.35652567888610065seconds
+
+retrieving image ------>0.005862365011125803seconds
+Difference calculations: 0.06506665889173746seconds
+Object Detection: 0.23707561800256371seconds
+Image Insertion: 0.020941278897225857seconds
+Single Round for cam 1:0.3323014979250729seconds
+
+retrieving image ------>0.004382635001093149seconds
+Difference calculations: 0.05949184391647577seconds
+Object Detection: 0.2883921528700739seconds
+Image Insertion: 0.039979188004508615seconds
+Single Round for cam 1:0.3949527139775455seconds
+
+retrieving image ------>0.005028015002608299seconds
+Difference calculations: 0.05871505104005337seconds
+Object Detection: 0.33303568488918245seconds
+Image Insertion: 0.043697083136066794seconds
+Single Round for cam 1:0.44385152286849916seconds
+
+retrieving image ------>0.005155150080099702seconds
+Difference calculations: 0.04073539492674172seconds
+Object Detection: 0.33001310913823545seconds
+Image Insertion: 0.025836884044110775seconds
+Single Round for cam 1:0.40447440603747964seconds
+
+retrieving image ------>0.003733661025762558seconds
+Difference calculations: 0.03990051010623574seconds
+Object Detection: 0.3183552040718496seconds
+Image Insertion: 0.023379651131108403seconds
+Single Round for cam 1:0.38751454814337194seconds
+
+retrieving image ------>0.0037439519073814154seconds
+Difference calculations: 0.0410906879696995seconds
+Object Detection: 0.2938856049440801seconds
+Image Insertion: 0.02501341118477285seconds
+Single Round for cam 1:0.36588915903121233seconds
+
+retrieving image ------>0.004991851048544049seconds
+Difference calculations: 0.05425844597630203seconds
+Object Detection: 0.29304257803596556seconds
+Image Insertion: 0.023981489008292556seconds
+Single Round for cam 1:0.3795824151020497seconds
+
+retrieving image ------>0.004514729138463736seconds
+Difference calculations: 0.04440722009167075seconds
+Object Detection: 0.29752202401869seconds
+Image Insertion: 0.02702150517143309seconds
+Single Round for cam 1:0.3761373399756849seconds
+
+retrieving image ------>0.005095002939924598seconds
+Difference calculations: 0.05941445310600102seconds
+Object Detection: 0.3123391738627106seconds
+Image Insertion: 0.023739094147458673seconds
+Single Round for cam 1:0.40376500110141933seconds
+
+retrieving image ------>0.0042020410764962435seconds
+Difference calculations: 0.06213803798891604seconds
+Object Detection: 0.3187670900952071seconds
+Image Insertion: 0.027233736123889685seconds
+Single Round for cam 1:0.41475888807326555seconds
+
+retrieving image ------>0.005338227143511176seconds
+Difference calculations: 0.04604582488536835seconds
+Object Detection: 0.33747952803969383seconds
+Image Insertion: 0.02281709900125861seconds
+Single Round for cam 1:0.4151647971011698seconds
+
+retrieving image ------>0.004085039021447301seconds
+Difference calculations: 0.04501090291887522seconds
+Object Detection: 0.338864031014964seconds
+Image Insertion: 0.02612779405899346seconds
+Single Round for cam 1:0.4166749641299248seconds
+
+retrieving image ------>0.007667917991057038seconds
+Difference calculations: 0.04505565203726292seconds
+Object Detection: 0.2978183429222554seconds
+Image Insertion: 0.028317376971244812seconds
+Single Round for cam 1:0.39739646506495774seconds
+
+retrieving image ------>0.005603703903034329seconds
+Difference calculations: 0.046506197890266776seconds
+Object Detection: 0.30012882105074823seconds
+Image Insertion: 0.021407444030046463seconds
+Single Round for cam 1:0.3775361238513142seconds
+
+retrieving image ------>0.004528905032202601seconds
+Difference calculations: 0.06213685520924628seconds
+Object Detection: 0.32073494396172464seconds
+Image Insertion: 0.03682053415104747seconds
+Single Round for cam 1:0.42723460984416306seconds
+
+retrieving image ------>0.005390750011429191seconds
+Difference calculations: 0.055672029964625835seconds
+Object Detection: 0.32065418316051364seconds
+Image Insertion: 0.03104296885430813seconds
+Single Round for cam 1:0.416558493161574seconds
+
+retrieving image ------>0.005580253899097443seconds
+Difference calculations: 0.05193281196989119seconds
+Object Detection: 0.3044662750326097seconds
+Image Insertion: 0.02462788298726082seconds
+Single Round for cam 1:0.3900890750810504seconds
+
+retrieving image ------>0.004327320959419012seconds
+Difference calculations: 0.04489950183779001seconds
+Object Detection: 0.2211405138950795seconds
+Image Insertion: 0.02441656100563705seconds
+Single Round for cam 1:0.2976064619142562seconds
+
+retrieving image ------>0.005572717869654298seconds
+Difference calculations: 0.06602119700983167seconds
+Object Detection: 0.24399827513843775seconds
+Image Insertion: 0.027515640947967768seconds
+Single Round for cam 1:0.34680165303871036seconds
+
+retrieving image ------>0.005731434095650911seconds
+Difference calculations: 0.053252296987921seconds
+Object Detection: 0.2999130019452423seconds
+Image Insertion: 0.03070234996266663seconds
+Single Round for cam 1:0.3923148999456316seconds
+
+retrieving image ------>0.005316245835274458seconds
+Difference calculations: 0.04410590115003288seconds
+Object Detection: 0.2586281569674611seconds
+Image Insertion: 0.022152513964101672seconds
+Single Round for cam 1:0.3442502939142287seconds
+
+retrieving image ------>0.00565924821421504seconds
+Difference calculations: 0.06518708704970777seconds
+Object Detection: 0.188783701043576seconds
+Image Insertion: 0.0363565010484308seconds
+Single Round for cam 1:0.29980857903137803seconds
+
+retrieving image ------>0.005520881153643131seconds
+Difference calculations: 0.06422389205545187seconds
+Object Detection: 0.2878109151497483seconds
+Image Insertion: 0.029233686858788133seconds
+Single Round for cam 1:0.3908008970320225seconds
+
+retrieving image ------>0.006390514085069299seconds
+Difference calculations: 0.06038643419742584seconds
+Object Detection: 0.2755926880054176seconds
+Image Insertion: 0.028371659805998206seconds
+Single Round for cam 1:0.3746194080449641seconds
+
+retrieving image ------>0.007683278061449528seconds
+Difference calculations: 0.0630927779711783seconds
+Object Detection: 0.21252489578910172seconds
+Image Insertion: 0.025772961089387536seconds
+Single Round for cam 1:0.3130757969338447seconds
+
+retrieving image ------>0.004908635979518294seconds
+Difference calculations: 0.07199168810620904seconds
+Object Detection: 0.24634583294391632seconds
+Image Insertion: 0.027995538897812366seconds
+Single Round for cam 1:0.35467279399745166seconds
+
+retrieving image ------>0.00549096311442554seconds
+Difference calculations: 0.06953800795599818seconds
+Object Detection: 0.323483110871166seconds
+Image Insertion: 0.06518794898875058seconds
+Single Round for cam 1:0.4672224090900272seconds
+
+retrieving image ------>0.00472121499478817seconds
+Difference calculations: 0.05347997578792274seconds
+Object Detection: 0.28366461396217346seconds
+Image Insertion: 0.023458139039576054seconds
+Single Round for cam 1:0.3688983879983425seconds
+
+retrieving image ------>0.0082128020003438seconds
+Difference calculations: 0.06349784694612026seconds
+Object Detection: 0.29807754303328693seconds
+Image Insertion: 0.016860387986525893seconds
+Single Round for cam 1:0.39196254685521126seconds
+
+retrieving image ------>0.011632978916168213seconds
+Difference calculations: 0.05600793706253171seconds
+Object Detection: 0.2760452670045197seconds
+Image Insertion: 0.022559551987797022seconds
+Single Round for cam 1:0.36988322297111154seconds
+
+retrieving image ------>0.005662516923621297seconds
+Difference calculations: 0.05551490280777216seconds
+Object Detection: 0.2621608709450811seconds
+Image Insertion: 0.02181256003677845seconds
+Single Round for cam 1:0.3523987429216504seconds
+
+retrieving image ------>0.005107377888634801seconds
+Difference calculations: 0.05840521212667227seconds
+Object Detection: 0.2660185161512345seconds
+Image Insertion: 0.02550583891570568seconds
+Single Round for cam 1:0.3577077379450202seconds
+
+retrieving image ------>0.00437140092253685seconds
+Difference calculations: 0.05832829908467829seconds
+Object Detection: 0.28499865299090743seconds
+Image Insertion: 0.016297515016049147seconds
+Single Round for cam 1:0.36677589593455195seconds
+
+retrieving image ------>0.005105060990899801seconds
+Difference calculations: 0.04707554215565324seconds
+Object Detection: 0.23807704914361238seconds
+Image Insertion: 0.03283355594612658seconds
+Single Round for cam 1:0.32645930885337293seconds
+
+retrieving image ------>0.005191106116399169seconds
+Difference calculations: 0.05803355504758656seconds
+Object Detection: 0.18112844787538052seconds
+Image Insertion: 0.023186998907476664seconds
+Single Round for cam 1:0.271076173055917seconds
+

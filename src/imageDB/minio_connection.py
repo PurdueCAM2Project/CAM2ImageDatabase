@@ -10,7 +10,7 @@ import subprocess as sp
 import time
 import datetime
 import config
-
+import io
 
 class MinioConn:
 
@@ -122,8 +122,8 @@ class MinioConn:
         self.mc.make_bucket(bucket_name, location=location)
 
     # Upload a file from local storage to Minio server
-    def upload_single_file(self, bucket_name, object_name, local_file_path):
-        self.mc.fput_object(bucket_name, object_name, local_file_path)
+    def upload_single_file(self, bucket_name, object_name, image):
+        self.mc.put_object(bucket_name, object_name, io.BytesIO(image), len(image))
 
 
 if __name__ == '__main__':

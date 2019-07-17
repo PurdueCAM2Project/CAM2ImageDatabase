@@ -1,16 +1,3 @@
-#! /usr/bin/env python
-# coding=utf-8
-#================================================================
-#   Copyright (C) 2019 * Ltd. All rights reserved.
-#
-#   Editor      : VIM
-#   File name   : config.py
-#   Author      : YunYang1994
-#   Created date: 2019-02-28 13:06:54
-#   Description :
-#
-#================================================================
-
 from easydict import EasyDict as edict
 
 
@@ -23,7 +10,7 @@ cfg                             = __C
 __C.YOLO                        = edict()
 
 # Set the class name
-__C.YOLO.CLASSES                = "./detection/data/classes/coco.names"
+__C.YOLO.CLASSES                = "./detection/data/classes/my_classes.names"
 __C.YOLO.ANCHORS                = "./detection/data/anchors/basline_anchors.txt"
 __C.YOLO.MOVING_AVE_DECAY       = 0.9995
 __C.YOLO.STRIDES                = [8, 16, 32]
@@ -59,13 +46,7 @@ __C.TEST.DATA_AUG               = False
 __C.TEST.WRITE_IMAGE            = True
 __C.TEST.WRITE_IMAGE_PATH       = "./detection/data/detection/"
 __C.TEST.WRITE_IMAGE_SHOW_LABEL = False
-__C.TEST.WEIGHT_FILE            = "./detection/checkpoint/yolov3_test_loss=9.2099.ckpt-5"
+__C.TEST.WEIGHT_FILE            = "./detection/checkpoint/yolov3_test_loss=4.6469.ckpt-18"
 __C.TEST.SHOW_LABEL             = False
 __C.TEST.SCORE_THRESHOLD        = 0.3
 __C.TEST.IOU_THRESHOLD          = 0.45
-
-
-
-
-
-
