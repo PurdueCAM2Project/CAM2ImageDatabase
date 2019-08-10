@@ -1,0 +1,290 @@
+Number of frames processed for 2 : 350
+Runtime for process 2: 81.46936222631484 seconds
+Processed size: 2177324800
+Stored size: 209585963
+
+Number of frames processed for 2 : 350
+Runtime for process 2: 64.16991920629516 seconds
+Processed size: 2177324800
+Stored size: 209585963
+
+Number of frames processed for 2 : 350
+Runtime for process 2: 62.589448743499815 seconds
+Processed size: 2177324800
+Stored size: 209585963
+
+Number of frames processed for 0 : 16
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 16
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 16
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 16
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 16
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 16
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 16
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 16
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 16
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 16
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 16
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 16
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 16
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 16
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 16
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 2
+Runtime for process 2: 6.578378282021731 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 0 : 2
+Runtime for process 0: 6.563970636110753 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 0 : 2
+Runtime for process 0: 2.6927214469760656 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 2 : 2
+Runtime for process 2: 2.738593115005642 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 0 : 2
+Runtime for process 0: 2.5673726368695498 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 2 : 2
+Runtime for process 2: 2.633237369824201 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 1 : 3715
+Runtime for process 1: 54.4913808950223 seconds
+Processed size: 23104526592
+Stored size: 44007211
+
+Number of frames processed for 2 : 29
+Runtime for process 2: 3.529476153664291 seconds
+Processed size: 180406912
+Stored size: 5128895
+
+Number of frames processed for 1 : 3717
+Runtime for process 1: 64.45228166691959 seconds
+Processed size: 23116968448
+Stored size: 48068302
+
+Number of frames processed for 0 : 3717
+Runtime for process 0: 64.70724723208696 seconds
+Processed size: 23116968448
+Stored size: 53143150
+
+Number of frames processed for 0 : 29
+Runtime for process 0: 3.431422784458846 seconds
+Processed size: 180406912
+Stored size: 5132834
+
+Number of frames processed for 1 : 174
+Runtime for process 1: 5.85249241348356 seconds
+Processed size: 1082441472
+Stored size: 7067381
+
+Number of frames processed for 1 : 29
+Runtime for process 1: 3.557794169522822 seconds
+Processed size: 180406912
+Stored size: 5132834
+
+Number of frames processed for 1 : 29
+Runtime for process 1: 3.508968385402113 seconds
+Processed size: 180406912
+Stored size: 5127006
+
+Number of frames processed for 0 : 174
+Runtime for process 0: 5.930900243576616 seconds
+Processed size: 1082441472
+Stored size: 8057798
+
+Number of frames processed for 1 : 29
+Runtime for process 1: 3.539201152510941 seconds
+Processed size: 180406912
+Stored size: 5132834
+
+Number of frames processed for 1 : 353
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 354
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 353
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 353
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 354
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 353
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 353
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 353
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 354
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 353
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 353
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 354
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 354
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 353
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 353
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 1 : 353
+Runtime for process 1: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 354
+Runtime for process 0: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 2 : 353
+Runtime for process 2: 0 seconds
+Processed size: 0
+Stored size: 0
+
+Number of frames processed for 0 : 2
+Runtime for process 0: 6.681456997059286 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 2 : 2
+Runtime for process 2: 6.681446230970323 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 2 : 2
+Runtime for process 2: 2.7341829068027437 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 0 : 2
+Runtime for process 0: 2.782019096892327 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 2 : 2
+Runtime for process 2: 6.888357906136662 seconds
+Processed size: 12441856
+Stored size: 1216586
+
+Number of frames processed for 0 : 2
+Runtime for process 0: 6.877181769814342 seconds
+Processed size: 12441856
+Stored size: 1216586
+

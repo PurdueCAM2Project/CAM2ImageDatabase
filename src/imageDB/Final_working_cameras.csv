@@ -1,0 +1,11 @@
+Camera_ID,Country,State,City,Latitude,Longtitude,Resolution_w,Resolution_h,Ip,Port,Image_path,Video_path
+5b0d32ee84d57c0004cb99db,MA,Null,,32,-5,288,704,196.12.203.72,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d326d84d57c0004cb9957,SE,Null,,62,15,720,1280,194.103.218.16,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0d8045bb0c0004279107,AT,Null,Bad Goisern,47.6333,13.6167,576,704,193.33.210.30,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0b8d45bb0c0004278f24,US,CA,La Jolla,32.8807,-117.236,480,704,137.110.112.53,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0afe45bb0c0004278e93,US,MO,Columbia,38.9033,-92.1022,1080,1920,128.206.143.98,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0a3e45bb0c0004278dcf,US,Null,,38,-97,600,800,12.154.97.245,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d096e45bb0c0004278cfd,US,IL,Wheeling,42.1286,-87.9237,480,640,50.76.244.73,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d095645bb0c0004278ce7,FR,Null,Grenoble,45.1715,5.7224,480,640,147.173.216.121,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d095245bb0c0004278ce3,DE,Null,,51,9,480,640,80.73.112.171,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d094745bb0c0004278cd8,US,IL,Schaumburg,42.0093,-88.0926,450,800,199.20.14.240,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi

@@ -1,3 +1,7 @@
+"""
+This file contains important variable initializations used in many functions.
+"""
+
 CAM_HEADER=["Camera_ID", "Country", "State", \
                 "City", "Latitude", "Longtitude", \
                 "Resolution_w", "Resolution_h", \

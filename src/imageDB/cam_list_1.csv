@@ -1,10 +1,8 @@
 Camera_ID,Country,State,City,Latitude,Longtitude,Resolution_w,Resolution_h,Ip,Port,Image_path,Video_path
 5b0d32ee84d57c0004cb99db,MA,Null,32,,-5,704,576,196.12.203.72,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5b0d326d84d57c0004cb9957,SE,Null,62,,15,1280,720,194.103.218.16,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
-5b0d326484d57c0004cb994d,PL,Null,52,,20,704,480,193.46.68.18,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5b0d0d8045bb0c0004279107,AT,Null,47.6333,Bad Goisern,13.6167,704,576,193.33.210.30,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5b0d0c6545bb0c0004278ffa,US,CO,39.5186,Parker,-104.761,640,480,165.127.23.131,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
-5b0d0b8d45bb0c0004278f24,US,CA,32.8807,La Jolla,-117.236,704,480,137.110.112.53,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5b0d0afe45bb0c0004278e93,US,MO,38.9033,Columbia,-92.1022,1920,1080,128.206.143.98,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5b0d0afa45bb0c0004278e90,US,AZ,32.2338,Tucson,-110.95,640,480,128.196.21.175,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5b0d0af545bb0c0004278e8c,US,AZ,32.2338,Tucson,-110.95,640,480,128.196.100.223,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
@@ -116,3 +114,5 @@ Camera_ID,Country,State,City,Latitude,Longtitude,Resolution_w,Resolution_h,Ip,Po
 5b0cfd0f45bb0c00042780d4,US,AK,Fairbanks,64.8378,-147.716,640,480,137.229.93.113,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5b0cfd1045bb0c00042780d6,FI,Null,,64,26,640,480,194.8.226.46,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5b0cfd9745bb0c0004278162,US,MA,Worcester,42.2423,-71.8099,1280,720,140.232.203.246,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0b8d45bb0c0004278f24,US,CA,32.8807,La Jolla,-117.236,704,480,137.110.112.53,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d326484d57c0004cb994d,PL,Null,52,,20,704,480,193.46.68.18,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi

@@ -3,6 +3,10 @@ import numpy as np
 import csv
 
 def diff():
+    """
+    Calculate the difference between two images.
+    """
+
     img1 = cv2.imread("./img1.jpeg")
 
     print(img1)

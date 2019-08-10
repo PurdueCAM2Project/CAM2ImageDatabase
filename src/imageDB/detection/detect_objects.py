@@ -12,14 +12,14 @@ import time
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ["CUDA_VISIBLE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0, 1, 2"
 
 class YoloTest(object):
-    def __init__(self):
+    def __init__(self, PID, classes):
         #import tensorflow as tf
         self.input_size       = cfg.TEST.INPUT_SIZE
         #self.anchor_per_scale = cfg.YOLO.ANCHOR_PER_SCALE
-        self.classes          = utils.read_class_names(cfg.YOLO.CLASSES)
+        self.classes          = classes #utils.read_class_names(cfg.YOLO.CLASSES)
         self.num_classes      = len(self.classes)
         #self.anchors          = np.array(utils.get_anchors(cfg.YOLO.ANCHORS))
         self.score_threshold  = cfg.TEST.SCORE_THRESHOLD
@@ -27,9 +27,17 @@ class YoloTest(object):
         self.moving_ave_decay = cfg.YOLO.MOVING_AVE_DECAY
         #self.annotation_path  = cfg.TEST.ANNOT_PATH
         self.weight_file      = cfg.TEST.WEIGHT_FILE
+        self.PID = PID
         #self.write_image      = cfg.TEST.WRITE_IMAGE
         #self.write_image_path = cfg.TEST.WRITE_IMAGE_PATH
         #self.show_label       = cfg.TEST.SHOW_LABEL
+        #self.show_label       = cfg.TEST.SHOW_LABEL
+
+        if PID == 3:
+            os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+        else:
+            os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
 
         with tf.name_scope('input'):
             self.input_data = tf.placeholder(dtype=tf.float32, name='input_data')
@@ -40,9 +48,21 @@ class YoloTest(object):
 
         with tf.name_scope('ema'):
             ema_obj = tf.train.ExponentialMovingAverage(self.moving_ave_decay)
-
         config = tf.ConfigProto()
-        config.gpu_options.visible_device_list = '0,1'
+        '''
+        if PID == 0:
+            config = tf.ConfigProto(device_count = {'GPU':2})
+            print ('if')
+        elif PID == 1:
+            config = tf.ConfigProto(device_count = {'GPU':2})
+            print ('elif')
+        else:
+            config = tf.ConfigProto(device_count = {'GPU':2})
+            print ('else')
+        '''
+
+        #config.gpu_options.visible_device_list = '0' #this line not doing anythin
+        #config.gpu_options.per_process_gpu_memory_fraction = 0.33
         config.gpu_options.allow_growth = True
         config.allow_soft_placement=True
         self.sess = tf.Session(config=config)
@@ -72,4 +92,4 @@ class YoloTest(object):
             image = utils.draw_bbox(image, bboxes)
             filename = str(time.time())
             cv2.imwrite("./detected_images/" + filename + ".jpg", image)
-        return bboxes, self.classes
+        return bboxes

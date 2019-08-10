@@ -66,6 +66,7 @@ import detection.config as cfg
 # minio error
 from minio.error import ResponseError
 
+
 class ImageDB:
 
     def __init__(self):
@@ -77,22 +78,34 @@ class ImageDB:
 
     def init_tables(self):
         # drop if needed
-
+        '''
+        Drops all tables in vitess and recrates them
+        '''
         self.vitess.dropCameraTable()
         self.vitess.dropImageTable()
         self.vitess.dropFeatureTable()
         self.vitess.dropRelationTable()
         self.vitess.dropBoxTable()
+        self.vitess.dropCropImgTable()
 
         self.vitess.createCameraTable()
         self.vitess.createImageTable()
         self.vitess.createFeatureTable()
         self.vitess.createRelationTable()
         self.vitess.createBoxTable()
+        self.vitess.createCropImgTable()
 
     # check if the given file has desired header
     @classmethod
     def check_header(self, csv_file, csv_header, required_header):
+        """
+        Checks if the given file has the desired header
+
+        :param csv_file:
+        :param csv_header:
+        :param required_header:
+        :return: 1 if header is correct, 0 if there is an error
+        """
 
         if required_header == config.IF_HEADER:
             # for image feature csv only, check if header is there is enough
@@ -104,10 +117,14 @@ class ImageDB:
         elif csv_header == required_header:
             return 1
         elif len(csv_header) < len(required_header):
+            print ('csv_header: ' , len(csv_header))
+            print ('required_header: ' , len(required_header))
             raise ValueError('\nFile ' + csv_file + ' is missing required column.')
             return 0
 
         elif len(csv_header) > len(required_header):
+            print ('csv_header: ' , len(csv_header))
+            print ('required_header: ' , len(required_header))
             raise ValueError('\nFile ' + csv_file + ' exceeds the expected number of columns.')
             return 0
         else:
@@ -118,6 +135,16 @@ class ImageDB:
     # TODO: the csv file integrity check incorporate with Lakshya's code
     @classmethod
     def read_data(self, csv_file, required_header, data_format, folder_path):
+        """
+        After checking for the correct header, reads the data from the csv file
+
+        :param csv_file:
+        :param required_header:
+        :param data_format:
+        :param folder_path:
+        :return: the data from the csv file as well the header
+        """
+
         # Get the list of files in the folder containing the images
         if data_format != 'tuple':
             files_in_folder = os.listdir(folder_path)
@@ -134,10 +161,10 @@ class ImageDB:
         else:
             print('Must specify to read as dict, list of lists or tuples.')
             return 0, 0
-        with open(csv_file, 'rt', encoding = 'utf-8-sig') as csvfile:
+        with open(csv_file, 'rt', encoding='utf-8-sig') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             reader = list(reader)
-            # check if it has the corret header
+            # check if it has the correct header
             if ImageDB.check_header(csv_file, reader[0], required_header):
                 header = reader[0]
                 reader = reader[1:]
@@ -197,6 +224,14 @@ class ImageDB:
         return 0, 0
 
     def single_insert_camera(self, camera_csv):
+
+        """
+        Reads csv file of camera information, checks that header is correct then isnerts information into Vitess.
+        Used for small number for cameras.
+
+        :param camera_csv:                  csv file, camera information
+        :return: 0 if correctly inserted
+        """
         camera_list, camera_header = ImageDB.read_data(camera_csv, config.CAM_HEADER, 'tuple', None)
 
         if camera_list and camera_header:
@@ -216,6 +251,14 @@ class ImageDB:
 
 
     def batch_insert_camera(self, camera_csv):
+
+        """
+        Reads csv file of camera information, checks that header is correct then isnerts information into Vitess.
+        Used for large number for cameras.
+
+        :param camera_csv:                  csv file, camera information
+        :return: 0 if correctly inserted
+        """
 
         # camera_list is a list of tuple, each element is a row in csv
         camera_list, camera_header = ImageDB.read_data(camera_csv, config.CAM_HEADER, 'tuple', None)
@@ -240,6 +283,13 @@ class ImageDB:
 
 
     def insert_BoundBox(self, boundbox_csv):
+
+        """
+        TODO: Is this function necessary?
+
+        :param boundbox_csv:
+        :return:
+        """
         ''' name_list is a list of tuple, each element is a row in csv.
         It contains the image name, feature name along with bounding boxes. '''
         name_list, name_header = ImageDB.read_data(boundbox_csv, config.BOX_NAME_HEADER, 'tuple', None)
@@ -268,10 +318,26 @@ class ImageDB:
         else:
             return 0
 
-
     # this function should read one image and corresponding bounding box
-    def insert_image(self, npImage, image_name, cam_ID, isprocessed, bounding_box, classes, image_date, image_time,
-                     image_size, class_dict):
+    def insert_image(self, image_name, cam_ID, isprocessed, bounding_box, classes, image_date, image_time,
+                     image_size, class_dict, path):
+
+        """
+        Inserts image metadata, image features, bounding boxes of objects in image into Vitess and uploads
+        the image into Minio
+
+        :param image_name:      str, name of image
+        :param cam_ID:          str, ID of camera from image was retrieved
+        :param isprocessed:     int, check if image passed through object detection
+        :param bounding_box:    list, bounding box coordinates for detected object
+        :param classes:         dict, all the classes that can be detected by object detection
+        :param image_date:      str, data image was retrieved
+        :param image_time:      str, time image was retrieved
+        :param image_size:      str, size of image
+        :param class_dict:      dict, classes and their ID in Vitess
+        :param path:            str, path where image is written
+        """
+
         # Variables for recording time taken to insert images
         try:
             # generate the image metadata for image_table
@@ -286,16 +352,12 @@ class ImageDB:
                     num_of_feature[feature_name] = 1
                 else:
                     num_of_feature[feature_name] += 1
+                # box[i]: confidence, xmin, xmax, ymin, ymax
                 self.vitess.insertBox(
                     tuple([image_id, class_dict[feature_name], box[4], box[0], box[2], box[1], box[3]]))
-            # confidence, xmin, xmax, ymin, ymax
-            #self.vitess.insertBox(tuple([image_id, self.vitess.getFeature(feature_name), box[4], box[0], box[2], box[1], box[3]]))
-
-
 
             # Insert metadata into the relation table
             for key in num_of_feature:
-                #self.vitess.insertImagefeatures(tuple([self.vitess.getFeature(key), image_id, num_of_feature[key]]))
                 self.vitess.insertImagefeatures(tuple([class_dict[key], image_id, num_of_feature[key]]))
 
             # sort features in descending
@@ -312,11 +374,13 @@ class ImageDB:
             except Exception as e:
                 print(e)
 
-            minio_link = self.minio.endpoint + "/" + bucket_name + "/" + image_id
+            minio_link = bucket_name #self.minio.endpoint + "/" + bucket_name + "/" + image_id
             dataset = bucket_name
 
             image = [image_id, name, cam_ID, image_date, image_time, image_type, image_size, minio_link, dataset,
                      isprocessed]
+            #if bucket_name == "person" or bucket_name == "none":
+            #if bucket_name == "car":
             self.vitess.insertImage(tuple(image))
             # Image is inserted after all database interaction as there is no rollback supported by minio.
             # We thus make sure that we only insert image when information is written to database.
@@ -326,23 +390,25 @@ class ImageDB:
             if self.minio.mc.bucket_exists(bucket_name) is False:
                 self.minio.create_bucket(bucket_name)
             # upload image to bucket
-            self.minio.upload_single_file(bucket_name, image_id, npImage)
+            #if bucket_name == "person" or bucket_name == "none":
+            #if bucket_name == "car":
+            self.minio.upload_single_file(bucket_name, image_id, path)
 
             self.vitess.mydb.commit()
 
         except mysql.connector.Error as e:
             print('Error inserting image information: ' + str(e))
             self.vitess.mydb.rollback()
-            #sys.exit()
+            # sys.exit()
             pass
         except ResponseError as e1:
             print('Error uploading image: ' + str(e1))
             self.vitess.mydb.rollback()
-            #sys.exit()
+            # sys.exit()
             pass
         except Exception as e2:
             print(e2)
-            #sys.exit()
+            # sys.exit()
             pass
 
 
@@ -414,7 +480,7 @@ class ImageDB:
                     file_path = folder_path + image_list[i][0]
 
                     # prepare the minio link before inserting
-                    minio_link = ""#self.minio.endpoint + ":/" + bucket_name + ":/" + image_id
+                    minio_link = "" # self.minio.endpoint + ":/" + bucket_name + ":/" + image_id
 
                     # TODO: which column is feature "minio_link"? -- 6
                     image_list[i][6] = minio_link
@@ -463,7 +529,7 @@ class ImageDB:
                 self.vitess.mydb.rollback()
                 sys.exit()
             except ResponseError as e1:
-                print('Error uploading image: ' + str(e))
+                print('Error uploading image: ' + str(e1))
                 self.vitess.mydb.rollback()
                 sys.exit()
             except Exception as e2:
@@ -472,9 +538,15 @@ class ImageDB:
         else:
             return 0
 
-
     # Get all cameras information
     def get_all_cameras(self, num_of_cams):
+
+        """
+        Queries Vitess for a given number of camera based on input
+
+        :param num_of_cams:     int, number of cameras desired
+        :return:                list, information for the requested number of cameras
+        """
         camera_data = self.vitess.getAllCameras(num_of_cams)
 
         if camera_data == -1:
@@ -485,46 +557,44 @@ class ImageDB:
 
         return camera_data
 
-    '''This fucntion takes a dictionary of arguments from the CLI and performs the following tasks - 1. Retreieved Image ID's from
-    the Vitess database that match the query parameters. 2. Stores a csv file of all the results. 3. Calls the minio docwnload
-    function to download the images if the download flag was specified.'''
     def get_image(self, arguments):
+
+        """
+        This function takes a dictionary of query arguments and:
+            1. Retrieves information of images that meet criteria from Vitess
+            2. Downloads these images from Minio if download flag in arguments is True
+
+        :param arguments:       dict, set of arguments to based query on
+        """
         try:
             if arguments != None:
-                result = self.vitess.getImage(arguments)
+                result = self.vitess.getImageV2(arguments)
                 if result == 0:
                     print("No files match your query. Please try again.")
                 elif result == -1:
                     print("Please pass valid arguments.")
                 else:
-                    '''
-                    fp = open('query_result.csv', 'w')
-                    outputFile = csv.writer(fp, lineterminator='\n')
-                    outputFile.writerow(["IV_ID", "IV_Name", "Image_Camera_ID", "IV_date", "IV_time", "File_type", "File_size", "Minio_link", "Dataset",
-                                        "Is_processed", "Camera_ID", "Country", "State", "City", "Latitude", "Longitude", "Resolution_w", "Resolution_h"])
-                    outputFile.writerows(result)
-                    fp.close()
-                    '''
                     print("Results were found.")
-
                 if arguments['download'] is not None:
+
+                    size_limit = arguments['size']
                     data_dict = {}
                     file_names = []
                     bucket_names = []
                     bucket_link = []
                     for row in result:
-                        file_names.append(row[0])
+                        file_names.append(row[1])
                         bucket_names.append(row[5])
                         bucket_link.append(row[4])
                     data_dict["File_Names"] = file_names
                     data_dict["Bucket_Name"] = bucket_names
                     data_dict["Bucket_Link"] = bucket_link
                     df = pd.DataFrame(data_dict)
-                    self.minio.batch_download(self.minio.mc, df)
+                    self.minio.batch_video_download(self.minio.mc, df, size_limit)
 
 
         except mysql.connector.Error as e:
-            print('Error retreiving image information: ' + str(e))
+            print('Error retrieving image information: ' + str(e))
             sys.exit()
         except ResponseError as e1:
             print('Error downloading image: ' + str(e1))
@@ -535,6 +605,16 @@ class ImageDB:
 
 
     def get_video(self, arguments):
+
+        """
+        This function takes a dictionary of query arguments and:
+            1. Retrieves information of images that meet criteria from Vitess
+            2. Sorts images by Camera ID and then Timestamp
+            3. Downloads images from Minio
+            4. Creates videos with the images were downloaded
+
+        :param arguments:       dict, set of arguments to base query on
+        """
         try:
             if arguments != None:
                 results = self.vitess.getImage(arguments)
@@ -568,9 +648,11 @@ class ImageDB:
                                     video_list.append(frames_list)
                                     frames_list = []
 
-                                d1 = datetime.strptime(str(sameID_list[i-1][2]) + str(sameID_list[i-1][3])[6:], '%Y-%m-%d %H:%M:%S')
-                                d2 = datetime.strptime(str(sameID_list[i][2]) + str(sameID_list[i][3])[6:], '%Y-%m-%d %H:%M:%S')
-                                time_gap =(d2 - d1).total_seconds()
+                                d1 = datetime.strptime(str(sameID_list[i-1][2]) + str(sameID_list[i-1][3])[6:],
+                                                       '%Y-%m-%d %H:%M:%S')
+                                d2 = datetime.strptime(str(sameID_list[i][2]) + str(sameID_list[i][3])[6:],
+                                                       '%Y-%m-%d %H:%M:%S')
+                                time_gap = (d2 - d1).total_seconds()
                                 # continue or break frames_list depending on time_gap
                                 if time_gap > frame_gap:
                                     # if condition is experimental. Not sure details about threshold and implementation
@@ -603,10 +685,10 @@ class ImageDB:
                         images = os.listdir('output_images/')
                         images.sort()
                         for i in images:
-                            #print(os.path.join('Cat2/', filename))
+                            # print(os.path.join('Cat2/', filename))
                             img = cv2.imread(os.path.join('output_images/', i))
-                            #cv2.imshow('image', img)
-                            #cv2.waitKey(500)
+                            # cv2.imshow('image', img)
+                            # cv2.waitKey(500)
 
                             height, width, layers = img.shape
                             size = (width, height)
@@ -627,7 +709,6 @@ class ImageDB:
                         self.minio.rm_cmd("output_images")
                         self.minio.mkdir_cmd("output_images")
 
-
         except mysql.connector.Error as e:
             print('Error retreiving image information: ' + str(e))
             sys.exit()
@@ -639,6 +720,12 @@ class ImageDB:
             sys.exit()
 
     def get_all(self):
+
+        """
+        Queries all images from Vitess then download images from Minio
+
+        :return:
+        """
         try:
             results = self.vitess.getAll()
             data_dict={}
@@ -664,4 +751,26 @@ class ImageDB:
             sys.exit()
         except Exception as e2:
             print(e2)
+            sys.exit()
+
+    def cam_images(self):
+
+        """
+        Queries all images from Vitess and sorts them based on camara to determine the total number of images
+        stored for each camera
+        """
+        try:
+            results = self.vitess.getAll()
+            df_results = pd.DataFrame(results)
+            df_sorted = df_results.groupby([0])
+            unique_camID = df_results[0].unique()
+
+            sameID = []
+            i = 0
+            for cam in unique_camID:
+                sameID.append(df_sorted.get_group(cam))
+                print("CamID:{} stored {} images".format(cam, len(sameID[i])))
+                i += 1
+            return
+        except:
             sys.exit()
