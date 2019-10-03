@@ -34,7 +34,7 @@ class DBbuild:
 
         self.db.init_tables()
         self.db.single_insert_camera(filename)
-        self.vitess
+        self.vitess.mydb.commit()
 
     def append(self, filename):
         """
@@ -103,13 +103,13 @@ class DBbuild:
         ??
         :return:
         """
-        #Query 1
+        # Query 1
         label = 'person'
         start_query = time.time()
         self.vitess.allFramesWithFeature(label)
         end_query1 = time.time() - start_query
 
-        #Query 2
+        # Query 2
         Timestamp1 = '14:43:00'
         Timestamp2 = '14:43:10'
         CountryName = 'MA'
@@ -118,7 +118,7 @@ class DBbuild:
         frames_between_timestamps = self.vitess.framesBetweenTimestamps(Timestamp1, Timestamp2, CountryName, StateName)
         end_query2 = time.time() - start_query
 
-        #Query 3
+        # Query 3
         start_query = time.time()
         self.vitess.findOneImage()
         end_query2 = time.time() - start_query

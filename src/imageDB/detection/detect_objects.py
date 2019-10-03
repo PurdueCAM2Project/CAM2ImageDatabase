@@ -12,7 +12,8 @@ import time
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 os.environ["CUDA_VISIBLE_ORDER"] = "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"] = "0, 1, 2"
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+
 
 class YoloTest(object):
     def __init__(self, PID, classes):
@@ -33,11 +34,9 @@ class YoloTest(object):
         #self.show_label       = cfg.TEST.SHOW_LABEL
         #self.show_label       = cfg.TEST.SHOW_LABEL
 
-        if PID == 3:
-            os.environ["CUDA_VISIBLE_DEVICES"] = "1"
-        else:
-            os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
+        os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+        gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.333)
 
         with tf.name_scope('input'):
             self.input_data = tf.placeholder(dtype=tf.float32, name='input_data')
@@ -48,7 +47,7 @@ class YoloTest(object):
 
         with tf.name_scope('ema'):
             ema_obj = tf.train.ExponentialMovingAverage(self.moving_ave_decay)
-        config = tf.ConfigProto()
+        config = tf.ConfigProto(gpu_options=gpu_options)
         '''
         if PID == 0:
             config = tf.ConfigProto(device_count = {'GPU':2})

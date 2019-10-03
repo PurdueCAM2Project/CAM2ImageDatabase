@@ -11,7 +11,7 @@ def findmin(min_list):
     return min_list.index(min(min_list))
 
 
-def setup_cams(data, coords):
+def setup_cams(data):
     """
     Using information from arguments, initialize a camera object.
 
@@ -20,17 +20,14 @@ def setup_cams(data, coords):
     :return: camera object
     """
     # Create camera object
-    cam = Camera(camera_id=data[0], ip_address=data[1], image_path=data[2], video_path=data[3],
-                 x_max=coords[0], x_min=coords[1], y_max=coords[2], y_min=coords[3])
+    cam = Camera(camera_id=data[0], ip_address=data[1], image_path=data[2], video_path=data[3])
 
     # Initialize camera capture object
     cam.capture = cv2.VideoCapture(cam.video_path)
-
     return cam
 
 
-# TODO: camera ID should be seperated from PID
-def setup_vids(video, PID, is_real_camera):
+def setup_vids(video, PID, is_real_camera, k):
     """
     Using information from arguments, initialize a camera object from a video file.
 
@@ -50,16 +47,9 @@ def setup_vids(video, PID, is_real_camera):
             coords = [0, 1300, 300, 1080]
         elif video == 'long_video_moving.mp4':
             coords = [0, 1920, 400, 1080]
-
         # Create camera object
-        cam = Camera(camera_id=str(PID), ip_address='0000', image_path=video, video_path=video, x_max=coords[0],
-                 x_min=coords[1], y_max=coords[2], y_min=coords[3])
-
-    elif is_real_camera == 'public_vid':
-        # Create camera object
-        cam = Camera(camera_id=str(PID), ip_address='0000', image_path=video, video_path=video, x_max=288,
-                 x_min=0, y_max=360, y_min=0)
-
+        cam = Camera(camera_id= '0', ip_address='0000', image_path=video, video_path=video, x_max=coords[0], x_min=coords[1], y_max=coords[2], y_min=coords[3])
+        #video + str(PID) + '_' + str(k)
     # Initialize camera capture object
     cam.capture = cv2.VideoCapture(video)
 
@@ -69,7 +59,7 @@ def setup_vids(video, PID, is_real_camera):
 def divide_cams(info_list, num_of_cams, num_procs):
     """
     Using the info_list, distribute the camera workload based on normalized values for
-    each cameras frame rate and resolution.
+    each camera's frame rate and resolution.
 
     :param info_list: camera information
     :param num_of_cams: number of camera objects to be divided

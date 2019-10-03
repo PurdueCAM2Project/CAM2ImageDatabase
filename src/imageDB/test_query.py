@@ -9,12 +9,12 @@ def query_test():
    vq_time_list = []
    # TODO: arguments type
 
-   arguments = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': None, 'Camera_ID': None,
-                'date': None, 'start_time': None, 'end_time': None, 'download': True, 'feature': ["car"], 'size': 4000}
+   arguments = {'latitude': None, 'longitude': None, 'city': None, 'state': None, 'country': None, 'Camera_ID': '0',
+                'date': None, 'start_time': None, 'end_time': None, 'download': "True", 'feature': None, 'size': 5000}
 
    query_time = time.time()
    ####
-   db.get_image(arguments)
+   db.get_video(arguments)
    #db.cam_images()
    ####
    print("Time taken to query: {}".format(time.time() - query_time))

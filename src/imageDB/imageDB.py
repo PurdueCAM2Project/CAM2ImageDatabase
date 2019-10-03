@@ -81,6 +81,7 @@ class ImageDB:
         '''
         Drops all tables in vitess and recrates them
         '''
+
         self.vitess.dropCameraTable()
         self.vitess.dropImageTable()
         self.vitess.dropFeatureTable()
@@ -367,7 +368,7 @@ class ImageDB:
             try:
                 if num_of_feature.get('car', -1) > num_of_feature.get('person', -1):
                     bucket_name = 'car'
-                elif num_of_feature.get('car', -1) < num_of_feature.get('person', -1):
+                elif num_of_feature.get('car', -1) <= num_of_feature.get('person', -1):
                     bucket_name = 'person'
                 else:
                     bucket_name = 'none'
@@ -379,31 +380,30 @@ class ImageDB:
 
             image = [image_id, name, cam_ID, image_date, image_time, image_type, image_size, minio_link, dataset,
                      isprocessed]
-            #if bucket_name == "person" or bucket_name == "none":
-            #if bucket_name == "car":
+
             self.vitess.insertImage(tuple(image))
             # Image is inserted after all database interaction as there is no rollback supported by minio.
             # We thus make sure that we only insert image when information is written to database.
             # If error occurs while inserting the image, we only need to rollback database operations
 
             # create the bucket if not existed
-            if self.minio.mc.bucket_exists(bucket_name) is False:
-                self.minio.create_bucket(bucket_name)
+            if self.minio.mc.bucket_exists(dataset) is False:
+                self.minio.create_bucket(dataset)
             # upload image to bucket
-            #if bucket_name == "person" or bucket_name == "none":
-            #if bucket_name == "car":
-            self.minio.upload_single_file(bucket_name, image_id, path)
+            self.minio.upload_single_file(dataset, image_id, path)
 
             self.vitess.mydb.commit()
 
         except mysql.connector.Error as e:
             print('Error inserting image information: ' + str(e))
             self.vitess.mydb.rollback()
+            self.vitess.mydb.commit()
             # sys.exit()
             pass
         except ResponseError as e1:
             print('Error uploading image: ' + str(e1))
             self.vitess.mydb.rollback()
+            self.vitess.mydb.commit()
             # sys.exit()
             pass
         except Exception as e2:
@@ -590,7 +590,7 @@ class ImageDB:
                     data_dict["Bucket_Name"] = bucket_names
                     data_dict["Bucket_Link"] = bucket_link
                     df = pd.DataFrame(data_dict)
-                    self.minio.batch_video_download(self.minio.mc, df, size_limit)
+                    self.minio.batch_video_download(self.minio.mc, df, size_limit, True)
 
 
         except mysql.connector.Error as e:
@@ -600,6 +600,7 @@ class ImageDB:
             print('Error downloading image: ' + str(e1))
             sys.exit()
         except Exception as e2:
+            print("Error was:")
             print(e2)
             sys.exit()
 
@@ -623,24 +624,24 @@ class ImageDB:
                 elif results == -1:
                     print("Please pass valid arguments.")
                 else:
-                    df_results= pd.DataFrame(results)
-                    #df_results[0] is the CamID column.
+                    df_results = pd.DataFrame(results)
+                    # df_results[0] is the CamID column.
                     unique_camID = df_results[0].unique()
                     sorted_list = df_results.groupby([0])
 
                     video_list = []
-                    #Gap between frames. Depends on fps threshold
+                    # Gap between frames. Depends on fps threshold
                     fps = 10.0
-                    frame_gap = 100#1.0 / fps
-                    video_length = 100 # default to be 60 sec
+                    frame_gap = 1  # 1.0 / fps
+                    video_length = 100  # default to be 60 sec
 
                     for cam in unique_camID:
-                        #sort[2,3] sorts by IV_date and IV_time
-                        sameID_list = sorted_list.get_group(cam).sort_values(by=[2,3]).values.tolist()
-
-                        frames_list = [] #emptying list
+                        # sort[2,3] sorts by IV_date and IV_time
+                        sameID_list = sorted_list.get_group(cam).sort_values(by=[2, 3]).values.tolist()
+                        '''
+                        frames_list = []  # emptying list
                         for i in range(len(sameID_list)):
-                            #first image in frame list requires no check
+                            # first image in frame list requires no check
                             if i == 0 or len(frames_list) == 0:
                                 frames_list.append(sameID_list[i])
                             else:
@@ -657,11 +658,14 @@ class ImageDB:
                                 if time_gap > frame_gap:
                                     # if condition is experimental. Not sure details about threshold and implementation
                                     # threshold len set to min 10fps for 10sec => 100 images
-                                    if len(frames_list) >= 100:
+                                    if len(frames_list) >= 1:
                                         video_list.append(frames_list)
                                     frames_list = []
                                 else:
                                     frames_list.append(sameID_list[i])
+                                    '''
+                        video_list = []
+                        video_list.append(sameID_list)
 
                     for i in range(len(video_list)):
                         frames_list = video_list[i]
@@ -677,7 +681,7 @@ class ImageDB:
                         data_dict["Bucket_Name"] = bucket_names
                         data_dict["Bucket_Link"] = bucket_link
                         df = pd.DataFrame(data_dict)
-                        self.minio.batch_video_download(self.minio.mc, df)
+                        self.minio.batch_video_download(self.minio.mc, df, 0, False)
                         print("download complete")
 
                         img_array = []
@@ -710,7 +714,7 @@ class ImageDB:
                         self.minio.mkdir_cmd("output_images")
 
         except mysql.connector.Error as e:
-            print('Error retreiving image information: ' + str(e))
+            print('Error retrieving image information: ' + str(e))
             sys.exit()
         except ResponseError as e1:
             print('Error downloading image: ' + str(e1))

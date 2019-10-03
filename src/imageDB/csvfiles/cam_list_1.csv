@@ -1,0 +1,118 @@
+Camera_ID,Country,State,City,Latitude,Longtitude,Resolution_w,Resolution_h,Ip,Port,Image_path,Video_path
+5b0d32ee84d57c0004cb99db,MA,Null,32,,-5,704,576,196.12.203.72,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d326d84d57c0004cb9957,SE,Null,62,,15,1280,720,194.103.218.16,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0d8045bb0c0004279107,AT,Null,47.6333,Bad Goisern,13.6167,704,576,193.33.210.30,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0c6545bb0c0004278ffa,US,CO,39.5186,Parker,-104.761,640,480,165.127.23.131,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0afe45bb0c0004278e93,US,MO,38.9033,Columbia,-92.1022,1920,1080,128.206.143.98,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0afa45bb0c0004278e90,US,AZ,32.2338,Tucson,-110.95,640,480,128.196.21.175,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0af545bb0c0004278e8c,US,AZ,32.2338,Tucson,-110.95,640,480,128.196.100.223,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0a3e45bb0c0004278dcf,US,Null,38,,-97,800,600,12.154.97.245,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d096e45bb0c0004278cfd,US,IL,42.1286,Wheeling,-87.9237,,,50.76.244.73,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d095645bb0c0004278ce7,FR,Null,45.1715,Grenoble,5.7224,640,480,147.173.216.121,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d095245bb0c0004278ce3,DE,Null,51,,9,640,480,80.73.112.171,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d094745bb0c0004278cd8,US,IL,42.0093,Schaumburg,-88.0926,800,450,199.20.14.240,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d093945bb0c0004278cca,SE,Null,64.6167,Vilhelmina,16.65,640,480,81.8.160.235,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d093845bb0c0004278cc9,SE,Null,64.6167,Vilhelmina,16.65,704,576,81.8.160.246,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d093845bb0c0004278cc8,SE,Null,58.9333,Strmstad,11.1833,640,480,194.71.159.8,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d093245bb0c0004278cc2,SE,Null,64.6167,Vilhelmina,16.65,640,480,81.8.180.115,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d091c45bb0c0004278cab,SE,Null,59.7167,Stor,15.1333,704,576,195.34.84.194,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d091245bb0c0004278ca3,US,NY,43.0899,Rochester,-77.6376,704,480,150.160.7.33,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d08f445bb0c0004278c89,AT,Null,47.3333,,13.3333,704,576,85.199.1.39,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d08e545bb0c0004278c7a,US,TN,35.7125,Jackson,-88.7021,1920,1080,69.167.204.51,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d086845bb0c0004278c01,DE,Null,52.3167,Bad Essen,8.3333,640,480,195.243.212.53,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d079b45bb0c0004278b38,PL,Null,52.5931,Polska,19.0894,704,576,95.50.215.157,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d077c45bb0c0004278b1a,US,CA,33.8768,Fullerton,-117.893,640,480,137.151.190.130,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d071b45bb0c0004278abf,US,AZ,34.6248,Prescott,-112.422,640,480,199.104.253.5,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d06f545bb0c0004278a9a,DE,Null,51,,9,768,576,217.91.58.189,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d06f145bb0c0004278a96,AT,Null,46.8661,Ainet,12.7014,640,480,87.243.137.233,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d06af45bb0c0004278a5a,NO,Null,62,,10,1280,720,87.238.46.3,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d06a545bb0c0004278a51,UA,Null,49,,32,640,480,194.44.202.21,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d069a45bb0c0004278a45,US,CA,37.5155,Fremont,-121.896,640,480,72.52.116.28,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d067845bb0c0004278a22,US,NY,40.8618,East Northport,-73.3151,640,480,96.57.11.42,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d067645bb0c0004278a20,AT,Null,47.8,Salzburg,13.0333,704,576,195.70.107.151,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d067545bb0c0004278a1f,RU,Null,60,,100,1280,800,93.123.226.39,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d067345bb0c0004278a1d,RU,Null,54.1549,Amur,34.3141,768,576,83.234.97.117,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d063e45bb0c00042789eb,SE,Null,59.3333,Karlskoga,14.5167,640,480,88.84.250.237,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d05d945bb0c0004278985,US,FL,30.4578,Pensacola,-87.2582,640,480,97.64.145.7,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d05c945bb0c0004278977,RU,Null,60,,100,1280,960,95.161.27.6,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d05c845bb0c0004278976,RU,Null,60,,100,1024,640,95.161.27.60,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d05bc45bb0c000427896a,IS,Null,65,,-18,640,480,93.95.74.169,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d059d45bb0c000427894a,AT,Null,47.3333,,13.3333,640,480,91.113.220.122,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d059945bb0c0004278946,AT,Null,48.0667,Bad Wimsbach-neydharting,13.9,640,480,91.112.232.244,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d059845bb0c0004278945,AT,Null,48.0667,Bad Wimsbach-neydharting,13.9,640,480,91.112.232.243,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d058a45bb0c0004278937,CZ,Null,49.75,,15.5,640,480,89.203.137.209,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d056245bb0c000427890e,AT,Null,47.3333,,13.3333,1920,1080,88.116.112.202,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d055745bb0c0004278905,JE,Null,49.1833,Saint Helier,-2.1,352,288,87.244.76.134,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d054f45bb0c00042788fd,PL,Null,52.9021,Czarnkw,16.5641,320,240,87.204.160.9,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d054445bb0c00042788f2,HU,Null,47,,20,768,576,87.101.127.24,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d054245bb0c00042788f0,AT,Null,48.3167,Wilhering,14.2,640,480,86.56.185.46,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d053545bb0c00042788e2,IT,Null,42.8333,,12.8333,480,640,85.43.154.40,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d04d145bb0c0004278883,NO,Null,59.2833,Kopervik,5.3,640,480,82.134.72.195,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d04d045bb0c0004278882,NO,Null,59.2833,Kopervik,5.3,640,480,82.134.72.194,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d04c245bb0c0004278873,SE,Null,62,,15,704,576,81.8.143.33,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d04a045bb0c0004278851,AT,Null,47.3333,,13.3333,704,576,80.75.240.35,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d048e45bb0c0004278841,GB,Null,51.5,,-0.13,320,240,80.229.149.26,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d047945bb0c000427882c,FR,Null,48.86,,2.35,640,480,80.13.189.135,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d046245bb0c0004278818,FI,Null,61.6833,Mikkeli,27.25,800,450,79.141.146.81,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d045c45bb0c0004278811,CZ,Null,49.1084,Lesonice,15.7572,480,360,78.156.141.219,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d045845bb0c000427880d,CZ,Null,49.3996,Bystrice Pod Hostynem,17.6742,640,480,77.48.31.70,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d043745bb0c00042787ec,US,FL,25.7743,Miami,-80.1937,800,500,74.92.201.146,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d042f45bb0c00042787e5,US,FL,25.7014,Miami,-80.3582,704,480,74.164.25.34,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d042845bb0c00042787df,US,ME,44.2618,Farmingdale,-69.8232,640,480,72.95.127.157,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d042645bb0c00042787de,US,TX,32.3046,Andrews,-102.638,640,480,72.48.231.50,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d03cb45bb0c000427878b,US,Null,38,,-97,640,480,67.53.34.94,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d03ab45bb0c000427876c,US,HI,21.9081,Koloa,-159.476,704,480,66.193.157.18,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d038245bb0c0004278742,CA,Null,44.7031,Portland,-76.1805,640,480,64.118.25.194,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d029f45bb0c000427865e,DE,Null,48.8167,Korntal-mnchingen,9.1167,768,576,217.92.73.116,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfa8045bb0c0004277e37,US,WI,Madison,43.0761,-89.4104,1280,720,128.104.181.37,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfa8b45bb0c0004277e43,US,MA,Amherst,42.3804,-72.5231,320,240,128.119.98.19,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfab045bb0c0004277e68,US,WA,Seattle,47.6606,-122.292,640,480,128.208.252.2,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfac045bb0c0004277e79,US,IN,West Lafayette,40.4249,-86.9162,640,480,128.46.190.179,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cface45bb0c0004277e88,US,NH,Hanover,43.7226,-72.1342,640,480,129.170.117.10,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfad245bb0c0004277e8c,DE,Null,Heidelberg,49.4167,8.7,640,360,129.206.127.105,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfad445bb0c0004277e8e,US,MD,College Park,38.8336,-76.8777,2048,1536,129.2.16.181,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfaea45bb0c0004277ea5,US,MD,Hyattsville,39.0007,-76.973,640,480,131.118.33.250,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfaeb45bb0c0004277ea6,AT,Null,Vienna,48.2,16.3667,320,240,131.130.50.123,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfafd45bb0c0004277eb7,US,VT,Middlebury,43.9957,-73.1596,1280,800,140.233.86.204,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb0d45bb0c0004277ec7,US,PA,University Park,40.8077,-77.8614,1600,1200,146.186.123.229,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb1945bb0c0004277ed3,US,NY,Hamilton,42.8175,-75.5483,640,480,149.43.156.105,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb2145bb0c0004277edb,IS,Null,,65,-18,704,576,157.157.215.231,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb2445bb0c0004277ede,US,CA,Los Angeles,33.9571,-118.404,320,240,157.242.44.60,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb2945bb0c0004277ee3,HR,Null,Zagreb,45.8,16,800,568,161.53.240.140,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb3e45bb0c0004277ef8,GB,Null,Plymouth,50.3761,-4.1632,800,600,192.171.163.3,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb4d45bb0c0004277f07,SE,Null,,62,15,1280,720,194.103.218.15,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb4f45bb0c0004277f09,SE,Null,Vertorne,66.3833,23.6667,640,480,194.117.188.138,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb5a45bb0c0004277f14,FI,Null,Ivalo,68.65,27.6,384,288,194.89.9.86,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb6045bb0c0004277f1a,SE,Null,Pajala,67.2,23.3667,640,480,195.196.36.242,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb6145bb0c0004277f1b,PL,Null,,52,20,384,288,195.200.199.8,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb6f45bb0c0004277f28,US,VA,Blacksburg,37.1791,-80.3515,1280,720,198.82.159.136,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb7145bb0c0004277f2a,US,SC,Rock Hill,34.9926,-81.1787,704,480,199.79.254.179,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb7445bb0c0004277f2d,MX,Null,,19.43,-99.13,640,480,200.36.58.250,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfb9e45bb0c0004277f57,FR,Null,Brest,48.3908,-4.4862,640,480,212.234.116.85,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfba145bb0c0004277f5b,DE,Null,Cloppenburg,52.8475,8.0462,640,480,212.6.91.123,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfba845bb0c0004277f62,CH,Null,Haggenschwil,47.4942,9.3425,768,576,213.196.182.244,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfbc345bb0c0004277f7e,US,AK,Anchorage,61.2181,-149.9,640,480,216.67.98.12,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfbc445bb0c0004277f7f,US,MI,Detroit,42.3314,-83.0457,704,480,216.8.159.21,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfbcd45bb0c0004277f89,DE,Null,Essen,51.45,7.0167,704,576,217.78.137.43,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfbe745bb0c0004277fa3,US,MI,Midland,43.7053,-84.2377,704,480,24.180.249.249,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfbfd45bb0c0004277fb8,ES,Null,Bilbao,43.2609,-2.9388,640,480,62.99.76.193,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc2b45bb0c0004277fe9,US,ND,Devils Lake,48.1436,-98.8872,800,450,76.10.79.246,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc2d45bb0c0004277feb,NO,Null,Alvdal,62.1167,10.65,704,576,77.106.164.66,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc2f45bb0c0004277fed,CZ,Null,Bystrice Pod Hostynem,49.3996,17.6742,640,480,77.48.31.68,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc4845bb0c0004278007,CZ,Null,Trinec,49.6804,18.6653,640,480,80.82.144.83,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc4e45bb0c000427800d,PL,Null,Kielce,50.8333,20.6667,640,480,81.26.28.141,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc4f45bb0c000427800e,SE,Null,Stensele,65.0833,17.1667,640,480,81.8.152.68,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc6e45bb0c000427802e,BG,Null,Burgas,42.5,27.4667,480,360,84.54.139.100,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc7c45bb0c000427803b,DK,Null,Holte,55.8167,12.4667,1920,1080,87.54.59.228,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfc8645bb0c0004278046,RU,Null,,60,100,640,480,91.143.62.11,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfcd845bb0c000427809d,US,MI,Allendale,42.9742,-85.9311,1920,1080,148.61.97.229,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfcd945bb0c000427809e,US,MI,Allendale,42.9742,-85.9311,1920,1080,148.61.63.218,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfcdb45bb0c00042780a0,DE,Null,Gttingen,51.5333,9.9333,320,240,134.76.205.194,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfce645bb0c00042780ab,SE,Null,Pajala,67.2,23.3667,800,450,195.196.35.91,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfcfa45bb0c00042780be,US,ND,Devils Lake,48.1436,-98.8872,800,450,69.178.250.15,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfcfc45bb0c00042780c0,,Null,Vancouver,49.2765,-123.218,1280,720,142.103.183.237,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfd0f45bb0c00042780d4,US,AK,Fairbanks,64.8378,-147.716,640,480,137.229.93.113,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfd1045bb0c00042780d6,FI,Null,,64,26,640,480,194.8.226.46,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0cfd9745bb0c0004278162,US,MA,Worcester,42.2423,-71.8099,1280,720,140.232.203.246,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d0b8d45bb0c0004278f24,US,CA,32.8807,La Jolla,-117.236,704,480,137.110.112.53,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+5b0d326484d57c0004cb994d,PL,Null,52,,20,704,480,193.46.68.18,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi

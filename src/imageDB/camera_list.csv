@@ -1,8 +1,8 @@
 Camera_ID,Country,State,City,Latitude,Longtitude,Resolution_w,Resolution_h,Ip,Port,Image_path,Video_path
-0,US,Null,,32,-5,288,704,196.12.203.72,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
-1,US,Null,,62,15,720,1280,194.103.218.16,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
-2,US,Null,Bad Goisern,47.6333,13.6167,576,704,193.33.210.30,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
-3,US,MO,Columbia,38.9033,-92.1022,1080,1920,128.206.143.98,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+0,US,Null,,32,-5,288,704,157.242.44.60,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+1,US,Null,,62,15,720,1280,149.43.156.105,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+2,US,Null,Bad Goisern,47.6333,13.6167,576,704,140.233.86.204,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
+3,US,MO,Columbia,38.9033,-92.1022,1080,1920,95.161.27.60,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 4,US,CA,La Jolla,32.8807,-117.236,480,704,137.110.112.53,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 5,US,Null,,38,-97,600,800,12.154.97.245,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi
 6,US,IL,Wheeling,42.1286,-87.9237,480,640,50.76.244.73,80,/axis-cgi/jpg/image.cgi,/axis-cgi/mjpg/video.cgi

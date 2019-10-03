@@ -34,12 +34,10 @@ def build_up_test(num_of_cams, is_real_camera, num_procs, diff_thresh, store_int
     print("querying camera data..." + "------> ", end="")
     timestamp = time.perf_counter()
 
-    # Set up cameras
-    # cam_data = example.db.get_all_cameras(num_of_cams)
 
     print("{} seconds\n".format(time.perf_counter() - timestamp))
-    # processes = []
 
+    #Read predefined classes from class names file
     classes = utils.read_class_names("my_classes.names")
     class_dict = {}
 
@@ -52,9 +50,11 @@ def build_up_test(num_of_cams, is_real_camera, num_procs, diff_thresh, store_int
         imageDB = ImageDB()
         media_list, header = imageDB.read_data('camera_list.csv', config.CAM_HEADER, 'tuple', None)
         media_list = divide_cams(media_list, num_of_cams, num_procs)
-        # print(media_list)
+
     elif is_real_camera == 'our_vid':
-        media_list = [['video_moving.mp4'], ['video_static.mp4'], ['video_moving.mp4'], ['video_static.mp4'], ['video_moving.mp4'], ['video_static.mp4'], ['video_moving.mp4'], ['video_static.mp4'], ['video_moving.mp4'], ['video_static.mp4']]  # 'video_static.mp4', 'video_inbetween.mp4']
+        media_list = ['video_moving.mp4']
+        #media_list = [['video_moving.mp4'], ['video_static.mp4'], ['video_moving.mp4'], ['video_static.mp4'], ['video_moving.mp4'], ['video_static.mp4'], ['video_moving.mp4'], ['video_static.mp4'], ['video_moving.mp4'], ['video_static.mp4']]  # 'video_static.mp4', 'video_inbetween.mp4']
+
         if num_procs < num_of_cams:
             chunked_media = [media_list[0], media_list[1], media_list[2]]
             for media in range(3, len(media_list[:num_of_cams])):
@@ -63,36 +63,26 @@ def build_up_test(num_of_cams, is_real_camera, num_procs, diff_thresh, store_int
             print (len(media_list[0]))
             print (len(media_list[1]))
             print (len(media_list[2]))
-    elif is_real_camera == 'public_vid':
-        TB = 1024*1024*1024*1024
-        video1 = ['single_gig.mp4']
-        media_list = [['single_gig.mp4']]
-        input_size = os.stat('single_gig.mp4').st_size
-        while input_size < TB:
-            media_list.append(video1)
-            input_size += os.stat('single_gig.mp4').st_size
-        if num_procs < len(media_list):
-            chunked_media = [['single_gig.mp4'], ['single_gig.mp4'], ['single_gig.mp4']]
-            for media in range(3, len(media_list[:])):
-                chunked_media[media%3].append(media_list[media][0])
-            media_list = chunked_media
-            print (len(media_list[0]))
-            print (len(media_list[1]))
-            print (len(media_list[2]))
+
 
     else:
         print ('is_real_camera flag set to invalid value')
-        print ('Valid values for is_real_camera: ip, our_vid, public_vid')
+        print ('Valid values for is_real_camera: ip, our_vid')
         return
     # Start multiprocessing
-
+    '''
     args = []
     for PID in range(num_procs):
         args.append((media_list[PID], is_real_camera, diff_thresh, store_interval, PID, num_procs, class_dict, classes))
-    # alias = functools.partial(_retrieveImage_alias, example)
+
     with multiprocessing.Pool(num_procs) as pool:
         pool.map(_retrieveImage_alias, args)
+    '''
+    
 
+    myroutine = Routine()
+    myroutine.retrieveImage(media_list, is_real_camera, diff_thresh, store_interval, 0, num_procs, class_dict, classes)
+    
 
     print('Full video: ', time.perf_counter() - start_time)
     print('Finished')
@@ -104,7 +94,7 @@ parser.add_argument('--num_cams', type=int, default=1,
 parser.add_argument('--num_procs', type=int, default=1,
                     help='Number of Processes')
 parser.add_argument('--is_real_camera', default='our_vid',
-                    help='ip or our_vid or public_vid')
+                    help='ip or our_vid')
 parser.add_argument('--diff', type=float, default=0.85,
                     help='difference threshold')
 parser.add_argument('--store_interval', type=float, default=0.1,
@@ -114,9 +104,17 @@ if __name__ == '__main__':
     arguments = parser.parse_args()
     build_up_test(arguments.num_cams, arguments.is_real_camera, arguments.num_procs, arguments.diff, arguments.store_interval)
     '''
-    This file takes in two arguments as input.
+    This user can pass in 5 arguments as input.
 
-    argv[1], type: str, options: 'camera' / 'video'
+    Argument 1, type: int, Default = 1
+        - This is a number representing how many cameras(videos)
+          the user wants to use capture images from.
+
+    Argument 2, type: int, Default = 1
+        - The number of processes used in multiprocessing will be
+          inputted by the user as the third argument.
+
+    Argument 3, type: str, options: 'ip' / 'our_vid'
         - This decides whether or not the program will use real
           ip cameras, or the test videos.
         - camera: yes it will use real cameras, it will import the
@@ -125,43 +123,9 @@ if __name__ == '__main__':
         - video: no it will not use real cameras, instead it uses
           the test videos we've taken.
 
-    argv[2], type: int
-        - This is a number representing how many cameras(videos)
-          the user wants to use capture images from.
+    Argument 4, type: float, Default = 0.85
+        - The difference threshold can be changed by the user
 
-    argv[3], type: int
-        - The number of processes used in multiprocessing will be
-          inputted by the user as the third argument.
-    '''
-
-    # Bash script to end subprocesses
-    # subprocess.call('end_process.sh')
-    '''
-    if sys.argv[1] == 'camera':
-        build_up_test(sys.argv[2], True, sys.argv[3])
-
-    elif sys.argv[1] == 'video':
-        build_up_test(sys.argv[2], False, sys.argv[3])
-
-    else:
-        print('Incorrect input arguments!')
-        print('argv[1]: "camera" or "video"')
-        print('argv[2]: integer greater than zero')
-    '''
-
-
-    '''
-    for PID in range(num_of_cams):
-        print("Start retrieveImage...\n")
-        p = multiprocessing.Process(target=example.retrieveImage, args=(media_list, is_real_camera, 1.0, 0.1, PID, class_dict))
-        processes.append(p)
-        p.start()
-
-
-    print ('Active Processes:', len(processes), '\n')
-
-    # Merge the processes
-    for process in processes:
-        process.join()
-
+    Argument 5, type: float, Default = 0.1
+        - The store interval can be changed by the user
     '''

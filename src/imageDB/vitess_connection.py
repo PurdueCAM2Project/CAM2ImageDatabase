@@ -101,11 +101,11 @@ class VitessConn:
         except:
             # create table
             self.mycursor.execute('CREATE TABLE CAMERA(Camera_ID VARCHAR(25),\
-									Country VARCHAR(30), State VARCHAR(30), City VARCHAR(30), \
-									Latitude VARCHAR(15), Longitude VARCHAR(15), \
-									Resolution_w VARCHAR(5), Resolution_h VARCHAR(5), Ip VARCHAR(15), Port VARCHAR(5), \
-									Image_path VARCHAR(100), Video_path VARCHAR(100), Fps VARCHAR(5)\
-									PRIMARY KEY (Camera_ID))')
+                                    Country VARCHAR(30), State VARCHAR(30), City VARCHAR(30), \
+                                    Latitude VARCHAR(15), Longitude VARCHAR(15), \
+                                    Resolution_w VARCHAR(5), Resolution_h VARCHAR(5), Ip VARCHAR(15), Port VARCHAR(5), \
+                                    Image_path VARCHAR(100), Video_path VARCHAR(100), Fps VARCHAR(5), \
+                                    PRIMARY KEY (Camera_ID))')
             print('CAMERA table created.')
 
 
@@ -120,12 +120,12 @@ class VitessConn:
             print('IMAGE_VIDEO table exist')
         except:
             ## create table
-            self.mycursor.execute('CREATE TABLE IMAGE_VIDEO(IV_ID VARCHAR(36) NOT NULL, IV_Name VARCHAR(50) NOT NULL, Camera_ID VARCHAR(25) NOT NULL, \
-									IV_date DATE NOT NULL, IV_time TIME NOT NULL, \
-									File_type VARCHAR(5) NOT NULL, File_size VARCHAR(10) NOT NULL, \
-									Minio_link VARCHAR(100) NOT NULL, Dataset VARCHAR(10) NOT NULL, Is_processed INT NOT NULL, \
+            self.mycursor.execute('CREATE TABLE IMAGE_VIDEO(IV_ID VARCHAR(36) NOT NULL, IV_Name VARCHAR(50) NOT NULL, \
+                                    Camera_ID VARCHAR(25) NOT NULL, IV_date DATE NOT NULL, IV_time TIME NOT NULL, \
+                                    File_type VARCHAR(5) NOT NULL, File_size VARCHAR(10) NOT NULL, \
+                                    Minio_link VARCHAR(100) NOT NULL, Dataset VARCHAR(10) NOT NULL, \
+                                    Is_processed INT NOT NULL, \
 									PRIMARY KEY (IV_ID))')
-
             print('IMAGE_VIDEO table created.')
 
 
@@ -142,7 +142,7 @@ class VitessConn:
         except:
             ## create table
             self.mycursor.execute('CREATE TABLE FEATURE(Feature_ID VARCHAR(36) NOT NULL, Feature_Name VARCHAR(10) NOT NULL, \
-			PRIMARY KEY (Feature_ID))')
+                                    PRIMARY KEY (Feature_ID))')
             print('FEATURE table created.')
 
 
@@ -158,7 +158,7 @@ class VitessConn:
         except:
             ## create table
             self.mycursor.execute('CREATE TABLE RELATION(Feature_ID VARCHAR(36) NOT NULL, IV_ID VARCHAR(36) NOT NULL, Feature_Num INT, \
-			PRIMARY KEY (Feature_ID, IV_ID))')
+                                    PRIMARY KEY (Feature_ID, IV_ID))')
             print('RELATION table created.')
 
     def createBoxTable(self):
@@ -170,8 +170,10 @@ class VitessConn:
             self.mycursor.execute('SELECT 1 FROM BOUND_BOX LIMIT 1')
             print('BOUND_BOX table exist.')
         except:
-            ## create table
-            self.mycursor.execute('CREATE TABLE BOUND_BOX(IV_ID VARCHAR(36), Feature_ID VARCHAR(36), Confidence VARCHAR(30), Xmin VARCHAR(30), Xmax VARCHAR(30), Ymin VARCHAR(30), Ymax VARCHAR(30), PRIMARY KEY(IV_ID, Feature_ID, Xmin, Xmax, Ymin, Ymax))')
+            # create table
+            self.mycursor.execute('CREATE TABLE BOUND_BOX(IV_ID VARCHAR(36), Feature_ID VARCHAR(36), \
+                                    Confidence VARCHAR(30), Xmin VARCHAR(30), Xmax VARCHAR(30), Ymin VARCHAR(30), \
+                                    Ymax VARCHAR(30), PRIMARY KEY(IV_ID, Feature_ID, Xmin, Xmax, Ymin, Ymax))')
             print('BOUND_BOX table created.')
 
     def createCropImgTable(self):
@@ -186,8 +188,8 @@ class VitessConn:
         except:
             # create table
             self.mycursor.execute('CREATE TABLE CROPPED_IMAGE(Camera_ID VARCHAR(25), \
-									Xmin VARCHAR(10), Xmax VARCHAR(10), Ymin VARCHAR(10), Ymax VARCHAR(10)\
-									PRIMARY KEY (Camera_ID))')
+                                    Xmin VARCHAR(10), Xmax VARCHAR(10), Ymin VARCHAR(10), Ymax VARCHAR(10), \
+                                    PRIMARY KEY (Camera_ID))')
             print('CROPPED_IMAGE table created.')
 
     # INSERT the element from the input into the database
@@ -200,13 +202,13 @@ class VitessConn:
         """
 
         sql = 'INSERT INTO CAMERA(Camera_ID, Country, State, City, Latitude, Longitude, Resolution_w, Resolution_h, \
-				Ip, Port, Image_path, Video_path) \
-				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
-				ON DUPLICATE KEY UPDATE \
-				Camera_ID=VALUES(Camera_ID), Country=VALUES(Country), State=VALUES(State), \
-				City=VALUES(City), Latitude=VALUES(Latitude), Longitude=VALUES(Longitude), \
-				Resolution_w=VALUES(Resolution_w), Resolution_h=VALUES(Resolution_h), \
-				Ip=VALUES(Ip), Port= VALUES(Port), Image_path=VALUES(Image_path), Video_path=VALUES(Video_path)'
+                Ip, Port, Image_path, Video_path) \
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
+                ON DUPLICATE KEY UPDATE \
+                Camera_ID=VALUES(Camera_ID), Country=VALUES(Country), State=VALUES(State), \
+                City=VALUES(City), Latitude=VALUES(Latitude), Longitude=VALUES(Longitude), \
+                Resolution_w=VALUES(Resolution_w), Resolution_h=VALUES(Resolution_h), \
+                Ip=VALUES(Ip), Port= VALUES(Port), Image_path=VALUES(Image_path), Video_path=VALUES(Video_path)'
 
         self.mycursor.execute(sql, camera)
 
@@ -219,13 +221,13 @@ class VitessConn:
         """
 
         sql = 'INSERT INTO CAMERA(Camera_ID, Country, State, City, Latitude, Longitude, Resolution_w, Resolution_h, \
-				Ip, Port, Image_path, Video_path) \
-				VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
-				ON DUPLICATE KEY UPDATE \
-				Camera_ID=VALUES(Camera_ID), Country=VALUES(Country), State=VALUES(State), \
-				City=VALUES(City), Latitude=VALUES(Latitude), Longitude=VALUES(Longitude), \
-				Resolution_w=VALUES(Resolution_w), Resolution_h=VALUES(Resolution_h), \
-				Ip=VALUES(Ip), Port= VALUES(Port), Image_path=VALUES(Image_path), Video_path=VALUES(Video_path)'
+                Ip, Port, Image_path, Video_path) \
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) \
+                ON DUPLICATE KEY UPDATE \
+                Camera_ID=VALUES(Camera_ID), Country=VALUES(Country), State=VALUES(State), \
+                City=VALUES(City), Latitude=VALUES(Latitude), Longitude=VALUES(Longitude), \
+                Resolution_w=VALUES(Resolution_w), Resolution_h=VALUES(Resolution_h), \
+                Ip=VALUES(Ip), Port= VALUES(Port), Image_path=VALUES(Image_path), Video_path=VALUES(Video_path)'
 
         self.mycursor.executemany(sql, cameras)
 
@@ -372,7 +374,7 @@ class VitessConn:
     def getImage(self, arguments):
         """
         This function takes a dictionary of arguments and queries for images in the Vitess database, returns 0
-		if no results are found, -1 if there was an error in the query response and the results if matches  were found.
+        if no results are found, -1 if there was an error in the query response and the results if matches  were found.
 
         :param arguments:       dict, set of arguments to base query upon
         :return:                list, results of image query
@@ -478,7 +480,7 @@ class VitessConn:
         else:
             fquery = "SELECT aTable.Camera_ID, aTable.IV_ID, aTable.IV_date, aTable.IV_time, aTable.Minio_link, " \
                      "aTable.Dataset FROM (SELECT IMAGE_VIDEO.IV_ID FROM IMAGE_VIDEO WHERE IMAGE_VIDEO.Minio_link IN " \
-                     + features + " AND IMAGE_VIDEO.Dataset IN ('bucket')"
+                     + features + " AND IMAGE_VIDEO.Dataset IN " + features #"('single')"
 
             fquery += ") AS bTable INNER JOIN (" + query + ") AS aTable ON aTable.IV_ID = bTable.IV_ID;"
 

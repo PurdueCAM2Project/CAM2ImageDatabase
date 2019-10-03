@@ -118,7 +118,7 @@ class MinioConn:
         print("Finished in --%s-- seconds" % (time.time() - start_time))
 
     #TODO: I think we should remove the other function and rename this
-    def batch_video_download(self, mc, df, size_limit):
+    def batch_video_download(self, mc, df, size_limit, is_image=False):
         """
         Downloads images from Minio
 
@@ -144,21 +144,21 @@ class MinioConn:
                 sys.exit()
 
         # Get a full object and prints the original object stat information.
-        #bucket_name[i]
         try:
             for i in range(file_names.__len__()):
                 mc.fget_object(bucket_name[i], file_names[i], './' + folder_name + file_names[i] + '.jpg')
 
-                img_size = os.path.getsize('./' + folder_name + file_names[i] + '.jpg')
-                size += img_size
+                if is_image == True:
+                    img_size = os.path.getsize('./' + folder_name + file_names[i] + '.jpg')
+                    size += img_size
+                    if size >= size_limit * 1024 * 1024:
+                        break
 
-                if size >= size_limit * 1024 * 1024:
-                    break
         except ResponseError as err:
             print(err)
 
         print("===============================================================")
-        #print("Finished in --%s-- seconds" % (time.time() - start_time))
+        print("Finished in --%s-- seconds" % (time.time() - start_time))
     # remove error handling, so that it can be caught in imageDB.py and allow rollback of vitess
 
 
