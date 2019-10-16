@@ -2,3 +2,4 @@ mysql-connector-python>=8.0.15
 minio>=4.0.13
 numpy>=1.16.2
 pandas>=0.24.2
+CAM2CameraDatabaseClient>=1.0.2

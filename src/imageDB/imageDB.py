@@ -282,6 +282,38 @@ class ImageDB:
         else:
             return 0
 
+    def batch_insert_camera_from_api(self):
+        """
+        Collects the latest list of all cameras and addes them to vitese.
+        Used for large number for cameras.
+
+        :return: 0 if correctly inserted
+        """
+        db = cam2.Client(config.clientID, config.clientSecret)
+
+        camera_list = []
+        offset = 0
+
+        camera_subset_list = db.search_camera(offset=offset)
+        while len(camera_subset_list) != 0 and offset < 200:
+            print(offset)
+            camera_list = camera_list + camera_subset_list
+            offset += 100
+            camera_subset_list = db.search_camera(offset=offset)
+
+        if camera_list:
+            try:
+                self.vitess.insertCameras(camera_list)#[i:i+5000])
+                self.vitess.mydb.commit()
+                print('Camera metadata updated')
+            except mysql.connector.Error as e:
+                print('Error inserting cameras: ' + str(e))
+                self.vitess.mydb.rollback()
+            except Exception as e2:
+                print(e2)
+        else:
+            return 0
+
 
     def insert_BoundBox(self, boundbox_csv):
 
