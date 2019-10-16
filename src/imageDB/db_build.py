@@ -46,6 +46,14 @@ class DBbuild:
         self.db.single_insert_camera(filename)
         self.db.batch_insert_camera(filename)
 
+    def fill(self):
+        """
+        Insert camera data to the current tables from the API.
+
+        """
+
+        self.db.batch_insert_camera_from_api()
+
     def feature(self, filename):
         """
         ?
@@ -127,7 +135,7 @@ class DBbuild:
 if __name__ == '__main__':
     """
     This file takes in two argument inputs
-    argv[1] is mode (start, append, feature, update, or queryTest)
+    argv[1] is mode (start, append, feature, update, fill, or queryTest)
     argv[2] is the csv file name
     """
 
@@ -144,6 +152,9 @@ if __name__ == '__main__':
 
     elif sys.argv[1] == 'update':
         imgDB_build.update(sys.argv[2])
+
+    elif sys.argv[1] == 'fill':
+        imgDB_build.fill()
 
     elif sys.argv[1] == 'queryTest':
         imgDB_build.queryTest()
